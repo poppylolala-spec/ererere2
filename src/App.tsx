@@ -1090,17 +1090,20 @@ function CreateDraftPage({ setCurrentPage }: { setCurrentPage: (page: Page) => v
       <div className="bg-white rounded-xl border border-[#d4dcc8]">
         {/* Compact metadata section */}
         <div className="p-6 border-b border-[#e8ede2]">
+          {/* Строка 1: Заголовок */}
+          <div className="mb-4">
+            <label className="block text-xs font-medium text-[#6b7f58] mb-1">Заголовок</label>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Введите заголовок статьи"
+              className="w-full px-3 py-2 rounded border border-[#d4dcc8] focus:outline-none focus:ring-2 focus:ring-[#8fa87a] text-sm text-[#3d4f30]"
+            />
+          </div>
+
+          {/* Строка 2: Раздел + Доп. разделы */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div>
-              <label className="block text-xs font-medium text-[#6b7f58] mb-1">Заголовок</label>
-              <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Введите заголовок"
-                className="w-full px-3 py-2 rounded border border-[#d4dcc8] focus:outline-none focus:ring-2 focus:ring-[#8fa87a] text-sm text-[#3d4f30]"
-              />
-            </div>
             <div>
               <label className="block text-xs font-medium text-[#6b7f58] mb-1">Раздел</label>
               <select
@@ -1114,21 +1117,8 @@ function CreateDraftPage({ setCurrentPage }: { setCurrentPage: (page: Page) => v
                 ))}
               </select>
             </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div>
-              <label className="block text-xs font-medium text-[#6b7f58] mb-1">Теги</label>
-              <input
-                type="text"
-                value={tags}
-                onChange={(e) => setTags(e.target.value)}
-                placeholder="Через запятую"
-                className="w-full px-3 py-2 rounded border border-[#d4dcc8] focus:outline-none focus:ring-2 focus:ring-[#8fa87a] text-sm text-[#3d4f30]"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-[#6b7f58] mb-1">Доп. разделы</label>
+              <label className="block text-xs font-medium text-[#6b7f58] mb-1">Дополнительные разделы</label>
               <div className="flex gap-2">
                 <select className="flex-1 px-3 py-2 rounded border border-[#d4dcc8] focus:outline-none focus:ring-2 focus:ring-[#8fa87a] text-sm text-[#3d4f30] bg-white">
                   <option>Не выбрано</option>
@@ -1144,28 +1134,43 @@ function CreateDraftPage({ setCurrentPage }: { setCurrentPage: (page: Page) => v
                 </button>
               </div>
             </div>
-            <div>
-              <label className="block text-xs font-medium text-[#6b7f58] mb-1">Привязка</label>
-              <div className="flex gap-2">
-                <select 
-                  disabled={!section && additionalSections.length === 0}
-                  className="flex-1 px-3 py-2 rounded border border-[#d4dcc8] focus:outline-none focus:ring-2 focus:ring-[#8fa87a] text-sm text-[#3d4f30] bg-white disabled:bg-[#f0f4eb] disabled:cursor-not-allowed"
-                >
-                  <option>Не выбрана</option>
-                </select>
-                <button
-                  disabled={!section && additionalSections.length === 0}
-                  className="px-3 py-2 rounded bg-[#e8f0de] hover:bg-[#d4e4c8] text-[#4a5d3a] text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  title="Добавить привязку"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                  </svg>
-                </button>
-              </div>
+          </div>
+
+          {/* Строка 3: Привязка */}
+          <div className="mb-4">
+            <label className="block text-xs font-medium text-[#6b7f58] mb-1">Привязка к материалам</label>
+            <div className="flex gap-2">
+              <select 
+                disabled={!section && additionalSections.length === 0}
+                className="flex-1 px-3 py-2 rounded border border-[#d4dcc8] focus:outline-none focus:ring-2 focus:ring-[#8fa87a] text-sm text-[#3d4f30] bg-white disabled:bg-[#f0f4eb] disabled:cursor-not-allowed"
+              >
+                <option>Не выбрана</option>
+              </select>
+              <button
+                disabled={!section && additionalSections.length === 0}
+                className="px-3 py-2 rounded bg-[#e8f0de] hover:bg-[#d4e4c8] text-[#4a5d3a] text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                title="Добавить привязку"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                </svg>
+              </button>
             </div>
           </div>
 
+          {/* Строка 4: Теги */}
+          <div className="mb-4">
+            <label className="block text-xs font-medium text-[#6b7f58] mb-1">Теги</label>
+            <input
+              type="text"
+              value={tags}
+              onChange={(e) => setTags(e.target.value)}
+              placeholder="Введите теги через запятую"
+              className="w-full px-3 py-2 rounded border border-[#d4dcc8] focus:outline-none focus:ring-2 focus:ring-[#8fa87a] text-sm text-[#3d4f30]"
+            />
+          </div>
+
+          {/* Строка 5: Вложения */}
           <div>
             <label className="block text-xs font-medium text-[#6b7f58] mb-1">Вложения</label>
             <div className="flex items-center gap-2">
