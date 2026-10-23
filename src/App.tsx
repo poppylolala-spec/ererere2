@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { categories, Category, Article } from './data/categories';
+import { getCategoryIcon } from './components/Icons';
 
-type Page = 'home' | 'profile' | 'workspace' | 'article' | 'search';
+type Page = 'home' | 'profile' | 'workspace' | 'article' | 'search' | 'create-draft';
 
 interface WorkspaceTab {
   id: string;
@@ -11,12 +12,12 @@ interface WorkspaceTab {
 }
 
 const workspaceTabs: WorkspaceTab[] = [
-  { id: 'drafts', label: 'Черновики', icon: '📝', status: 'draft' },
-  { id: 'published', label: 'Опубликованные', icon: '✅', status: 'published' },
-  { id: 'review', label: 'На проверке', icon: '🔍', status: 'review' },
-  { id: 'archive', label: 'Архив', icon: '📦', status: 'archived' },
-  { id: 'comments', label: 'Мои комментарии', icon: '💬', status: 'comments' },
-  { id: 'trash', label: 'Корзина', icon: '🗑️', status: 'trash' },
+  { id: 'drafts', label: 'Черновики', icon: 'drafts', status: 'draft' },
+  { id: 'published', label: 'Опубликованные', icon: 'published', status: 'published' },
+  { id: 'review', label: 'На проверке', icon: 'review', status: 'review' },
+  { id: 'archive', label: 'Архив', icon: 'archive', status: 'archived' },
+  { id: 'comments', label: 'Мои комментарии', icon: 'comments', status: 'comments' },
+  { id: 'trash', label: 'Корзина', icon: 'trash', status: 'trash' },
 ];
 
 // Helper to collect all articles from a category tree
@@ -63,7 +64,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [workspaceTab, setWorkspaceTab] = useState('drafts');
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
-  const [showSearch, setShowSearch] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   const toggleNode = (id: string) => {
     setExpandedNodes(prev => {
@@ -88,7 +89,6 @@ export default function App() {
   const handleSearch = () => {
     if (searchQuery.trim()) {
       setCurrentPage('search');
-      setShowSearch(false);
     }
   };
 
@@ -128,7 +128,9 @@ export default function App() {
         <div className="flex items-center justify-between px-6 py-3">
           {/* Logo */}
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => { setCurrentPage('home'); setSelectedCategory(null); setSelectedArticle(null); }}>
-            <span className="text-2xl">🌿</span>
+            <svg className="w-7 h-7 text-[#8fa87a]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 21V11m0 0c-2-3-5-4-7-3m7 3c2-3 5-4 7-3M9 11c0-2 1-4 3-5m0 5c0-2-1-4-3-5" />
+            </svg>
             <h1 className="text-white text-xl font-bold tracking-wide">База знаний</h1>
           </div>
 
@@ -150,7 +152,7 @@ export default function App() {
           </div>
 
           {/* Right section */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             {/* Workspace button */}
             <button
               onClick={() => setCurrentPage('workspace')}
@@ -161,6 +163,77 @@ export default function App() {
               </svg>
               <span className="hidden sm:inline">Рабочий кабинет</span>
             </button>
+
+            {/* Notifications */}
+            <div className="relative">
+              <button
+                onClick={() => setShowNotifications(!showNotifications)}
+                className="relative p-2 rounded-lg hover:bg-[#5a6f48] transition-colors"
+              >
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+                <span className="absolute top-1 right-1 w-2 h-2 bg-[#e8a838] rounded-full"></span>
+              </button>
+
+              {showNotifications && (
+                <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl shadow-xl border border-[#d4dcc8] overflow-hidden z-50">
+                  <div className="p-4 border-b border-[#e8ede2] flex items-center justify-between">
+                    <h3 className="font-semibold text-[#3d4f30]">Уведомления</h3>
+                    <span className="text-xs text-[#6b7f58] bg-[#e8f0de] px-2 py-0.5 rounded-full">3 новых</span>
+                  </div>
+                  <div className="max-h-80 overflow-y-auto">
+                    <div className="p-4 border-b border-[#e8ede2] hover:bg-[#f0f4eb] cursor-pointer transition-colors">
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 rounded-full bg-[#e8f0de] flex items-center justify-center flex-shrink-0">
+                          <svg className="w-4 h-4 text-[#4a5d3a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p className="text-sm text-[#3d4f30] font-medium">Статья одобрена</p>
+                          <p className="text-xs text-[#6b7f58] mt-0.5">«Уход за фиалками» прошла проверку и опубликована</p>
+                          <p className="text-xs text-[#a8b89a] mt-1">2 часа назад</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-4 border-b border-[#e8ede2] hover:bg-[#f0f4eb] cursor-pointer transition-colors">
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 rounded-full bg-[#fef3cd] flex items-center justify-center flex-shrink-0">
+                          <svg className="w-4 h-4 text-[#856404]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p className="text-sm text-[#3d4f30] font-medium">Новый комментарий</p>
+                          <p className="text-xs text-[#6b7f58] mt-0.5">Игорь Садовников оставил комментарий к вашей статье</p>
+                          <p className="text-xs text-[#a8b89a] mt-1">5 часов назад</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-4 hover:bg-[#f0f4eb] cursor-pointer transition-colors">
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 rounded-full bg-[#d4e8f0] flex items-center justify-center flex-shrink-0">
+                          <svg className="w-4 h-4 text-[#2c5f7c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p className="text-sm text-[#3d4f30] font-medium">Запрос на проверку</p>
+                          <p className="text-xs text-[#6b7f58] mt-0.5">«Пересадка фаленопсиса» отправлена на рецензию</p>
+                          <p className="text-xs text-[#a8b89a] mt-1">Вчера</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-3 border-t border-[#e8ede2]">
+                    <button className="w-full text-center text-sm text-[#4a5d3a] hover:text-[#3d4f30] font-medium py-1">
+                      Смотреть все уведомления
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* Profile */}
             <div className="relative">
@@ -193,28 +266,28 @@ export default function App() {
                   <div className="p-3">
                     <div className="flex justify-between items-center py-2 px-2 rounded-lg hover:bg-[#f0f4eb] cursor-pointer transition-colors" onClick={() => { setCurrentPage('profile'); setShowProfileDropdown(false); }}>
                       <div className="flex items-center gap-2">
-                        <span>👤</span>
+                        <svg className="w-4 h-4 text-[#6b7f58]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
                         <span className="text-sm text-[#3d4f30]">Мой профиль</span>
                       </div>
-                      <span className="text-xs text-[#6b7f58]">⭐ 4.8 · 12 статей</span>
+                      <span className="text-xs text-[#6b7f58]">4.8 / 12 ст.</span>
                     </div>
                     <div className="flex justify-between items-center py-2 px-2 rounded-lg hover:bg-[#f0f4eb] cursor-pointer transition-colors">
                       <div className="flex items-center gap-2">
-                        <span>⚙️</span>
+                        <svg className="w-4 h-4 text-[#6b7f58]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
                         <span className="text-sm text-[#3d4f30]">Настройки</span>
                       </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2 px-2 rounded-lg hover:bg-[#f0f4eb] cursor-pointer transition-colors">
-                      <div className="flex items-center gap-2">
-                        <span>🔔</span>
-                        <span className="text-sm text-[#3d4f30]">Уведомления</span>
-                      </div>
-                      <span className="bg-[#e8a838] text-white text-xs px-2 py-0.5 rounded-full">3</span>
                     </div>
                     <hr className="my-2 border-[#e8ede2]" />
                     <div className="flex justify-between items-center py-2 px-2 rounded-lg hover:bg-[#f0f4eb] cursor-pointer transition-colors">
                       <div className="flex items-center gap-2">
-                        <span>🚪</span>
+                        <svg className="w-4 h-4 text-[#6b7f58]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
                         <span className="text-sm text-[#3d4f30]">Выйти</span>
                       </div>
                     </div>
@@ -316,7 +389,7 @@ function SidebarNode({
       >
         {hasChildren && (
           <svg
-            className={`w-3 h-3 flex-shrink-0 transition-transform ${isExpanded ? 'rotate-90' : ''}`}
+            className={`w-3 h-3 flex-shrink-0 transition-transform text-[#8fa87a]`}
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -324,7 +397,7 @@ function SidebarNode({
           </svg>
         )}
         {!hasChildren && <span className="w-3" />}
-        <span className="text-base">{category.icon}</span>
+        <span className="text-[#6b7f58]">{getCategoryIcon(category.icon, "w-4 h-4")}</span>
         <span className="text-sm truncate">{category.name}</span>
       </div>
       {isExpanded && hasChildren && (
@@ -363,7 +436,7 @@ function HomePage({ handleCategoryClick }: { handleCategoryClick: (id: string) =
             className="bg-white rounded-xl p-5 border border-[#d4dcc8] hover:border-[#8fa87a] hover:shadow-md transition-all cursor-pointer group"
           >
             <div className="flex items-center gap-3 mb-3">
-              <span className="text-3xl">{cat.icon}</span>
+              <span className="text-[#6b7f58]">{getCategoryIcon(cat.icon, "w-7 h-7")}</span>
               <h3 className="text-lg font-semibold text-[#3d4f30] group-hover:text-[#4a5d3a] transition-colors">{cat.name}</h3>
             </div>
             <p className="text-sm text-[#6b7f58]">
@@ -425,7 +498,7 @@ function CategoryPage({
 
       {/* Category header */}
       <div className="flex items-center gap-4 mb-8">
-        <span className="text-4xl">{category.icon}</span>
+        <span className="text-[#6b7f58]">{getCategoryIcon(category.icon, "w-9 h-9")}</span>
         <div>
           <h1 className="text-2xl font-bold text-[#3d4f30]">{category.name}</h1>
           <p className="text-[#6b7f58] text-sm mt-1">
@@ -455,7 +528,7 @@ function CategoryPage({
                 `}
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-xl">{child.icon}</span>
+                  <span className="text-[#6b7f58]">{getCategoryIcon(child.icon, "w-5 h-5")}</span>
                   <div>
                     <span className="text-[#3d4f30] font-medium group-hover:text-[#4a5d3a]">{child.name}</span>
                     <span className="text-xs text-[#8fa87a] ml-3">
@@ -472,7 +545,7 @@ function CategoryPage({
         </div>
       )}
 
-      {/* Articles as list */}
+      {/* Articles as list - without status badges */}
       {hasArticles && (
         <div>
           <h2 className="text-lg font-semibold text-[#3d4f30] mb-4 flex items-center gap-2">
@@ -497,7 +570,6 @@ function CategoryPage({
                     <div className="flex items-center gap-4 mt-2">
                       <span className="text-xs text-[#8fa87a]">{article.author}</span>
                       <span className="text-xs text-[#a8b89a]">{article.date}</span>
-                      <StatusBadge status={article.status} />
                     </div>
                   </div>
                   <svg className="w-5 h-5 text-[#8fa87a] group-hover:text-[#4a5d3a] transition-colors flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -513,53 +585,190 @@ function CategoryPage({
   );
 }
 
-// Article page
+// Article page with sidebar
 function ArticlePage({ article }: { article: Article }) {
   return (
-    <div className="p-8 max-w-4xl">
-      <div className="bg-white rounded-xl border border-[#d4dcc8] p-8">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-[#3d4f30] mb-3">{article.title}</h1>
-          <div className="flex items-center gap-4 text-sm text-[#6b7f58]">
-            <span className="flex items-center gap-1">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-              {article.author}
-            </span>
-            <span className="flex items-center gap-1">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              {article.date}
-            </span>
-            <StatusBadge status={article.status} />
+    <div className="p-8">
+      <div className="flex gap-6">
+        {/* Main article content */}
+        <div className="flex-1 min-w-0">
+          <div className="bg-white rounded-xl border border-[#d4dcc8] p-8">
+            <div className="mb-6">
+              <h1 className="text-2xl font-bold text-[#3d4f30] mb-3">{article.title}</h1>
+              <div className="flex items-center gap-4 text-sm text-[#6b7f58]">
+                <span className="flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  {article.author}
+                </span>
+                <span className="flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  {article.publishedAt || article.date}
+                </span>
+              </div>
+            </div>
+            <hr className="border-[#e8ede2] mb-6" />
+            <div className="prose prose-sm max-w-none">
+              <p className="text-[#3d4f30] leading-relaxed text-base">{article.content}</p>
+            </div>
+            <div className="mt-8 pt-6 border-t border-[#e8ede2]">
+              <div className="flex items-center gap-3">
+                <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#e8f0de] hover:bg-[#d4e4c8] text-[#4a5d3a] transition-colors">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+                  </svg>
+                  Полезно
+                </button>
+                <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#f0f4eb] hover:bg-[#e8ede2] text-[#6b7f58] transition-colors">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                  </svg>
+                  Поделиться
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-        <hr className="border-[#e8ede2] mb-6" />
-        <div className="prose prose-sm max-w-none">
-          <p className="text-[#3d4f30] leading-relaxed text-base">{article.content}</p>
-        </div>
-        <div className="mt-8 pt-6 border-t border-[#e8ede2]">
-          <div className="flex items-center gap-3">
-            <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#e8f0de] hover:bg-[#d4e4c8] text-[#4a5d3a] transition-colors">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
-              </svg>
-              Полезно
-            </button>
-            <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#f0f4eb] hover:bg-[#e8ede2] text-[#6b7f58] transition-colors">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+          {/* Comments section */}
+          <div className="bg-white rounded-xl border border-[#d4dcc8] p-6 mt-6">
+            <h3 className="text-lg font-semibold text-[#3d4f30] mb-4 flex items-center gap-2">
+              <svg className="w-5 h-5 text-[#6b7f58]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
               </svg>
-              Комментарий
-            </button>
-            <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#f0f4eb] hover:bg-[#e8ede2] text-[#6b7f58] transition-colors">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+              Комментарии: {article.commentsCount || 0}
+            </h3>
+            {(article.commentsCount || 0) > 0 ? (
+              <div className="space-y-4">
+                <div className="border-l-2 border-[#8fa87a] pl-4 py-2">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-sm font-medium text-[#3d4f30]">Игорь Садовников</span>
+                    <span className="text-xs text-[#a8b89a]">2 дня назад</span>
+                  </div>
+                  <p className="text-sm text-[#4a5d3a]">Отличная статья, очень полезно для начинающих цветоводов!</p>
+                </div>
+              </div>
+            ) : (
+              <p className="text-sm text-[#6b7f58]">Пока нет комментариев. Будьте первым!</p>
+            )}
+            <div className="mt-4 pt-4 border-t border-[#e8ede2]">
+              <textarea
+                placeholder="Написать комментарий..."
+                className="w-full px-4 py-3 rounded-lg border border-[#d4dcc8] focus:outline-none focus:ring-2 focus:ring-[#8fa87a] focus:border-transparent resize-none text-sm"
+                rows={3}
+              />
+              <button className="mt-2 px-4 py-2 rounded-lg bg-[#4a5d3a] hover:bg-[#5a6f48] text-white text-sm transition-colors">
+                Отправить
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Right sidebar */}
+        <div className="w-80 flex-shrink-0 space-y-4">
+          {/* Rating */}
+          <div className="bg-white rounded-xl border border-[#d4dcc8] p-5">
+            <h3 className="text-sm font-semibold text-[#3d4f30] mb-3 flex items-center gap-2">
+              <svg className="w-4 h-4 text-[#e8a838]" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
               </svg>
-              Поделиться
-            </button>
+              Оценка материала
+            </h3>
+            {article.rating && article.ratingCount ? (
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-2xl font-bold text-[#3d4f30]">{article.rating}</span>
+                  <div className="flex">
+                    {[1, 2, 3, 4, 5].map(star => (
+                      <svg key={star} className={`w-4 h-4 ${star <= Math.round(article.rating!) ? 'text-[#e8a838]' : 'text-[#e8ede2]'}`} fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                      </svg>
+                    ))}
+                  </div>
+                </div>
+                <p className="text-xs text-[#6b7f58]">{article.ratingCount} оценок</p>
+              </div>
+            ) : (
+              <div>
+                <p className="text-sm text-[#6b7f58] mb-1">Мало оценок</p>
+                <p className="text-xs text-[#a8b89a]">Оценок пока нет</p>
+              </div>
+            )}
+            <p className="text-xs text-[#a8b89a] mt-3 italic">Свой материал оценивать нельзя.</p>
+          </div>
+
+          {/* About material */}
+          <div className="bg-white rounded-xl border border-[#d4dcc8] p-5">
+            <h3 className="text-sm font-semibold text-[#3d4f30] mb-3 flex items-center gap-2">
+              <svg className="w-4 h-4 text-[#6b7f58]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              О материале
+            </h3>
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-xs text-[#6b7f58]">Автор</span>
+                <span className="text-sm text-[#3d4f30]">{article.author}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-xs text-[#6b7f58]">Проверил</span>
+                <span className="text-sm text-[#3d4f30]">{article.reviewer || 'Тест Куратор'}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-xs text-[#6b7f58]">Версия</span>
+                <span className="text-sm text-[#3d4f30]">{article.version || 'v1'}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-xs text-[#6b7f58]">Опубликована</span>
+                <span className="text-sm text-[#3d4f30]">{article.publishedAt || '16.10.2026, 16:30'}</span>
+              </div>
+              <hr className="border-[#e8ede2]" />
+              <div className="space-y-2">
+                <button className="w-full text-left text-sm text-[#4a5d3a] hover:text-[#3d4f30] flex items-center gap-2 py-1">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  Версия на проверке — открыть
+                </button>
+                <button className="w-full text-left text-sm text-[#4a5d3a] hover:text-[#3d4f30] flex items-center gap-2 py-1">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                  Открыть в редакторе
+                </button>
+                <button className="w-full text-left text-sm text-red-600 hover:text-red-700 flex items-center gap-2 py-1">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                  </svg>
+                  Снять с публикации
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Attachments */}
+          <div className="bg-white rounded-xl border border-[#d4dcc8] p-5">
+            <h3 className="text-sm font-semibold text-[#3d4f30] mb-3 flex items-center gap-2">
+              <svg className="w-4 h-4 text-[#6b7f58]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+              </svg>
+              Вложения
+            </h3>
+            <p className="text-sm text-[#6b7f58]">Файлов нет.</p>
+          </div>
+
+          {/* Related materials */}
+          <div className="bg-white rounded-xl border border-[#d4dcc8] p-5">
+            <h3 className="text-sm font-semibold text-[#3d4f30] mb-3 flex items-center gap-2">
+              <svg className="w-4 h-4 text-[#6b7f58]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+              </svg>
+              Материалы по теме
+            </h3>
+            <p className="text-sm text-[#6b7f58]">Пока нет.</p>
           </div>
         </div>
       </div>
@@ -592,7 +801,7 @@ function ProfilePage() {
             <div className="text-sm text-[#6b7f58]">Статей</div>
           </div>
           <div className="p-6 text-center">
-            <div className="text-2xl font-bold text-[#4a5d3a]">⭐ 4.8</div>
+            <div className="text-2xl font-bold text-[#4a5d3a]">4.8</div>
             <div className="text-sm text-[#6b7f58]">Рейтинг</div>
           </div>
           <div className="p-6 text-center">
@@ -638,20 +847,19 @@ function ProfilePage() {
           <h2 className="text-lg font-semibold text-[#3d4f30] mb-4">Последние статьи</h2>
           <div className="space-y-3">
             {[
-              { title: 'Уход за фиалками в домашних условиях', date: '2024-12-15', status: 'published' },
-              { title: 'Правильный полив фаленопсиса', date: '2024-12-01', status: 'published' },
-              { title: 'Хамедорея изящная — уход', date: '2024-09-25', status: 'published' },
-              { title: 'Нефролепис — самый популярный папоротник', date: '2024-09-15', status: 'published' },
+              { title: 'Уход за фиалками в домашних условиях', date: '2024-12-15' },
+              { title: 'Правильный полив фаленопсиса', date: '2024-12-01' },
+              { title: 'Хамедорея изящная — уход', date: '2024-09-25' },
+              { title: 'Нефролепис — самый популярный папоротник', date: '2024-09-15' },
             ].map((article, i) => (
               <div key={i} className="flex items-center justify-between py-3 px-4 rounded-lg hover:bg-[#f0f4eb] transition-colors">
                 <div className="flex items-center gap-3">
-                  <span className="text-[#8fa87a]">📄</span>
+                  <svg className="w-4 h-4 text-[#8fa87a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
                   <span className="text-sm text-[#3d4f30]">{article.title}</span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-xs text-[#6b7f58]">{article.date}</span>
-                  <StatusBadge status={article.status as Article['status']} />
-                </div>
+                <span className="text-xs text-[#6b7f58]">{article.date}</span>
               </div>
             ))}
           </div>
@@ -672,12 +880,21 @@ function WorkspacePage({
   getArticles: (tab: string) => Article[];
 }) {
   const articles = getArticles(activeTab);
+  const isMyMaterials = ['drafts', 'published', 'review', 'archive'].includes(activeTab);
 
   return (
     <div className="p-8">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-[#3d4f30] mb-2">Рабочий кабинет</h1>
-        <p className="text-[#6b7f58]">Управление вашими статьями и публикациями</p>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-[#3d4f30] mb-2">Рабочий кабинет</h1>
+          <p className="text-[#6b7f58]">Управление вашими статьями и публикациями</p>
+        </div>
+        <button className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#4a5d3a] hover:bg-[#5a6f48] text-white transition-colors shadow-md">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
+          Создать черновик
+        </button>
       </div>
 
       {/* Tabs */}
@@ -693,7 +910,7 @@ function WorkspacePage({
               }
             `}
           >
-            <span>{tab.icon}</span>
+            <TabIcon name={tab.icon} />
             <span>{tab.label}</span>
           </button>
         ))}
@@ -703,7 +920,17 @@ function WorkspacePage({
       <div className="bg-white rounded-xl border border-[#d4dcc8] overflow-hidden">
         {(activeTab === 'comments' || activeTab === 'trash') ? (
           <div className="p-12 text-center">
-            <span className="text-5xl mb-4 block">{activeTab === 'comments' ? '💬' : '🗑️'}</span>
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#f0f4eb] flex items-center justify-center">
+              {activeTab === 'comments' ? (
+                <svg className="w-8 h-8 text-[#8fa87a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                </svg>
+              ) : (
+                <svg className="w-8 h-8 text-[#8fa87a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              )}
+            </div>
             <h3 className="text-lg font-medium text-[#3d4f30] mb-2">
               {activeTab === 'comments' ? 'Мои комментарии' : 'Корзина'}
             </h3>
@@ -729,16 +956,18 @@ function WorkspacePage({
                       <span className="text-xs text-[#a8b89a]">{article.date}</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <StatusBadge status={article.status} />
-                  </div>
+                  {isMyMaterials && article.status && <StatusBadge status={article.status} />}
                 </div>
               </div>
             ))}
           </div>
         ) : (
           <div className="p-12 text-center">
-            <span className="text-5xl mb-4 block">📭</span>
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#f0f4eb] flex items-center justify-center">
+              <svg className="w-8 h-8 text-[#8fa87a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
             <h3 className="text-lg font-medium text-[#3d4f30] mb-2">Пусто</h3>
             <p className="text-[#6b7f58]">В этой вкладке пока нет статей</p>
           </div>
@@ -746,6 +975,18 @@ function WorkspacePage({
       </div>
     </div>
   );
+}
+
+function TabIcon({ name }: { name: string }) {
+  const icons: Record<string, JSX.Element> = {
+    drafts: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>,
+    published: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
+    review: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>,
+    archive: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" /></svg>,
+    comments: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" /></svg>,
+    trash: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>,
+  };
+  return icons[name] || null;
 }
 
 // Search page
@@ -772,13 +1013,16 @@ function SearchPage({ results, query, onArticleClick }: { results: Article[]; qu
               <div className="flex items-center gap-4 mt-2">
                 <span className="text-xs text-[#8fa87a]">{article.author}</span>
                 <span className="text-xs text-[#a8b89a]">{article.date}</span>
-                <StatusBadge status={article.status} />
               </div>
             </div>
           ))
         ) : (
           <div className="p-12 text-center">
-            <span className="text-5xl mb-4 block">🔍</span>
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#f0f4eb] flex items-center justify-center">
+              <svg className="w-8 h-8 text-[#8fa87a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
             <h3 className="text-lg font-medium text-[#3d4f30] mb-2">Ничего не найдено</h3>
             <p className="text-[#6b7f58]">Попробуйте изменить поисковый запрос</p>
           </div>
@@ -790,6 +1034,7 @@ function SearchPage({ results, query, onArticleClick }: { results: Article[]; qu
 
 // Status badge component
 function StatusBadge({ status }: { status: Article['status'] }) {
+  if (!status) return null;
   const config = {
     published: { label: 'Опубликовано', className: 'bg-[#e8f0de] text-[#4a5d3a]' },
     draft: { label: 'Черновик', className: 'bg-[#fef3cd] text-[#856404]' },
