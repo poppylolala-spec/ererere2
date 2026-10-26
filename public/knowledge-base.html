@@ -307,6 +307,7 @@
       const [showNotifications, setShowNotifications] = useState(false);
       const [sidebarTab, setSidebarTab] = useState('toc');
       const [userDrafts, setUserDrafts] = useState([]);
+      const [editingDraft, setEditingDraft] = useState(null);
 
       const toggleNode = (id) => {
         setExpandedNodes(prev => {
@@ -587,9 +588,21 @@
               {currentPage === 'home' && selectedCategory && <CategoryPage categoryId={selectedCategory} onArticleClick={handleArticleClick} onCategoryClick={handleCategoryClick} breadcrumbs={getBreadcrumbs()} />}
               {currentPage === 'article' && selectedArticle && <ArticlePage article={selectedArticle} />}
               {currentPage === 'profile' && <ProfilePage onArticleClick={handleArticleClick} />}
-              {currentPage === 'workspace' && <WorkspacePage activeTab={workspaceTab} setActiveTab={setWorkspaceTab} getArticles={getWorkspaceArticles} setCurrentPage={setCurrentPage} />}
+              {currentPage === 'workspace' && <WorkspacePage 
+                activeTab={workspaceTab} 
+                setActiveTab={setWorkspaceTab} 
+                getArticles={getWorkspaceArticles} 
+                setCurrentPage={setCurrentPage}
+                setEditingDraft={setEditingDraft}
+              />}
               {currentPage === 'search' && <SearchPage results={searchResults} query={searchQuery} onArticleClick={handleArticleClick} />}
-              {currentPage === 'create-draft' && <CreateDraftPage setCurrentPage={setCurrentPage} setUserDrafts={setUserDrafts} userDrafts={userDrafts} />}
+              {currentPage === 'create-draft' && <CreateDraftPage 
+                setCurrentPage={setCurrentPage} 
+                setUserDrafts={setUserDrafts} 
+                userDrafts={userDrafts}
+                editingDraft={editingDraft}
+                setEditingDraft={setEditingDraft}
+              />}
               {currentPage === 'notifications' && <NotificationsPage setCurrentPage={setCurrentPage} />}
               {currentPage === 'my-comments' && <MyCommentsPage onArticleClick={handleArticleClick} />}
               {currentPage === 'my-attachments' && <MyAttachmentsPage />}
@@ -879,7 +892,7 @@
       );
     }
 
-    function WorkspacePage({ activeTab, setActiveTab, getArticles, setCurrentPage }) {
+    function WorkspacePage({ activeTab, setActiveTab, getArticles, setCurrentPage, setEditingDraft }) {
       const articles = getArticles(activeTab);
       const isMyMaterials = ['drafts', 'published', 'review', 'archive'].includes(activeTab);
       const tabs = [
@@ -913,7 +926,7 @@
             {activeTab === 'trash' ? (
               <div className="p-12 text-center"><div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#f0f4eb] flex items-center justify-center"><svg className="w-8 h-8 text-[#8fa87a]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></div><h3 className="text-lg font-medium text-[#3d4f30] mb-2">Корзина</h3><p className="text-[#6b7f58]">Удалённые статьи будут перемещены сюда</p></div>
             ) : articles.length > 0 ? (
-              <div>{articles.map((article, i) => <div key={article.id} className={`px-6 py-4 hover:bg-[#f0f4eb] cursor-pointer ${i !== articles.length - 1 ? 'border-b border-[#e8ede2]' : ''}`}><div className="flex items-start justify-between gap-4"><div className="flex-1"><h3 className="text-[#3d4f30] font-medium mb-1">{article.title}</h3><p className="text-sm text-[#6b7f58] line-clamp-2">{article.content}</p><div className="flex items-center gap-4 mt-2"><span className="text-xs text-[#8fa87a]">{article.author}</span><span className="text-xs text-[#a8b89a]">{article.date}</span></div></div>{isMyMaterials && article.status && <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusConfig[article.status]?.className}`}>{statusConfig[article.status]?.label}</span>}</div></div>)}</div>
+              <div>{articles.map((article, i) => <div key={article.id} onClick={() => { if (article.status === 'draft') { setEditingDraft(article); setCurrentPage('create-draft'); } }} className={`px-6 py-4 hover:bg-[#f0f4eb] cursor-pointer ${i !== articles.length - 1 ? 'border-b border-[#e8ede2]' : ''}`}><div className="flex items-start justify-between gap-4"><div className="flex-1"><h3 className="text-[#3d4f30] font-medium mb-1">{article.title}</h3><p className="text-sm text-[#6b7f58] line-clamp-2">{article.content}</p><div className="flex items-center gap-4 mt-2"><span className="text-xs text-[#8fa87a]">{article.author}</span><span className="text-xs text-[#a8b89a]">{article.date}</span></div></div>{isMyMaterials && article.status && <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusConfig[article.status]?.className}`}>{statusConfig[article.status]?.label}</span>}</div></div>)}</div>
             ) : (
               <div className="p-12 text-center"><div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#f0f4eb] flex items-center justify-center"><svg className="w-8 h-8 text-[#8fa87a]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg></div><h3 className="text-lg font-medium text-[#3d4f30] mb-2">Пусто</h3><p className="text-[#6b7f58]">В этой вкладке пока нет статей</p></div>
             )}
@@ -933,13 +946,13 @@
       );
     }
 
-    function CreateDraftPage({ setCurrentPage, setUserDrafts, userDrafts }) {
-      const [title, setTitle] = useState('');
+    function CreateDraftPage({ setCurrentPage, setUserDrafts, userDrafts, editingDraft, setEditingDraft }) {
+      const [title, setTitle] = useState(editingDraft?.title || '');
       const [section, setSection] = useState('');
       const [tags, setTags] = useState('');
       const [additionalSections, setAdditionalSections] = useState([]);
       const [attachments, setAttachments] = useState([]);
-      const [content, setContent] = useState('');
+      const [content, setContent] = useState(editingDraft?.content || '');
 
       const allSections = categories.map(cat => ({ id: cat.id, name: cat.name }));
 
@@ -956,25 +969,40 @@
           return;
         }
 
-        const newDraft = {
-          id: `draft-${Date.now()}`,
-          title: title,
-          content: content || 'Черновик без содержания',
-          author: 'Анна Зелёнова',
-          date: new Date().toISOString().split('T')[0],
-          status: 'draft',
-          version: 'v1',
-        };
-
-        setUserDrafts([...userDrafts, newDraft]);
+        if (editingDraft) {
+          // Обновляем существующий черновик
+          const updatedDraft = {
+            ...editingDraft,
+            title: title,
+            content: content || 'Черновик без содержания',
+          };
+          setUserDrafts(userDrafts.map(d => d.id === editingDraft.id ? updatedDraft : d));
+          setEditingDraft(null);
+        } else {
+          // Создаём новый черновик
+          const newDraft = {
+            id: `draft-${Date.now()}`,
+            title: title,
+            content: content || 'Черновик без содержания',
+            author: 'Анна Зелёнова',
+            date: new Date().toISOString().split('T')[0],
+            status: 'draft',
+            version: 'v1',
+          };
+          setUserDrafts([...userDrafts, newDraft]);
+        }
         setCurrentPage('workspace');
       };
 
       return (
         <div className="w-full p-8 max-w-6xl">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-[#3d4f30] mb-2">Создание черновика</h1>
-            <p className="text-[#6b7f58]">Заполните информацию о новом материале</p>
+            <h1 className="text-2xl font-bold text-[#3d4f30] mb-2">
+              {editingDraft ? 'Редактирование черновика' : 'Создание черновика'}
+            </h1>
+            <p className="text-[#6b7f58]">
+              {editingDraft ? 'Внесите изменения в материал' : 'Заполните информацию о новом материале'}
+            </p>
           </div>
 
           <div className="bg-white rounded-xl border border-[#d4dcc8]">

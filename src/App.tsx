@@ -68,6 +68,7 @@ export default function App() {
   const [sidebarView, setSidebarView] = useState<SidebarView>('tree');
   const [sidebarTab, setSidebarTab] = useState<'tree' | 'toc'>('toc');
   const [userDrafts, setUserDrafts] = useState<Article[]>([]);
+  const [editingDraft, setEditingDraft] = useState<Article | null>(null);
 
   const toggleNode = (id: string) => {
     setExpandedNodes(prev => {
@@ -431,10 +432,17 @@ export default function App() {
               setActiveTab={setWorkspaceTab}
               getArticles={getWorkspaceArticles}
               setCurrentPage={setCurrentPage}
+              setEditingDraft={setEditingDraft}
             />
           )}
           {currentPage === 'create-draft' && (
-            <CreateDraftPage setCurrentPage={setCurrentPage} setUserDrafts={setUserDrafts} userDrafts={userDrafts} />
+            <CreateDraftPage 
+              setCurrentPage={setCurrentPage} 
+              setUserDrafts={setUserDrafts} 
+              userDrafts={userDrafts}
+              editingDraft={editingDraft}
+              setEditingDraft={setEditingDraft}
+            />
           )}
           {currentPage === 'search' && (
             <SearchPage results={searchResults} query={searchQuery} onArticleClick={handleArticleClick} />
@@ -1013,12 +1021,14 @@ function WorkspacePage({
   activeTab,
   setActiveTab,
   getArticles,
-  setCurrentPage
+  setCurrentPage,
+  setEditingDraft
 }: {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   getArticles: (tab: string) => Article[];
   setCurrentPage: (page: Page) => void;
+  setEditingDraft: (draft: Article | null) => void;
 }) {
   const articles = getArticles(activeTab);
   const isMyMaterials = ['drafts', 'published', 'review', 'archive'].includes(activeTab);
@@ -1096,6 +1106,12 @@ function WorkspacePage({
             {articles.map((article, i) => (
               <div
                 key={article.id}
+                onClick={() => {
+                  if (article.status === 'draft') {
+                    setEditingDraft(article);
+                    setCurrentPage('create-draft');
+                  }
+                }}
                 className={`px-6 py-4 hover:bg-[#f0f4eb] transition-colors cursor-pointer
                   ${i !== articles.length - 1 ? 'border-b border-[#e8ede2]' : ''}
                 `}
@@ -1702,13 +1718,13 @@ function StatusBadge({ status }: { status: Article['status'] }) {
 }
 
 // Create Draft Page
-function CreateDraftPage({ setCurrentPage, setUserDrafts, userDrafts }: { setCurrentPage: (page: Page) => void; setUserDrafts: React.Dispatch<React.SetStateAction<Article[]>>; userDrafts: Article[] }) {
-  const [title, setTitle] = useState('');
+function CreateDraftPage({ setCurrentPage, setUserDrafts, userDrafts, editingDraft, setEditingDraft }: { setCurrentPage: (page: Page) => void; setUserDrafts: React.Dispatch<React.SetStateAction<Article[]>>; userDrafts: Article[]; editingDraft: Article | null; setEditingDraft: (draft: Article | null) => void }) {
+  const [title, setTitle] = useState(editingDraft?.title || '');
   const [section, setSection] = useState('');
   const [tags, setTags] = useState('');
   const [additionalSections, setAdditionalSections] = useState<string[]>([]);
   const [attachments, setAttachments] = useState<string[]>([]);
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState(editingDraft?.content || '');
 
   const allSections = categories.map(cat => ({ id: cat.id, name: cat.name }));
 
@@ -1729,25 +1745,40 @@ function CreateDraftPage({ setCurrentPage, setUserDrafts, userDrafts }: { setCur
       return;
     }
 
-    const newDraft: Article = {
-      id: `draft-${Date.now()}`,
-      title: title,
-      content: content || 'Черновик без содержания',
-      author: 'Анна Зелёнова',
-      date: new Date().toISOString().split('T')[0],
-      status: 'draft',
-      version: 'v1',
-    };
-
-    setUserDrafts([...userDrafts, newDraft]);
+    if (editingDraft) {
+      // Обновляем существующий черновик
+      const updatedDraft: Article = {
+        ...editingDraft,
+        title: title,
+        content: content || 'Черновик без содержания',
+      };
+      setUserDrafts(userDrafts.map(d => d.id === editingDraft.id ? updatedDraft : d));
+      setEditingDraft(null);
+    } else {
+      // Создаём новый черновик
+      const newDraft: Article = {
+        id: `draft-${Date.now()}`,
+        title: title,
+        content: content || 'Черновик без содержания',
+        author: 'Анна Зелёнова',
+        date: new Date().toISOString().split('T')[0],
+        status: 'draft',
+        version: 'v1',
+      };
+      setUserDrafts([...userDrafts, newDraft]);
+    }
     setCurrentPage('workspace');
   };
 
   return (
     <div className="w-full p-8 max-w-6xl">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-[#3d4f30] mb-2">Создание черновика</h1>
-        <p className="text-[#6b7f58]">Заполните информацию о новом материале</p>
+        <h1 className="text-2xl font-bold text-[#3d4f30] mb-2">
+          {editingDraft ? 'Редактирование черновика' : 'Создание черновика'}
+        </h1>
+        <p className="text-[#6b7f58]">
+          {editingDraft ? 'Внесите изменения в материал' : 'Заполните информацию о новом материале'}
+        </p>
       </div>
 
       <div className="bg-white rounded-xl border border-[#d4dcc8]">
