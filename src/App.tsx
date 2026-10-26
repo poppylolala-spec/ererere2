@@ -67,6 +67,7 @@ export default function App() {
   const [showNotifications, setShowNotifications] = useState(false);
   const [sidebarView, setSidebarView] = useState<SidebarView>('tree');
   const [sidebarTab, setSidebarTab] = useState<'tree' | 'toc'>('toc');
+  const [userDrafts, setUserDrafts] = useState<Article[]>([]);
 
   const toggleNode = (id: string) => {
     setExpandedNodes(prev => {
@@ -112,15 +113,20 @@ export default function App() {
     const annaArticles = allArticles.filter(a => a.author === 'Анна Зелёнова');
     
     // Добавляем статусы программно для демонстрации
-    const articlesWithStatus = annaArticles.map((article, index) => {
+    const articlesWithStatus: Article[] = annaArticles.map((article, index) => {
       let status: 'published' | 'draft' | 'review' | 'archived' = 'published';
       if (index % 4 === 0) status = 'published';
-      else if (index % 4 === 1) status = 'draft';
-      else if (index % 4 === 2) status = 'review';
-      else status = 'archived';
+      else if (index % 4 === 1) status = 'review';
+      else if (index % 4 === 2) status = 'archived';
+      else status = 'published';
       
       return { ...article, status };
     });
+    
+    if (tab === 'drafts') {
+      // Возвращаем только пользовательские черновики
+      return userDrafts;
+    }
     
     return articlesWithStatus.filter(a => a.status === tab);
   };
@@ -428,7 +434,7 @@ export default function App() {
             />
           )}
           {currentPage === 'create-draft' && (
-            <CreateDraftPage setCurrentPage={setCurrentPage} />
+            <CreateDraftPage setCurrentPage={setCurrentPage} setUserDrafts={setUserDrafts} userDrafts={userDrafts} />
           )}
           {currentPage === 'search' && (
             <SearchPage results={searchResults} query={searchQuery} onArticleClick={handleArticleClick} />
@@ -681,15 +687,6 @@ function CategoryPage({
 // Article page with sidebar
 function ArticlePage({ article }: { article: Article }) {
   const hasSections = article.sections && article.sections.length > 0;
-  const [showTocPopover, setShowTocPopover] = useState(false);
-
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      setShowTocPopover(false);
-    }
-  };
 
   return (
     <div className="p-8">
@@ -698,50 +695,7 @@ function ArticlePage({ article }: { article: Article }) {
         <div className="flex-1 min-w-0">
           <div className="bg-white rounded-xl border border-[#d4dcc8] p-8">
             <div className="mb-6">
-              <div className="flex items-start justify-between gap-4 mb-3">
-                <h1 className="text-2xl font-bold text-[#3d4f30]">{article.title}</h1>
-                {hasSections && (
-                  <div className="relative">
-                    <button
-                      onClick={() => setShowTocPopover(!showTocPopover)}
-                      className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#f0f4eb] hover:bg-[#e8ede2] text-[#4a5d3a] transition-colors text-sm"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                      </svg>
-                      Содержание
-                    </button>
-                    
-                    {showTocPopover && (
-                      <>
-                        <div 
-                          className="fixed inset-0 z-40"
-                          onClick={() => setShowTocPopover(false)}
-                        />
-                        <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl border border-[#d4dcc8] shadow-xl z-50 overflow-hidden">
-                          <div className="p-4 border-b border-[#e8ede2] bg-[#f0f4eb]">
-                            <h3 className="text-sm font-semibold text-[#3d4f30]">Содержание статьи</h3>
-                          </div>
-                          <nav className="p-3 max-h-96 overflow-y-auto">
-                            <div className="space-y-1">
-                              {article.sections!.map((section, index) => (
-                                <button
-                                  key={section.id}
-                                  onClick={() => scrollToSection(section.id)}
-                                  className="w-full text-left text-sm text-[#6b7f58] hover:text-[#4a5d3a] hover:bg-[#f0f4eb] py-2 px-3 rounded transition-colors"
-                                >
-                                  <span className="text-[#8fa87a] mr-2">{index + 1}.</span>
-                                  {section.title}
-                                </button>
-                              ))}
-                            </div>
-                          </nav>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                )}
-              </div>
+              <h1 className="text-2xl font-bold text-[#3d4f30] mb-3">{article.title}</h1>
               <div className="flex items-center gap-4 text-sm text-[#6b7f58]">
                 <span className="flex items-center gap-1">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1748,7 +1702,7 @@ function StatusBadge({ status }: { status: Article['status'] }) {
 }
 
 // Create Draft Page
-function CreateDraftPage({ setCurrentPage }: { setCurrentPage: (page: Page) => void }) {
+function CreateDraftPage({ setCurrentPage, setUserDrafts, userDrafts }: { setCurrentPage: (page: Page) => void; setUserDrafts: React.Dispatch<React.SetStateAction<Article[]>>; userDrafts: Article[] }) {
   const [title, setTitle] = useState('');
   const [section, setSection] = useState('');
   const [tags, setTags] = useState('');
@@ -1767,6 +1721,26 @@ function CreateDraftPage({ setCurrentPage }: { setCurrentPage: (page: Page) => v
 
   const removeAdditionalSection = (index: number) => {
     setAdditionalSections(additionalSections.filter((_, i) => i !== index));
+  };
+
+  const handleSaveDraft = () => {
+    if (!title.trim()) {
+      alert('Пожалуйста, введите заголовок статьи');
+      return;
+    }
+
+    const newDraft: Article = {
+      id: `draft-${Date.now()}`,
+      title: title,
+      content: content || 'Черновик без содержания',
+      author: 'Анна Зелёнова',
+      date: new Date().toISOString().split('T')[0],
+      status: 'draft',
+      version: 'v1',
+    };
+
+    setUserDrafts([...userDrafts, newDraft]);
+    setCurrentPage('workspace');
   };
 
   return (
@@ -1987,7 +1961,9 @@ function CreateDraftPage({ setCurrentPage }: { setCurrentPage: (page: Page) => v
 
         {/* Action buttons */}
         <div className="flex flex-wrap gap-3">
-          <button className="px-5 py-2.5 rounded-lg bg-[#4a5d3a] hover:bg-[#5a6f48] text-white transition-colors shadow-md">
+          <button 
+            onClick={handleSaveDraft}
+            className="px-5 py-2.5 rounded-lg bg-[#4a5d3a] hover:bg-[#5a6f48] text-white transition-colors shadow-md">
             Сохранить черновик
           </button>
           <button className="px-5 py-2.5 rounded-lg bg-white hover:bg-[#f0f4eb] text-[#4a5d3a] border border-[#d4dcc8] transition-colors">
