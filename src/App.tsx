@@ -331,32 +331,45 @@ export default function App() {
         {(currentPage === 'home' || currentPage === 'article' || currentPage === 'search') && (
           <aside className="w-72 bg-white border-r border-[#d4dcc8] flex-shrink-0 shadow-sm overflow-hidden flex flex-col self-stretch">
             {/* Tabs for Tree/TOC - sticky at top */}
-            <div className="flex-shrink-0 bg-white border-b border-[#e8ede2]">
+            <div className="flex-shrink-0">
               {currentPage === 'article' && selectedArticle && selectedArticle.sections && selectedArticle.sections.length > 0 ? (
                 <div className="flex">
                   <button
                     onClick={() => setSidebarTab('tree')}
-                    className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
+                    className={`flex-1 px-4 py-3 text-sm font-medium transition-all relative ${
                       sidebarTab === 'tree'
-                        ? 'text-[#4a5d3a] border-b-2 border-[#4a5d3a] bg-[#f0f4eb]'
-                        : 'text-[#6b7f58] hover:text-[#4a5d3a] hover:bg-[#f0f4eb]'
+                        ? 'text-[#4a5d3a] bg-white border-b-2 border-[#4a5d3a]'
+                        : 'text-[#6b7f58] bg-[#f0f4eb] hover:bg-[#e8f0de]'
                     }`}
                   >
                     Категории
+                    {sidebarTab === 'toc' && (
+                      <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 flex gap-1 opacity-40">
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                        </svg>
+                      </div>
+                    )}
                   </button>
                   <button
                     onClick={() => setSidebarTab('toc')}
-                    className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
+                    className={`flex-1 px-4 py-3 text-sm font-medium transition-all relative ${
                       sidebarTab === 'toc'
-                        ? 'text-[#4a5d3a] border-b-2 border-[#4a5d3a] bg-[#f0f4eb]'
-                        : 'text-[#6b7f58] hover:text-[#4a5d3a] hover:bg-[#f0f4eb]'
+                        ? 'text-[#4a5d3a] bg-white border-b-2 border-[#4a5d3a]'
+                        : 'text-[#6b7f58] bg-[#f0f4eb] hover:bg-[#e8f0de]'
                     }`}
                   >
                     Содержание
+                    {sidebarTab === 'tree' && (
+                      <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 flex gap-1 opacity-40">
+                        <span className="text-xs">1.</span>
+                        <span className="text-xs">2.</span>
+                      </div>
+                    )}
                   </button>
                 </div>
               ) : (
-                <div className="p-4">
+                <div className="p-4 bg-white border-b border-[#e8ede2]">
                   <h2 className="text-sm font-semibold text-[#4a5d3a] uppercase tracking-wider">Категории</h2>
                 </div>
               )}
@@ -538,6 +551,32 @@ function SidebarNode({
 
 // Home page
 function HomePage({ handleCategoryClick }: { handleCategoryClick: (id: string) => void }) {
+  // Позиции узлов для графа
+  const nodePositions = [
+    { id: 'indoor', x: 400, y: 150 },
+    { id: 'garden', x: 200, y: 300 },
+    { id: 'trees', x: 600, y: 300 },
+    { id: 'planting', x: 150, y: 450 },
+    { id: 'bulbous', x: 350, y: 450 },
+    { id: 'herbs', x: 550, y: 450 },
+    { id: 'pests', x: 700, y: 450 },
+    { id: 'landscape', x: 450, y: 600 },
+  ];
+
+  // Связи между категориями
+  const connections = [
+    { from: 'indoor', to: 'garden' },
+    { from: 'indoor', to: 'trees' },
+    { from: 'garden', to: 'planting' },
+    { from: 'garden', to: 'bulbous' },
+    { from: 'trees', to: 'herbs' },
+    { from: 'trees', to: 'pests' },
+    { from: 'planting', to: 'landscape' },
+    { from: 'bulbous', to: 'landscape' },
+    { from: 'herbs', to: 'landscape' },
+    { from: 'pests', to: 'landscape' },
+  ];
+
   return (
     <div className="p-8">
       <div className="mb-8">
@@ -545,22 +584,64 @@ function HomePage({ handleCategoryClick }: { handleCategoryClick: (id: string) =
         <p className="text-[#6b7f58] text-lg">Энциклопедия растений — уход, посадка, размножение и многое другое</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {categories.map(cat => (
-          <div
-            key={cat.id}
-            onClick={() => handleCategoryClick(cat.id)}
-            className="bg-white rounded-xl p-5 border border-[#d4dcc8] hover:border-[#8fa87a] hover:shadow-md transition-all cursor-pointer group"
-          >
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-[#6b7f58]">{getCategoryIcon(cat.icon, "w-7 h-7")}</span>
-              <h3 className="text-lg font-semibold text-[#3d4f30] group-hover:text-[#4a5d3a] transition-colors">{cat.name}</h3>
-            </div>
-            <p className="text-sm text-[#6b7f58]">
-              {cat.children ? `${cat.children.length} подкатегорий` : `${cat.articles?.length || 0} статей`}
-            </p>
-          </div>
-        ))}
+      <div className="bg-white rounded-xl border border-[#d4dcc8] p-6">
+        <svg width="100%" height="700" viewBox="0 0 900 700" className="w-full">
+          {/* Связи */}
+          {connections.map((conn, i) => {
+            const fromNode = nodePositions.find(n => n.id === conn.from);
+            const toNode = nodePositions.find(n => n.id === conn.to);
+            if (!fromNode || !toNode) return null;
+            
+            return (
+              <line
+                key={i}
+                x1={fromNode.x}
+                y1={fromNode.y}
+                x2={toNode.x}
+                y2={toNode.y}
+                stroke="#d4dcc8"
+                strokeWidth="2"
+              />
+            );
+          })}
+
+          {/* Узлы */}
+          {nodePositions.map(node => {
+            const category = categories.find(c => c.id === node.id);
+            if (!category) return null;
+
+            return (
+              <g
+                key={node.id}
+                onClick={() => handleCategoryClick(node.id)}
+                className="cursor-pointer"
+              >
+                <circle
+                  cx={node.x}
+                  cy={node.y}
+                  r="45"
+                  fill="#f0f4eb"
+                  stroke="#8fa87a"
+                  strokeWidth="2"
+                  className="hover:fill-[#e8f0de] transition-colors"
+                />
+                <foreignObject x={node.x - 20} y={node.y - 20} width="40" height="40">
+                  <div className="flex items-center justify-center text-[#6b7f58]">
+                    {getCategoryIcon(category.icon, "w-6 h-6")}
+                  </div>
+                </foreignObject>
+                <text
+                  x={node.x}
+                  y={node.y + 65}
+                  textAnchor="middle"
+                  className="text-sm font-medium fill-[#3d4f30]"
+                >
+                  {category.name}
+                </text>
+              </g>
+            );
+          })}
+        </svg>
       </div>
     </div>
   );
