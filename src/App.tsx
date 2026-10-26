@@ -16,8 +16,6 @@ const workspaceTabs: WorkspaceTab[] = [
   { id: 'published', label: 'Опубликованные', icon: 'published', status: 'published' },
   { id: 'review', label: 'На проверке', icon: 'review', status: 'review' },
   { id: 'archive', label: 'Архив', icon: 'archive', status: 'archived' },
-  { id: 'comments', label: 'Мои комментарии', icon: 'comments', status: 'comments' },
-  { id: 'attachments', label: 'Мои вложения', icon: 'attachments', status: 'attachments' },
   { id: 'trash', label: 'Корзина', icon: 'trash', status: 'trash' },
 ];
 
@@ -964,7 +962,7 @@ function WorkspacePage({
           </button>      </div>
 
       {/* Tabs */}
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-4">
         {workspaceTabs.map(tab => (
           <button
             key={tab.id}
@@ -982,74 +980,31 @@ function WorkspacePage({
         ))}
       </div>
 
+      {/* Additional buttons */}
+      <div className="flex flex-wrap gap-2 mb-6">
+        <button
+          onClick={() => setCurrentPage('my-comments')}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all bg-white text-[#4a5d3a] border border-[#d4dcc8] hover:bg-[#f0f4eb] hover:border-[#8fa87a]"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+          </svg>
+          <span>Мои комментарии</span>
+        </button>
+        <button
+          onClick={() => setCurrentPage('my-attachments')}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all bg-white text-[#4a5d3a] border border-[#d4dcc8] hover:bg-[#f0f4eb] hover:border-[#8fa87a]"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+          </svg>
+          <span>Мои вложения</span>
+        </button>
+      </div>
+
       {/* Content */}
       <div className="bg-white rounded-xl border border-[#d4dcc8] overflow-hidden">
-        {activeTab === 'comments' ? (
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-[#3d4f30]">Мои комментарии</h3>
-              <button
-                onClick={() => setCurrentPage('my-comments')}
-                className="text-sm text-[#4a5d3a] hover:text-[#3d4f30] font-medium flex items-center gap-1"
-              >
-                Показать все
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
-            <div className="space-y-3">
-              {userComments.slice(0, 3).map((comment) => (
-                <div key={comment.id} className="p-4 bg-[#f0f4eb] rounded-lg">
-                  <div className="flex items-start justify-between gap-2 mb-2">
-                    <span className="text-sm font-medium text-[#4a5d3a]">{comment.articleTitle}</span>
-                    <span className="text-xs text-[#a8b89a] whitespace-nowrap">{comment.date}</span>
-                  </div>
-                  <p className="text-sm text-[#3d4f30] line-clamp-2">{comment.comment}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : activeTab === 'attachments' ? (
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-[#3d4f30]">Мои вложения</h3>
-              <button
-                onClick={() => setCurrentPage('my-attachments')}
-                className="text-sm text-[#4a5d3a] hover:text-[#3d4f30] font-medium flex items-center gap-1"
-              >
-                Показать все
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
-            <div className="space-y-3">
-              {userAttachments.slice(0, 3).map((attachment) => (
-                <div key={attachment.id} className="flex items-center gap-3 p-3 bg-[#f0f4eb] rounded-lg">
-                  {attachment.type === 'image' ? (
-                    <div className="w-10 h-10 rounded-lg bg-[#d4e8f0] flex items-center justify-center flex-shrink-0">
-                      <svg className="w-5 h-5 text-[#2c5f7c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                  ) : (
-                    <div className="w-10 h-10 rounded-lg bg-[#e8f0de] flex items-center justify-center flex-shrink-0">
-                      <svg className="w-5 h-5 text-[#4a5d3a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                    </div>
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm font-medium text-[#3d4f30] truncate">{attachment.name}</div>
-                    <div className="text-xs text-[#6b7f58]">{attachment.source}</div>
-                  </div>
-                  <div className="text-xs text-[#a8b89a]">{attachment.size}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : activeTab === 'trash' ? (
+        {activeTab === 'trash' ? (
           <div className="p-12 text-center">
             <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#f0f4eb] flex items-center justify-center">
               <svg className="w-8 h-8 text-[#8fa87a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1161,14 +1116,15 @@ interface UserComment {
   comment: string;
   date: string;
   replies: number;
+  rating: number;
 }
 
 const userComments: UserComment[] = [
-  { id: 1, articleTitle: 'Уход за фиалками в домашних условиях', articleId: 'v1', comment: 'Отличная статья! Добавлю, что фиалки также любят высокую влажность воздуха. Можно ставить горшок на поддон с влажным керамзитом.', date: '2 дня назад', replies: 2 },
-  { id: 2, articleTitle: 'Правильный полив фаленопсиса', articleId: 'p1', comment: 'Спасибо за подробное описание! А можно ли использовать дождевую воду для полива?', date: '3 дня назад', replies: 1 },
-  { id: 3, articleTitle: 'Размножение фиалок листом', articleId: 'v2', comment: 'Попробовала этот метод — всё получилось! Через 3 недели уже появились детки.', date: '5 дней назад', replies: 3 },
-  { id: 4, articleTitle: 'Болезни фиалок и их лечение', articleId: 'v3', comment: 'Очень полезная информация. Подскажите, а как отличить мучнистую росу от других заболеваний?', date: 'неделю назад', replies: 0 },
-  { id: 5, articleTitle: 'Хамедорея изящная — уход', articleId: 'palm1', comment: 'Моя хамедорея отлично себя чувствует при таком уходе. Рекомендую также опрыскивать листья раз в неделю.', date: 'неделю назад', replies: 1 },
+  { id: 1, articleTitle: 'Уход за фиалками в домашних условиях', articleId: 'v1', comment: 'Отличная статья! Добавлю, что фиалки также любят высокую влажность воздуха. Можно ставить горшок на поддон с влажным керамзитом.', date: '2 дня назад', replies: 2, rating: 4.8 },
+  { id: 2, articleTitle: 'Правильный полив фаленопсиса', articleId: 'p1', comment: 'Спасибо за подробное описание! А можно ли использовать дождевую воду для полива?', date: '3 дня назад', replies: 1, rating: 4.5 },
+  { id: 3, articleTitle: 'Размножение фиалок листом', articleId: 'v2', comment: 'Попробовала этот метод — всё получилось! Через 3 недели уже появились детки.', date: '5 дней назад', replies: 3, rating: 4.9 },
+  { id: 4, articleTitle: 'Болезни фиалок и их лечение', articleId: 'v3', comment: 'Очень полезная информация. Подскажите, а как отличить мучнистую росу от других заболеваний?', date: 'неделю назад', replies: 0, rating: 4.6 },
+  { id: 5, articleTitle: 'Хамедорея изящная — уход', articleId: 'palm1', comment: 'Моя хамедорея отлично себя чувствует при таком уходе. Рекомендую также опрыскивать листья раз в неделю.', date: 'неделю назад', replies: 1, rating: 4.7 },
 ];
 
 // User Attachments Data
@@ -1235,6 +1191,12 @@ function MyCommentsPage({ onArticleClick }: { onArticleClick: (article: Article)
                   </div>
                   <p className="text-sm text-[#3d4f30] mb-3">{comment.comment}</p>
                   <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-1">
+                      <svg className="w-4 h-4 text-[#e8a838]" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                      </svg>
+                      <span className="text-sm font-medium text-[#3d4f30]">{comment.rating}</span>
+                    </div>
                     {comment.replies > 0 && (
                       <span className="text-xs text-[#6b7f58]">
                         Ответов: {comment.replies}
@@ -1272,33 +1234,81 @@ function MyCommentsPage({ onArticleClick }: { onArticleClick: (article: Article)
 
 // My Attachments Page
 function MyAttachmentsPage() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showAddModal, setShowAddModal] = useState(false);
+
+  const filteredAttachments = userAttachments.filter(attachment =>
+    attachment.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    attachment.source.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleDownload = (attachment: UserAttachment) => {
+    alert(`Скачивание файла: ${attachment.name}`);
+  };
+
+  const handleView = (attachment: UserAttachment) => {
+    if (attachment.type === 'image') {
+      alert(`Просмотр изображения: ${attachment.name}`);
+    } else {
+      alert(`Открытие документа: ${attachment.name}`);
+    }
+  };
+
   return (
-    <div className="w-full p-8 max-w-4xl">
+    <div className="w-full p-8 max-w-5xl">
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-[#3d4f30] mb-2">Мои вложения</h1>
+          <p className="text-[#6b7f58]">Все файлы и изображения, добавленные в черновики</p>
+        </div>
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#4a5d3a] hover:bg-[#5a6f48] text-white transition-colors shadow-md"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
+          Добавить вложение
+        </button>
+      </div>
+
+      {/* Search */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-[#3d4f30] mb-2">Мои вложения</h1>
-        <p className="text-[#6b7f58]">Все файлы и изображения, добавленные в черновики</p>
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Поиск по вложениям..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full px-4 py-3 pl-10 rounded-lg bg-white border border-[#d4dcc8] focus:outline-none focus:ring-2 focus:ring-[#8fa87a] focus:border-transparent text-[#3d4f30]"
+          />
+          <svg className="absolute left-3 top-3.5 w-5 h-5 text-[#8fa87a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
       </div>
 
       <div className="bg-white rounded-xl border border-[#d4dcc8] overflow-hidden">
-        {userAttachments.length > 0 ? (
+        {filteredAttachments.length > 0 ? (
           <div>
             {/* Header */}
             <div className="px-6 py-3 bg-[#f0f4eb] border-b border-[#e8ede2] grid grid-cols-12 gap-4 text-xs font-semibold text-[#6b7f58] uppercase tracking-wider">
-              <div className="col-span-5">Файл</div>
+              <div className="col-span-4">Файл</div>
               <div className="col-span-2">Размер</div>
-              <div className="col-span-3">Источник</div>
+              <div className="col-span-2">Источник</div>
               <div className="col-span-2">Загружен</div>
+              <div className="col-span-2">Действия</div>
             </div>
             
             {/* Files list */}
-            {userAttachments.map((attachment, i) => (
+            {filteredAttachments.map((attachment, i) => (
               <div
                 key={attachment.id}
                 className={`px-6 py-4 hover:bg-[#f0f4eb] transition-colors grid grid-cols-12 gap-4 items-center ${
-                  i !== userAttachments.length - 1 ? 'border-b border-[#e8ede2]' : ''
+                  i !== filteredAttachments.length - 1 ? 'border-b border-[#e8ede2]' : ''
                 }`}
               >
-                <div className="col-span-5 flex items-center gap-3">
+                <div className="col-span-4 flex items-center gap-3">
                   {attachment.type === 'image' ? (
                     <div className="w-10 h-10 rounded-lg bg-[#d4e8f0] flex items-center justify-center flex-shrink-0">
                       <svg className="w-5 h-5 text-[#2c5f7c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1315,8 +1325,29 @@ function MyAttachmentsPage() {
                   <span className="text-sm text-[#3d4f30] font-medium truncate">{attachment.name}</span>
                 </div>
                 <div className="col-span-2 text-sm text-[#6b7f58]">{attachment.size}</div>
-                <div className="col-span-3 text-sm text-[#6b7f58] truncate">{attachment.source}</div>
+                <div className="col-span-2 text-sm text-[#6b7f58] truncate">{attachment.source}</div>
                 <div className="col-span-2 text-xs text-[#a8b89a]">{attachment.date}</div>
+                <div className="col-span-2 flex items-center gap-2">
+                  <button
+                    onClick={() => handleView(attachment)}
+                    className="p-2 rounded-lg hover:bg-[#e8f0de] text-[#4a5d3a] transition-colors"
+                    title="Просмотр"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => handleDownload(attachment)}
+                    className="p-2 rounded-lg hover:bg-[#e8f0de] text-[#4a5d3a] transition-colors"
+                    title="Скачать"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                  </button>
+                </div>
               </div>
             ))}
           </div>
@@ -1327,8 +1358,12 @@ function MyAttachmentsPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-[#3d4f30] mb-2">Нет вложений</h3>
-            <p className="text-[#6b7f58]">Вы пока не добавляли файлы в черновики</p>
+            <h3 className="text-lg font-medium text-[#3d4f30] mb-2">
+              {searchQuery ? 'Ничего не найдено' : 'Нет вложений'}
+            </h3>
+            <p className="text-[#6b7f58]">
+              {searchQuery ? 'Попробуйте изменить поисковый запрос' : 'Вы пока не добавляли файлы в черновики'}
+            </p>
           </div>
         )}
       </div>
@@ -1348,6 +1383,44 @@ function MyAttachmentsPage() {
           <div className="text-sm text-[#6b7f58]">Документов</div>
         </div>
       </div>
+
+      {/* Add Attachment Modal */}
+      {showAddModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+            <h2 className="text-xl font-bold text-[#3d4f30] mb-4">Добавить вложение</h2>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-[#6b7f58] mb-2">Выберите файл</label>
+                <div className="border-2 border-dashed border-[#d4dcc8] rounded-lg p-8 text-center hover:border-[#8fa87a] transition-colors cursor-pointer">
+                  <svg className="w-12 h-12 mx-auto mb-3 text-[#8fa87a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                  </svg>
+                  <p className="text-sm text-[#6b7f58]">Нажмите для выбора файла или перетащите сюда</p>
+                  <p className="text-xs text-[#a8b89a] mt-1">PDF, DOC, JPG, PNG (макс. 10 МБ)</p>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowAddModal(false)}
+                  className="flex-1 px-4 py-2.5 rounded-lg border border-[#d4dcc8] text-[#4a5d3a] hover:bg-[#f0f4eb] transition-colors"
+                >
+                  Отмена
+                </button>
+                <button
+                  onClick={() => {
+                    alert('Файл добавлен (демо)');
+                    setShowAddModal(false);
+                  }}
+                  className="flex-1 px-4 py-2.5 rounded-lg bg-[#4a5d3a] hover:bg-[#5a6f48] text-white transition-colors"
+                >
+                  Добавить
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
