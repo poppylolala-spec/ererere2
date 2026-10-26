@@ -325,7 +325,11 @@ export default function App() {
         )}
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto bg-[#f5f5f0]">
+        <main className={`flex-1 overflow-y-auto bg-[#f5f5f0] ${
+          currentPage === 'profile' || currentPage === 'workspace' || currentPage === 'create-draft' || currentPage === 'notifications'
+            ? 'flex justify-center items-start'
+            : ''
+        }`}>
           {currentPage === 'home' && !selectedCategory && (
             <HomePage handleCategoryClick={handleCategoryClick} />
           )}
@@ -790,7 +794,7 @@ function ArticlePage({ article }: { article: Article }) {
 // Profile page
 function ProfilePage() {
   return (
-    <div className="p-8 max-w-4xl">
+    <div className="w-full p-8 max-w-4xl">
       <div className="bg-white rounded-xl border border-[#d4dcc8] overflow-hidden">
         {/* Profile header */}
         <div className="bg-gradient-to-r from-[#4a5d3a] to-[#6b7f58] p-8">
@@ -896,7 +900,7 @@ function WorkspacePage({
   const isMyMaterials = ['drafts', 'published', 'review', 'archive'].includes(activeTab);
 
   return (
-    <div className="p-8">
+    <div className="w-full p-8 max-w-6xl">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-[#3d4f30] mb-2">Рабочий кабинет</h1>
@@ -1125,7 +1129,7 @@ function NotificationsPage({ setCurrentPage }: { setCurrentPage: (page: Page) =>
   };
 
   return (
-    <div className="p-8 max-w-4xl">
+    <div className="w-full p-8 max-w-4xl">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-[#3d4f30] mb-2">Уведомления</h1>
@@ -1268,7 +1272,7 @@ function CreateDraftPage({ setCurrentPage }: { setCurrentPage: (page: Page) => v
   };
 
   return (
-    <div className="p-8 max-w-6xl">
+    <div className="w-full p-8 max-w-6xl">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-[#3d4f30] mb-2">Создание черновика</h1>
         <p className="text-[#6b7f58]">Заполните информацию о новом материале</p>
