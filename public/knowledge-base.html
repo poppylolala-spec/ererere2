@@ -353,7 +353,7 @@
       };
 
       return (
-        <div className="min-h-screen bg-[#f5f5f0] flex flex-col">
+        <div className="h-screen bg-[#f5f5f0] flex flex-col overflow-hidden">
           {/* Header */}
           <header className="bg-[#4a5d3a] shadow-lg sticky top-0 z-50">
             <div className="flex items-center justify-between px-6 py-3">
@@ -486,10 +486,10 @@
             </div>
           </header>
 
-            <div className="flex flex-1 h-[calc(100vh-64px)]">
+            <div className="flex flex-1 min-h-0">
                 {/* Sidebar - показываем только на страницах базы знаний */}
                 {(currentPage === 'home' || currentPage === 'article' || currentPage === 'search') && (
-                  <aside className="w-72 bg-white border-r border-[#d4dcc8] flex-shrink-0 shadow-sm sticky top-0 overflow-hidden flex flex-col h-full">
+                  <aside className="w-72 bg-white border-r border-[#d4dcc8] flex-shrink-0 shadow-sm overflow-hidden flex flex-col self-stretch">
                     {/* Tabs for Tree/TOC - sticky at top */}
                     <div className="flex-shrink-0 bg-white border-b border-[#e8ede2]">
                       {currentPage === 'article' && selectedArticle && selectedArticle.sections && selectedArticle.sections.length > 0 ? (
@@ -557,7 +557,7 @@
             )}
 
             {/* Main */}
-            <main className={`flex-1 overflow-y-auto bg-[#f5f5f0] ${
+            <main className={`flex-1 overflow-y-auto bg-[#f5f5f0] min-h-0 ${
               currentPage === 'profile' || currentPage === 'workspace' || currentPage === 'create-draft' || currentPage === 'notifications' || currentPage === 'my-comments' || currentPage === 'my-attachments'
                 ? 'flex justify-center items-start'
                 : ''
