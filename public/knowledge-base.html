@@ -404,6 +404,11 @@
                           </div>
                         </div>
                       </div>
+                      <div className="p-3 border-t border-[#e8ede2]">
+                        <button onClick={() => { setCurrentPage('notifications'); setShowNotifications(false); }} className="w-full text-center text-sm text-[#4a5d3a] hover:text-[#3d4f30] font-medium py-1">
+                          Смотреть все уведомления
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -455,17 +460,19 @@
           </header>
 
           <div className="flex flex-1 overflow-hidden">
-            {/* Sidebar */}
-            <aside className="w-72 bg-white border-r border-[#d4dcc8] overflow-y-auto flex-shrink-0 shadow-sm">
-              <div className="p-4 border-b border-[#e8ede2]">
-                <h2 className="text-sm font-semibold text-[#4a5d3a] uppercase tracking-wider">Категории</h2>
-              </div>
-              <nav className="p-2">
-                {categories.map(cat => (
-                  <SidebarNode key={cat.id} category={cat} expandedNodes={expandedNodes} toggleNode={toggleNode} selectedCategory={selectedCategory} handleCategoryClick={handleCategoryClick} depth={0} />
-                ))}
-              </nav>
-            </aside>
+            {/* Sidebar - показываем только на страницах базы знаний */}
+            {(currentPage === 'home' || currentPage === 'article' || currentPage === 'search') && (
+              <aside className="w-72 bg-white border-r border-[#d4dcc8] overflow-y-auto flex-shrink-0 shadow-sm">
+                <div className="p-4 border-b border-[#e8ede2]">
+                  <h2 className="text-sm font-semibold text-[#4a5d3a] uppercase tracking-wider">Категории</h2>
+                </div>
+                <nav className="p-2">
+                  {categories.map(cat => (
+                    <SidebarNode key={cat.id} category={cat} expandedNodes={expandedNodes} toggleNode={toggleNode} selectedCategory={selectedCategory} handleCategoryClick={handleCategoryClick} depth={0} />
+                  ))}
+                </nav>
+              </aside>
+            )}
 
             {/* Main */}
             <main className="flex-1 overflow-y-auto bg-[#f5f5f0]">
@@ -476,6 +483,7 @@
               {currentPage === 'workspace' && <WorkspacePage activeTab={workspaceTab} setActiveTab={setWorkspaceTab} getArticles={getWorkspaceArticles} setCurrentPage={setCurrentPage} />}
               {currentPage === 'search' && <SearchPage results={searchResults} query={searchQuery} onArticleClick={handleArticleClick} />}
               {currentPage === 'create-draft' && <CreateDraftPage setCurrentPage={setCurrentPage} />}
+              {currentPage === 'notifications' && <NotificationsPage setCurrentPage={setCurrentPage} />}
             </main>
           </div>
         </div>
@@ -885,6 +893,108 @@
             <button className="px-5 py-2.5 rounded-lg bg-white hover:bg-[#f0f4eb] text-[#4a5d3a] border border-[#d4dcc8] transition-colors">Отправить на модерацию</button>
             <button className="px-5 py-2.5 rounded-lg bg-white hover:bg-[#f0f4eb] text-[#4a5d3a] border border-[#d4dcc8] transition-colors">В корзину</button>
             <button onClick={() => setCurrentPage('workspace')} className="px-5 py-2.5 rounded-lg bg-white hover:bg-[#f0f4eb] text-[#4a5d3a] border border-[#d4dcc8] transition-colors">К страницам</button>
+          </div>
+        </div>
+      );
+    }
+
+    function NotificationsPage({ setCurrentPage }) {
+      const [filter, setFilter] = useState('all');
+      const [notifications, setNotifications] = useState([
+        { id: 1, type: 'approved', title: 'Статья одобрена', message: '«Уход за фиалками в домашних условиях» прошла проверку и опубликована', time: '2 часа назад', read: false },
+        { id: 2, type: 'comment', title: 'Новый комментарий', message: 'Игорь Садовников оставил комментарий к вашей статье «Правильный полив фаленопсиса»', time: '5 часов назад', read: false },
+        { id: 3, type: 'review', title: 'Запрос на проверку', message: '«Пересадка фаленопсиса» отправлена на рецензию куратору', time: 'Вчера, 14:30', read: false },
+        { id: 4, type: 'comment', title: 'Ответ на комментарий', message: 'Мария Цветкова ответила на ваш комментарий в статье «Размножение фиалок листом»', time: 'Вчера, 10:15', read: true },
+        { id: 5, type: 'system', title: 'Обновление системы', message: 'Добавлена новая функция «Материалы по теме». Ознакомьтесь с документацией.', time: '2 дня назад', read: true },
+        { id: 6, type: 'approved', title: 'Статья одобрена', message: '«Хамедорея изящная — уход» прошла проверку и опубликована', time: '3 дня назад', read: true },
+        { id: 7, type: 'comment', title: 'Новый комментарий', message: 'Пётр Колючкин оставил комментарий к вашей статье «Нефролепис — самый популярный папоротник»', time: '4 дня назад', read: true },
+        { id: 8, type: 'review', title: 'Статья возвращена на доработку', message: 'Куратор указал на необходимость дополнить раздел о болезнях в статье «Фикус Бенджамина»', time: '5 дней назад', read: true },
+        { id: 9, type: 'system', title: 'Новый куратор', message: 'Елена Орхидеева назначена куратором раздела «Орхидеи»', time: 'Неделю назад', read: true },
+        { id: 10, type: 'approved', title: 'Черновик сохранён', message: 'Ваш черновик «Болезни фиалок и их лечение» автоматически сохранён', time: 'Неделю назад', read: true },
+      ]);
+
+      const markAsRead = (id) => {
+        setNotifications(notifications.map(n => n.id === id ? { ...n, read: true } : n));
+      };
+
+      const markAllAsRead = () => {
+        setNotifications(notifications.map(n => ({ ...n, read: true })));
+      };
+
+      const filteredNotifications = notifications.filter(n => {
+        if (filter === 'unread') return !n.read;
+        if (filter === 'read') return n.read;
+        return true;
+      });
+
+      const unreadCount = notifications.filter(n => !n.read).length;
+
+      const getNotificationIcon = (type) => {
+        switch (type) {
+          case 'approved':
+            return <div className="w-10 h-10 rounded-full bg-[#e8f0de] flex items-center justify-center flex-shrink-0"><svg className="w-5 h-5 text-[#4a5d3a]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>;
+          case 'comment':
+            return <div className="w-10 h-10 rounded-full bg-[#fef3cd] flex items-center justify-center flex-shrink-0"><svg className="w-5 h-5 text-[#856404]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg></div>;
+          case 'review':
+            return <div className="w-10 h-10 rounded-full bg-[#d4e8f0] flex items-center justify-center flex-shrink-0"><svg className="w-5 h-5 text-[#2c5f7c]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>;
+          case 'system':
+            return <div className="w-10 h-10 rounded-full bg-[#e8ede2] flex items-center justify-center flex-shrink-0"><svg className="w-5 h-5 text-[#6b7f58]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>;
+        }
+      };
+
+      return (
+        <div className="p-8 max-w-4xl">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h1 className="text-2xl font-bold text-[#3d4f30] mb-2">Уведомления</h1>
+              <p className="text-[#6b7f58]">{unreadCount > 0 ? `${unreadCount} непрочитанных` : 'Все уведомления прочитаны'}</p>
+            </div>
+            {unreadCount > 0 && (
+              <button onClick={markAllAsRead} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white hover:bg-[#f0f4eb] text-[#4a5d3a] border border-[#d4dcc8] transition-colors text-sm">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                Прочитать все
+              </button>
+            )}
+          </div>
+
+          <div className="flex gap-2 mb-6">
+            <button onClick={() => setFilter('all')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${filter === 'all' ? 'bg-[#4a5d3a] text-white shadow-md' : 'bg-white text-[#4a5d3a] border border-[#d4dcc8] hover:bg-[#f0f4eb]'}`}>
+              Все ({notifications.length})
+            </button>
+            <button onClick={() => setFilter('unread')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${filter === 'unread' ? 'bg-[#4a5d3a] text-white shadow-md' : 'bg-white text-[#4a5d3a] border border-[#d4dcc8] hover:bg-[#f0f4eb]'}`}>
+              Непрочитанные ({unreadCount})
+            </button>
+            <button onClick={() => setFilter('read')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${filter === 'read' ? 'bg-[#4a5d3a] text-white shadow-md' : 'bg-white text-[#4a5d3a] border border-[#d4dcc8] hover:bg-[#f0f4eb]'}`}>
+              Прочитанные ({notifications.length - unreadCount})
+            </button>
+          </div>
+
+          <div className="bg-white rounded-xl border border-[#d4dcc8] overflow-hidden">
+            {filteredNotifications.length > 0 ? (
+              filteredNotifications.map((notification, i) => (
+                <div key={notification.id} onClick={() => !notification.read && markAsRead(notification.id)} className={`px-6 py-4 cursor-pointer transition-colors ${!notification.read ? 'bg-[#f9faf5]' : 'bg-white'} hover:bg-[#f0f4eb] ${i !== filteredNotifications.length - 1 ? 'border-b border-[#e8ede2]' : ''}`}>
+                  <div className="flex items-start gap-4">
+                    {getNotificationIcon(notification.type)}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2 mb-1">
+                        <h3 className={`text-sm ${!notification.read ? 'font-semibold text-[#3d4f30]' : 'font-medium text-[#4a5d3a]'}`}>{notification.title}</h3>
+                        {!notification.read && <span className="w-2 h-2 bg-[#4a5d3a] rounded-full flex-shrink-0 mt-1.5"></span>}
+                      </div>
+                      <p className="text-sm text-[#6b7f58] mb-1">{notification.message}</p>
+                      <p className="text-xs text-[#a8b89a]">{notification.time}</p>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="p-12 text-center">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#f0f4eb] flex items-center justify-center">
+                  <svg className="w-8 h-8 text-[#8fa87a]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+                </div>
+                <h3 className="text-lg font-medium text-[#3d4f30] mb-2">Нет уведомлений</h3>
+                <p className="text-[#6b7f58]">{filter === 'unread' ? 'Все уведомления прочитаны' : 'В этой категории пока нет уведомлений'}</p>
+              </div>
+            )}
           </div>
         </div>
       );
