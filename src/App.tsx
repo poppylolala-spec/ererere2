@@ -105,7 +105,22 @@ export default function App() {
   const getWorkspaceArticles = (tab: string): Article[] => {
     const allArticles = categories.flatMap(cat => collectArticles(cat));
     if (tab === 'comments' || tab === 'trash') return [];
-    return allArticles.filter(a => a.status === tab);
+    
+    // Фильтруем только статьи Анны Зелёновой
+    const annaArticles = allArticles.filter(a => a.author === 'Анна Зелёнова');
+    
+    // Добавляем статусы программно для демонстрации
+    const articlesWithStatus = annaArticles.map((article, index) => {
+      let status: 'published' | 'draft' | 'review' | 'archived' = 'published';
+      if (index % 4 === 0) status = 'published';
+      else if (index % 4 === 1) status = 'draft';
+      else if (index % 4 === 2) status = 'review';
+      else status = 'archived';
+      
+      return { ...article, status };
+    });
+    
+    return articlesWithStatus.filter(a => a.status === tab);
   };
 
   const getBreadcrumbs = () => {
