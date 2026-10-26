@@ -316,10 +316,10 @@ export default function App() {
         </div>
       </header>
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1">
         {/* Sidebar - показываем только на страницах базы знаний */}
         {(currentPage === 'home' || currentPage === 'article' || currentPage === 'search') && (
-          <aside className="w-72 bg-white border-r border-[#d4dcc8] overflow-y-auto flex-shrink-0 shadow-sm sticky top-0 h-screen">
+          <aside className="w-72 bg-white border-r border-[#d4dcc8] flex-shrink-0 shadow-sm sticky top-0 self-start max-h-[calc(100vh-64px)] flex flex-col">
             {/* Tabs for Tree/TOC */}
             {currentPage === 'article' && selectedArticle && selectedArticle.sections && selectedArticle.sections.length > 0 ? (
               <div className="border-b border-[#e8ede2]">
@@ -354,7 +354,7 @@ export default function App() {
             
             {/* Content based on tab */}
             {sidebarTab === 'tree' || !selectedArticle?.sections ? (
-              <nav className="p-2">
+              <nav className="p-2 overflow-y-auto flex-1">
                 {categories.map(cat => (
                   <SidebarNode
                     key={cat.id}
@@ -368,7 +368,7 @@ export default function App() {
                 ))}
               </nav>
             ) : (
-              <nav className="p-4">
+              <nav className="p-4 overflow-y-auto flex-1">
                 <h3 className="text-sm font-semibold text-[#3d4f30] mb-3">Содержание</h3>
                 <div className="space-y-1">
                   {selectedArticle.sections.map((section, index) => (
