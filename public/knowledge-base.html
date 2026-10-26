@@ -486,70 +486,74 @@
             </div>
           </header>
 
-          <div className="flex flex-1">
-            {/* Sidebar - показываем только на страницах базы знаний */}
-            {(currentPage === 'home' || currentPage === 'article' || currentPage === 'search') && (
-              <aside className="w-72 bg-white border-r border-[#d4dcc8] flex-shrink-0 shadow-sm sticky top-0 self-start max-h-[calc(100vh-64px)] flex flex-col">
-                {currentPage === 'article' && selectedArticle && selectedArticle.sections && selectedArticle.sections.length > 0 ? (
-                  <div className="border-b border-[#e8ede2]">
-                    <div className="flex">
-                      <button
-                        onClick={() => setSidebarTab('tree')}
-                        className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
-                          sidebarTab === 'tree'
-                            ? 'text-[#4a5d3a] border-b-2 border-[#4a5d3a] bg-[#f0f4eb]'
-                            : 'text-[#6b7f58] hover:text-[#4a5d3a] hover:bg-[#f0f4eb]'
-                        }`}
-                      >
-                        Категории
-                      </button>
-                      <button
-                        onClick={() => setSidebarTab('toc')}
-                        className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
-                          sidebarTab === 'toc'
-                            ? 'text-[#4a5d3a] border-b-2 border-[#4a5d3a] bg-[#f0f4eb]'
-                            : 'text-[#6b7f58] hover:text-[#4a5d3a] hover:bg-[#f0f4eb]'
-                        }`}
-                      >
-                        Содержание
-                      </button>
+            <div className="flex flex-1 h-[calc(100vh-64px)]">
+                {/* Sidebar - показываем только на страницах базы знаний */}
+                {(currentPage === 'home' || currentPage === 'article' || currentPage === 'search') && (
+                  <aside className="w-72 bg-white border-r border-[#d4dcc8] flex-shrink-0 shadow-sm sticky top-0 overflow-hidden flex flex-col h-full">
+                    {/* Tabs for Tree/TOC - sticky at top */}
+                    <div className="flex-shrink-0 bg-white border-b border-[#e8ede2]">
+                      {currentPage === 'article' && selectedArticle && selectedArticle.sections && selectedArticle.sections.length > 0 ? (
+                        <div className="flex">
+                          <button
+                            onClick={() => setSidebarTab('tree')}
+                            className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
+                              sidebarTab === 'tree'
+                                ? 'text-[#4a5d3a] border-b-2 border-[#4a5d3a] bg-[#f0f4eb]'
+                                : 'text-[#6b7f58] hover:text-[#4a5d3a] hover:bg-[#f0f4eb]'
+                            }`}
+                          >
+                            Категории
+                          </button>
+                          <button
+                            onClick={() => setSidebarTab('toc')}
+                            className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
+                              sidebarTab === 'toc'
+                                ? 'text-[#4a5d3a] border-b-2 border-[#4a5d3a] bg-[#f0f4eb]'
+                                : 'text-[#6b7f58] hover:text-[#4a5d3a] hover:bg-[#f0f4eb]'
+                            }`}
+                          >
+                            Содержание
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="p-4">
+                          <h2 className="text-sm font-semibold text-[#4a5d3a] uppercase tracking-wider">Категории</h2>
+                        </div>
+                      )}
                     </div>
-                  </div>
-                ) : (
-                  <div className="p-4 border-b border-[#e8ede2]">
-                    <h2 className="text-sm font-semibold text-[#4a5d3a] uppercase tracking-wider">Категории</h2>
-                  </div>
-                )}
                 
-                {sidebarTab === 'tree' || !selectedArticle?.sections ? (
-                  <nav className="p-2 overflow-y-auto flex-1">
-                    {categories.map(cat => (
-                      <SidebarNode key={cat.id} category={cat} expandedNodes={expandedNodes} toggleNode={toggleNode} selectedCategory={selectedCategory} handleCategoryClick={handleCategoryClick} depth={0} />
-                    ))}
-                  </nav>
-                ) : (
-                  <nav className="p-4 overflow-y-auto flex-1">
-                    <h3 className="text-sm font-semibold text-[#3d4f30] mb-3">Содержание</h3>
-                    <div className="space-y-1">
-                      {selectedArticle.sections.map((section, index) => (
-                        <button
-                          key={section.id}
-                          onClick={() => {
-                            const element = document.getElementById(section.id);
-                            if (element) {
-                              element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            }
-                          }}
-                          className="w-full text-left text-sm text-[#6b7f58] hover:text-[#4a5d3a] hover:bg-[#f0f4eb] py-1.5 px-2 rounded transition-colors"
-                        >
-                          <span className="text-[#8fa87a] mr-2">{index + 1}.</span>
-                          {section.title}
-                        </button>
-                      ))}
+                    {/* Scrollable content area */}
+                    <div className="flex-1 overflow-y-auto">
+                      {sidebarTab === 'tree' || !selectedArticle?.sections ? (
+                        <nav className="p-2">
+                          {categories.map(cat => (
+                            <SidebarNode key={cat.id} category={cat} expandedNodes={expandedNodes} toggleNode={toggleNode} selectedCategory={selectedCategory} handleCategoryClick={handleCategoryClick} depth={0} />
+                          ))}
+                        </nav>
+                      ) : (
+                        <nav className="p-4">
+                          <h3 className="text-sm font-semibold text-[#3d4f30] mb-3">Содержание</h3>
+                          <div className="space-y-1">
+                            {selectedArticle.sections.map((section, index) => (
+                              <button
+                                key={section.id}
+                                onClick={() => {
+                                  const element = document.getElementById(section.id);
+                                  if (element) {
+                                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                  }
+                                }}
+                                className="w-full text-left text-sm text-[#6b7f58] hover:text-[#4a5d3a] hover:bg-[#f0f4eb] py-1.5 px-2 rounded transition-colors"
+                              >
+                                <span className="text-[#8fa87a] mr-2">{index + 1}.</span>
+                                {section.title}
+                              </button>
+                            ))}
+                          </div>
+                        </nav>
+                      )}
                     </div>
-                  </nav>
-                )}
-              </aside>
+                  </aside>
             )}
 
             {/* Main */}
