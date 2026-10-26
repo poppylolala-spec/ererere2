@@ -69,6 +69,7 @@ export default function App() {
   const [sidebarTab, setSidebarTab] = useState<'tree' | 'toc'>('toc');
   const [userDrafts, setUserDrafts] = useState<Article[]>([]);
   const [editingDraft, setEditingDraft] = useState<Article | null>(null);
+  const [reviewMode, setReviewMode] = useState(false);
 
   const toggleNode = (id: string) => {
     setExpandedNodes(prev => {
@@ -421,7 +422,7 @@ export default function App() {
             />
           )}
           {currentPage === 'article' && selectedArticle && (
-            <ArticlePage article={selectedArticle} />
+            <ArticlePage article={selectedArticle} reviewMode={reviewMode} />
           )}
           {currentPage === 'profile' && (
             <ProfilePage onArticleClick={handleArticleClick} />
@@ -433,6 +434,15 @@ export default function App() {
               getArticles={getWorkspaceArticles}
               setCurrentPage={setCurrentPage}
               setEditingDraft={setEditingDraft}
+              handleArticleClick={(article) => {
+                if (article.status === 'review') {
+                  setReviewMode(true);
+                } else {
+                  setReviewMode(false);
+                }
+                handleArticleClick(article);
+              }}
+              setReviewMode={setReviewMode}
             />
           )}
           {currentPage === 'create-draft' && (
@@ -693,11 +703,22 @@ function CategoryPage({
 }
 
 // Article page with sidebar
-function ArticlePage({ article }: { article: Article }) {
+function ArticlePage({ article, reviewMode }: { article: Article; reviewMode?: boolean }) {
   const hasSections = article.sections && article.sections.length > 0;
 
   return (
     <div className="p-8">
+      {reviewMode && (
+        <div className="mb-4 p-4 bg-[#fef3cd] border border-[#fbbf24] rounded-lg flex items-start gap-3">
+          <svg className="w-5 h-5 text-[#92400e] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <div>
+            <h3 className="font-semibold text-[#92400e] mb-1">Статья находится на проверке</h3>
+            <p className="text-sm text-[#78350f]">Этот материал в настоящее время проверяется куратором. После одобрения он будет опубликован в базе знаний.</p>
+          </div>
+        </div>
+      )}
       <div className="flex gap-6">
         {/* Main article content */}
         <div className="flex-1 min-w-0">
@@ -1022,13 +1043,17 @@ function WorkspacePage({
   setActiveTab,
   getArticles,
   setCurrentPage,
-  setEditingDraft
+  setEditingDraft,
+  handleArticleClick,
+  setReviewMode
 }: {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   getArticles: (tab: string) => Article[];
   setCurrentPage: (page: Page) => void;
   setEditingDraft: (draft: Article | null) => void;
+  handleArticleClick: (article: Article) => void;
+  setReviewMode: (mode: boolean) => void;
 }) {
   const articles = getArticles(activeTab);
   const isMyMaterials = ['drafts', 'published', 'review', 'archive'].includes(activeTab);
@@ -1110,6 +1135,8 @@ function WorkspacePage({
                   if (article.status === 'draft') {
                     setEditingDraft(article);
                     setCurrentPage('create-draft');
+                  } else if (article.status === 'published' || article.status === 'review') {
+                    handleArticleClick(article);
                   }
                 }}
                 className={`px-6 py-4 hover:bg-[#f0f4eb] transition-colors cursor-pointer
