@@ -64,6 +64,7 @@ export default function App() {
   const [workspaceTab, setWorkspaceTab] = useState('drafts');
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [sidebarTab, setSidebarTab] = useState<'tree' | 'toc'>('tree');
 
   const toggleNode = (id: string) => {
     setExpandedNodes(prev => {
@@ -319,22 +320,75 @@ export default function App() {
         {/* Sidebar - показываем только на страницах базы знаний */}
         {(currentPage === 'home' || currentPage === 'article' || currentPage === 'search') && (
           <aside className="w-72 bg-white border-r border-[#d4dcc8] overflow-y-auto flex-shrink-0 shadow-sm">
-            <div className="p-4 border-b border-[#e8ede2]">
-              <h2 className="text-sm font-semibold text-[#4a5d3a] uppercase tracking-wider">Категории</h2>
-            </div>
-            <nav className="p-2">
-              {categories.map(cat => (
-                <SidebarNode
-                  key={cat.id}
-                  category={cat}
-                  expandedNodes={expandedNodes}
-                  toggleNode={toggleNode}
-                  selectedCategory={selectedCategory}
-                  handleCategoryClick={handleCategoryClick}
-                  depth={0}
-                />
-              ))}
-            </nav>
+            {/* Tabs for Tree/TOC */}
+            {currentPage === 'article' && selectedArticle && selectedArticle.sections && selectedArticle.sections.length > 0 ? (
+              <div className="border-b border-[#e8ede2]">
+                <div className="flex">
+                  <button
+                    onClick={() => setSidebarTab('tree')}
+                    className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
+                      sidebarTab === 'tree'
+                        ? 'text-[#4a5d3a] border-b-2 border-[#4a5d3a] bg-[#f0f4eb]'
+                        : 'text-[#6b7f58] hover:text-[#4a5d3a] hover:bg-[#f0f4eb]'
+                    }`}
+                  >
+                    Дерево
+                  </button>
+                  <button
+                    onClick={() => setSidebarTab('toc')}
+                    className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
+                      sidebarTab === 'toc'
+                        ? 'text-[#4a5d3a] border-b-2 border-[#4a5d3a] bg-[#f0f4eb]'
+                        : 'text-[#6b7f58] hover:text-[#4a5d3a] hover:bg-[#f0f4eb]'
+                    }`}
+                  >
+                    Содержание
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="p-4 border-b border-[#e8ede2]">
+                <h2 className="text-sm font-semibold text-[#4a5d3a] uppercase tracking-wider">Категории</h2>
+              </div>
+            )}
+            
+            {/* Content based on tab */}
+            {sidebarTab === 'tree' || !selectedArticle?.sections ? (
+              <nav className="p-2">
+                {categories.map(cat => (
+                  <SidebarNode
+                    key={cat.id}
+                    category={cat}
+                    expandedNodes={expandedNodes}
+                    toggleNode={toggleNode}
+                    selectedCategory={selectedCategory}
+                    handleCategoryClick={handleCategoryClick}
+                    depth={0}
+                  />
+                ))}
+              </nav>
+            ) : (
+              <nav className="p-4">
+                <h3 className="text-sm font-semibold text-[#3d4f30] mb-3">Содержание</h3>
+                <div className="space-y-1">
+                  {selectedArticle.sections.map((section, index) => (
+                    <button
+                      key={section.id}
+                      onClick={() => {
+                        const element = document.getElementById(section.id);
+                        if (element) {
+                          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                      }}
+                      className="w-full text-left text-sm text-[#6b7f58] hover:text-[#4a5d3a] hover:bg-[#f0f4eb] py-1.5 px-2 rounded transition-colors"
+                    >
+                      <span className="text-[#8fa87a] mr-2">{index + 1}.</span>
+                      {section.title}
+                    </button>
+                  ))}
+                </div>
+              </nav>
+            )}
           </aside>
         )}
 
@@ -623,6 +677,7 @@ function CategoryPage({
 // Article page with sidebar
 function ArticlePage({ article }: { article: Article }) {
   const hasSections = article.sections && article.sections.length > 0;
+  const [showTocPopover, setShowTocPopover] = useState(false);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -634,32 +689,6 @@ function ArticlePage({ article }: { article: Article }) {
   return (
     <div className="p-8">
       <div className="flex gap-6">
-        {/* Table of Contents - Left Sidebar */}
-        {hasSections && (
-          <div className="w-64 flex-shrink-0">
-            <div className="bg-white rounded-xl border border-[#d4dcc8] p-4 sticky top-4">
-              <h3 className="text-sm font-semibold text-[#3d4f30] mb-3 flex items-center gap-2">
-                <svg className="w-4 h-4 text-[#6b7f58]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                </svg>
-                Содержание
-              </h3>
-              <nav className="space-y-1">
-                {article.sections!.map((section, index) => (
-                  <button
-                    key={section.id}
-                    onClick={() => scrollToSection(section.id)}
-                    className="w-full text-left text-sm text-[#6b7f58] hover:text-[#4a5d3a] hover:bg-[#f0f4eb] py-1.5 px-2 rounded transition-colors"
-                  >
-                    <span className="text-[#8fa87a] mr-2">{index + 1}.</span>
-                    {section.title}
-                  </button>
-                ))}
-              </nav>
-            </div>
-          </div>
-        )}
-
         {/* Main article content */}
         <div className="flex-1 min-w-0">
           <div className="bg-white rounded-xl border border-[#d4dcc8] p-8">
@@ -681,6 +710,58 @@ function ArticlePage({ article }: { article: Article }) {
               </div>
             </div>
             <hr className="border-[#e8ede2] mb-6" />
+            
+            {/* Popover TOC Button */}
+            {hasSections && (
+              <div className="mb-6">
+                <div className="relative">
+                  <button
+                    onClick={() => setShowTocPopover(!showTocPopover)}
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#f0f4eb] hover:bg-[#e8ede2] text-[#4a5d3a] text-sm font-medium transition-colors"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                    </svg>
+                    Содержание ({article.sections!.length} разделов)
+                    <svg className={`w-4 h-4 transition-transform ${showTocPopover ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  
+                  {showTocPopover && (
+                    <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-xl border border-[#d4dcc8] shadow-lg z-10 p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-sm font-semibold text-[#3d4f30]">Содержание</h3>
+                        <button
+                          onClick={() => setShowTocPopover(false)}
+                          className="p-1 rounded hover:bg-[#f0f4eb] text-[#6b7f58]"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </div>
+                      <nav className="space-y-1 max-h-96 overflow-y-auto">
+                        {article.sections!.map((section, index) => (
+                          <button
+                            key={section.id}
+                            onClick={() => {
+                              scrollToSection(section.id);
+                              setShowTocPopover(false);
+                            }}
+                            className="w-full text-left text-sm text-[#6b7f58] hover:text-[#4a5d3a] hover:bg-[#f0f4eb] py-1.5 px-2 rounded transition-colors"
+                          >
+                            <span className="text-[#8fa87a] mr-2">{index + 1}.</span>
+                            {section.title}
+                          </button>
+                        ))}
+                      </nav>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+            
             <div className="prose prose-sm max-w-none">
               {hasSections ? (
                 <div className="space-y-8">
