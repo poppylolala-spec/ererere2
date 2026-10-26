@@ -360,7 +360,7 @@ export default function App() {
             <ArticlePage article={selectedArticle} />
           )}
           {currentPage === 'profile' && (
-            <ProfilePage />
+            <ProfilePage onArticleClick={handleArticleClick} />
           )}
           {currentPage === 'workspace' && (
             <WorkspacePage
@@ -758,13 +758,6 @@ function ArticlePage({ article }: { article: Article }) {
               <div className="space-y-2">
                 <button className="w-full text-left text-sm text-[#4a5d3a] hover:text-[#3d4f30] flex items-center gap-2 py-1">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                  </svg>
-                  Версия на проверке — открыть
-                </button>
-                <button className="w-full text-left text-sm text-[#4a5d3a] hover:text-[#3d4f30] flex items-center gap-2 py-1">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                   </svg>
                   Открыть в редакторе
@@ -807,7 +800,21 @@ function ArticlePage({ article }: { article: Article }) {
 }
 
 // Profile page
-function ProfilePage() {
+function ProfilePage({ onArticleClick }: { onArticleClick?: (article: Article) => void }) {
+  const [showAllArticles, setShowAllArticles] = useState(false);
+  
+  const allArticles = categories.flatMap(cat => collectArticles(cat));
+  const authorArticles = allArticles.filter(a => a.author === 'Анна Зелёнова');
+  
+  const recentArticles = authorArticles.slice(0, 4);
+  const displayedArticles = showAllArticles ? authorArticles : recentArticles;
+
+  const handleArticleClick = (article: Article) => {
+    if (onArticleClick) {
+      onArticleClick(article);
+    }
+  };
+
   return (
     <div className="w-full p-8 max-w-4xl">
       <div className="bg-white rounded-xl border border-[#d4dcc8] overflow-hidden">
@@ -827,7 +834,7 @@ function ProfilePage() {
         {/* Stats */}
         <div className="grid grid-cols-4 divide-x divide-[#e8ede2] border-b border-[#e8ede2]">
           <div className="p-6 text-center">
-            <div className="text-2xl font-bold text-[#4a5d3a]">12</div>
+            <div className="text-2xl font-bold text-[#4a5d3a]">{authorArticles.length}</div>
             <div className="text-sm text-[#6b7f58]">Статей</div>
           </div>
           <div className="p-6 text-center">
@@ -874,15 +881,16 @@ function ProfilePage() {
 
         {/* Recent articles */}
         <div className="p-6 border-t border-[#e8ede2]">
-          <h2 className="text-lg font-semibold text-[#3d4f30] mb-4">Последние статьи</h2>
+          <h2 className="text-lg font-semibold text-[#3d4f30] mb-4">
+            {showAllArticles ? 'Все статьи' : 'Последние статьи'}
+          </h2>
           <div className="space-y-3">
-            {[
-              { title: 'Уход за фиалками в домашних условиях', date: '2024-12-15' },
-              { title: 'Правильный полив фаленопсиса', date: '2024-12-01' },
-              { title: 'Хамедорея изящная — уход', date: '2024-09-25' },
-              { title: 'Нефролепис — самый популярный папоротник', date: '2024-09-15' },
-            ].map((article, i) => (
-              <div key={i} className="flex items-center justify-between py-3 px-4 rounded-lg hover:bg-[#f0f4eb] transition-colors">
+            {displayedArticles.map((article, i) => (
+              <div 
+                key={i} 
+                onClick={() => handleArticleClick(article)}
+                className="flex items-center justify-between py-3 px-4 rounded-lg hover:bg-[#f0f4eb] transition-colors cursor-pointer"
+              >
                 <div className="flex items-center gap-3">
                   <svg className="w-4 h-4 text-[#8fa87a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -893,6 +901,24 @@ function ProfilePage() {
               </div>
             ))}
           </div>
+          
+          {!showAllArticles && authorArticles.length > 4 && (
+            <button
+              onClick={() => setShowAllArticles(true)}
+              className="mt-4 w-full py-3 px-4 rounded-lg border border-[#d4dcc8] hover:bg-[#f0f4eb] transition-colors text-sm font-medium text-[#4a5d3a]"
+            >
+              Показать все статьи ({authorArticles.length})
+            </button>
+          )}
+          
+          {showAllArticles && (
+            <button
+              onClick={() => setShowAllArticles(false)}
+              className="mt-4 w-full py-3 px-4 rounded-lg border border-[#d4dcc8] hover:bg-[#f0f4eb] transition-colors text-sm font-medium text-[#4a5d3a]"
+            >
+              Свернуть
+            </button>
+          )}
         </div>
       </div>
     </div>
