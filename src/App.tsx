@@ -358,6 +358,22 @@ export default function App() {
                 
                 {/* Content area with peek */}
                 <div className="flex-1 flex overflow-hidden">
+                  {/* Inactive tab peek - LEFT when TOC active */}
+                  {sidebarTab === 'toc' && (
+                    <div 
+                      className="w-14 overflow-y-auto border-r border-[#e8ede2] bg-[#f0f4eb]"
+                      onClick={() => setSidebarTab('tree')}
+                    >
+                      <div className="p-2 space-y-3">
+                        {categories.slice(0, 8).map(cat => (
+                          <div key={cat.id} className="flex items-center justify-center text-[#6b7f58] opacity-60 hover:opacity-100 transition-opacity" title={cat.name}>
+                            {getCategoryIcon(cat.icon, "w-4 h-4")}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
                   {/* Active tab content */}
                   <div className="flex-1 overflow-y-auto">
                     {sidebarTab === 'tree' ? (
@@ -397,35 +413,23 @@ export default function App() {
                     )}
                   </div>
                   
-                  {/* Inactive tab peek */}
-                  <div 
-                    className={`w-14 overflow-y-auto border-l border-[#e8ede2] ${
-                      sidebarTab === 'tree' ? 'bg-[#f0f4eb]' : 'bg-[#f0f4eb]'
-                    }`}
-                    onClick={() => setSidebarTab(sidebarTab === 'tree' ? 'toc' : 'tree')}
-                  >
-                    {sidebarTab === 'tree' ? (
-                      // Peek of TOC - show paragraph icons
+                  {/* Inactive tab peek - RIGHT when tree active */}
+                  {sidebarTab === 'tree' && (
+                    <div 
+                      className="w-14 overflow-y-auto border-l border-[#e8ede2] bg-[#f0f4eb]"
+                      onClick={() => setSidebarTab('toc')}
+                    >
                       <div className="p-2 space-y-3">
                         {selectedArticle.sections.slice(0, 8).map((_, index) => (
-                          <div key={index} className="flex items-center justify-center">
+                          <div key={index} className="flex items-center justify-center" title={`Раздел ${index + 1}`}>
                             <svg className="w-4 h-4 text-[#8fa87a] opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h10" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h10M4 14h16M4 18h10" />
                             </svg>
                           </div>
                         ))}
                       </div>
-                    ) : (
-                      // Peek of Categories - show category icons
-                      <div className="p-2 space-y-3">
-                        {categories.slice(0, 8).map(cat => (
-                          <div key={cat.id} className="flex items-center justify-center text-[#6b7f58] opacity-60">
-                            {getCategoryIcon(cat.icon, "w-4 h-4")}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               </>
             ) : (
@@ -587,20 +591,57 @@ function SidebarNode({
 
 // Home page
 function HomePage({ handleCategoryClick }: { handleCategoryClick: (id: string) => void }) {
-  // Позиции узлов для графа
-  const nodePositions = [
-    { id: 'indoor', x: 400, y: 150 },
-    { id: 'garden', x: 200, y: 300 },
-    { id: 'trees', x: 600, y: 300 },
-    { id: 'planting', x: 150, y: 450 },
-    { id: 'bulbous', x: 350, y: 450 },
-    { id: 'herbs', x: 550, y: 450 },
-    { id: 'pests', x: 700, y: 450 },
-    { id: 'landscape', x: 450, y: 600 },
+  // Позиции основных категорий
+  const mainNodes = [
+    { id: 'indoor', x: 450, y: 120, label: 'Комнатные растения' },
+    { id: 'garden', x: 250, y: 280, label: 'Садовые растения' },
+    { id: 'trees', x: 650, y: 280, label: 'Деревья' },
+    { id: 'planting', x: 150, y: 450, label: 'Посадка и уход' },
+    { id: 'bulbous', x: 350, y: 450, label: 'Луковичные' },
+    { id: 'herbs', x: 550, y: 450, label: 'Травы и специи' },
+    { id: 'pests', x: 750, y: 450, label: 'Вредители и болезни' },
+    { id: 'landscape', x: 450, y: 620, label: 'Ландшафтный дизайн' },
   ];
 
-  // Связи между категориями
-  const connections = [
+  // Позиции подкатегорий (вокруг основных)
+  const subNodes = [
+    // Комнатные растения
+    { id: 'violets', x: 380, y: 80, parent: 'indoor', label: 'Фиалки' },
+    { id: 'orchids', x: 520, y: 80, parent: 'indoor', label: 'Орхидеи' },
+    { id: 'cacti', x: 380, y: 160, parent: 'indoor', label: 'Кактусы' },
+    { id: 'succulents', x: 520, y: 160, parent: 'indoor', label: 'Суккуленты' },
+    
+    // Садовые растения
+    { id: 'roses', x: 180, y: 240, parent: 'garden', label: 'Розы' },
+    { id: 'peonies', x: 320, y: 240, parent: 'garden', label: 'Пионы' },
+    
+    // Деревья
+    { id: 'fruit-trees', x: 580, y: 240, parent: 'trees', label: 'Плодовые' },
+    { id: 'conifers', x: 720, y: 240, parent: 'trees', label: 'Хвойные' },
+    
+    // Посадка и уход
+    { id: 'soil', x: 80, y: 410, parent: 'planting', label: 'Почва' },
+    { id: 'watering', x: 220, y: 410, parent: 'planting', label: 'Полив' },
+    
+    // Луковичные
+    { id: 'tulips', x: 280, y: 410, parent: 'bulbous', label: 'Тюльпаны' },
+    { id: 'daffodils', x: 420, y: 410, parent: 'bulbous', label: 'Нарциссы' },
+    
+    // Травы и специи
+    { id: 'basil', x: 480, y: 410, parent: 'herbs', label: 'Базилик' },
+    { id: 'mint', x: 620, y: 410, parent: 'herbs', label: 'Мята' },
+    
+    // Вредители и болезни
+    { id: 'aphids', x: 680, y: 410, parent: 'pests', label: 'Тля' },
+    { id: 'fungus', x: 820, y: 410, parent: 'pests', label: 'Грибки' },
+    
+    // Ландшафтный дизайн
+    { id: 'flowerbeds', x: 380, y: 580, parent: 'landscape', label: 'Клумбы' },
+    { id: 'lawn', x: 520, y: 580, parent: 'landscape', label: 'Газон' },
+  ];
+
+  // Связи между основными категориями
+  const mainConnections = [
     { from: 'indoor', to: 'garden' },
     { from: 'indoor', to: 'trees' },
     { from: 'garden', to: 'planting' },
@@ -616,33 +657,107 @@ function HomePage({ handleCategoryClick }: { handleCategoryClick: (id: string) =
   return (
     <div className="p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#3d4f30] mb-2">Добро пожаловать в базу знаний</h1>
-        <p className="text-[#6b7f58] text-lg">Энциклопедия растений — уход, посадка, размножение и многое другое</p>
+        <h1 className="text-3xl font-bold text-[#1a1a1a] mb-2">Добро пожаловать в базу знаний</h1>
+        <p className="text-[#666666] text-lg">Энциклопедия растений — уход, посадка, размножение и многое другое</p>
       </div>
 
-      <div className="bg-white rounded-xl border border-[#d4dcc8] p-6">
-        <svg width="100%" height="700" viewBox="0 0 900 700" className="w-full">
-          {/* Связи */}
-          {connections.map((conn, i) => {
-            const fromNode = nodePositions.find(n => n.id === conn.from);
-            const toNode = nodePositions.find(n => n.id === conn.to);
+      <div className="bg-white rounded-xl border border-[#e0e0e0] p-6 shadow-sm">
+        <svg width="100%" height="750" viewBox="0 0 900 750" className="w-full">
+          {/* Градиенты и фильтры */}
+          <defs>
+            <linearGradient id="mainNodeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#ffffff" />
+              <stop offset="100%" stopColor="#f5f5f5" />
+            </linearGradient>
+            <linearGradient id="subNodeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#fafafa" />
+              <stop offset="100%" stopColor="#f0f0f0" />
+            </linearGradient>
+            <filter id="shadow">
+              <feDropShadow dx="0" dy="2" stdDeviation="3" floodOpacity="0.15"/>
+            </filter>
+          </defs>
+
+          {/* Связи между основными категориями */}
+          {mainConnections.map((conn, i) => {
+            const fromNode = mainNodes.find(n => n.id === conn.from);
+            const toNode = mainNodes.find(n => n.id === conn.to);
             if (!fromNode || !toNode) return null;
             
             return (
               <line
-                key={i}
+                key={`main-${i}`}
                 x1={fromNode.x}
                 y1={fromNode.y}
                 x2={toNode.x}
                 y2={toNode.y}
-                stroke="#d4dcc8"
+                stroke="#d0d0d0"
                 strokeWidth="2"
+                strokeDasharray="5,5"
               />
             );
           })}
 
-          {/* Узлы */}
-          {nodePositions.map(node => {
+          {/* Связи подкатегорий с основными */}
+          {subNodes.map((subNode, i) => {
+            const parentNode = mainNodes.find(n => n.id === subNode.parent);
+            if (!parentNode) return null;
+            
+            return (
+              <line
+                key={`sub-${i}`}
+                x1={parentNode.x}
+                y1={parentNode.y}
+                x2={subNode.x}
+                y2={subNode.y}
+                stroke="#e0e0e0"
+                strokeWidth="1.5"
+              />
+            );
+          })}
+
+          {/* Подкатегории (меньшие узлы) */}
+          {subNodes.map(node => {
+            const category = categories.find(c => c.id === node.id) || 
+                           categories.flatMap(c => c.children || []).find(c => c.id === node.id);
+            if (!category) return null;
+
+            return (
+              <g
+                key={node.id}
+                onClick={() => handleCategoryClick(node.id)}
+                className="cursor-pointer"
+              >
+                <circle
+                  cx={node.x}
+                  cy={node.y}
+                  r="25"
+                  fill="url(#subNodeGradient)"
+                  stroke="#c0c0c0"
+                  strokeWidth="1.5"
+                  filter="url(#shadow)"
+                  className="hover:stroke-[#999999] transition-all"
+                />
+                <foreignObject x={node.x - 12} y={node.y - 12} width="24" height="24">
+                  <div className="flex items-center justify-center text-[#666666]">
+                    {getCategoryIcon(category.icon, "w-4 h-4")}
+                  </div>
+                </foreignObject>
+                <text
+                  x={node.x}
+                  y={node.y + 38}
+                  textAnchor="middle"
+                  className="text-xs fill-[#666666]"
+                  style={{ fontSize: '11px' }}
+                >
+                  {node.label}
+                </text>
+              </g>
+            );
+          })}
+
+          {/* Основные категории (большие узлы) */}
+          {mainNodes.map(node => {
             const category = categories.find(c => c.id === node.id);
             if (!category) return null;
 
@@ -655,24 +770,26 @@ function HomePage({ handleCategoryClick }: { handleCategoryClick: (id: string) =
                 <circle
                   cx={node.x}
                   cy={node.y}
-                  r="45"
-                  fill="#f0f4eb"
-                  stroke="#8fa87a"
+                  r="40"
+                  fill="url(#mainNodeGradient)"
+                  stroke="#999999"
                   strokeWidth="2"
-                  className="hover:fill-[#e8f0de] transition-colors"
+                  filter="url(#shadow)"
+                  className="hover:stroke-[#666666] hover:scale-105 transition-all"
                 />
-                <foreignObject x={node.x - 20} y={node.y - 20} width="40" height="40">
-                  <div className="flex items-center justify-center text-[#6b7f58]">
+                <foreignObject x={node.x - 18} y={node.y - 18} width="36" height="36">
+                  <div className="flex items-center justify-center text-[#444444]">
                     {getCategoryIcon(category.icon, "w-6 h-6")}
                   </div>
                 </foreignObject>
                 <text
                   x={node.x}
-                  y={node.y + 65}
+                  y={node.y + 55}
                   textAnchor="middle"
-                  className="text-sm font-medium fill-[#3d4f30]"
+                  className="text-sm font-semibold fill-[#333333]"
+                  style={{ fontSize: '13px' }}
                 >
-                  {category.name}
+                  {node.label}
                 </text>
               </g>
             );
