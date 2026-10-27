@@ -585,27 +585,46 @@ function SidebarNode({
   return (
     <div>
       <div
-        className={`flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer transition-all group
+        className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all group
           ${isSelected ? 'bg-[#E4E2DC] text-[#2A2D28] font-medium' : 'hover:bg-[#ECEAE6] text-[#4A4E44]'}
         `}
         style={{ paddingLeft: `${depth * 16 + 12}px` }}
-        onClick={() => {
-          // Только разворачиваем/сворачиваем, не переходим
-          if (hasChildren || hasArticles) toggleNode(category.id);
-        }}
       >
+        {/* Стрелка - разворачивает/сворачивает */}
         {(hasChildren || hasArticles) && (
           <svg
-            className={`w-3 h-3 flex-shrink-0 transition-transform text-[#8A8E84] ${isExpanded ? 'rotate-90' : ''}`}
+            className={`w-3 h-3 flex-shrink-0 transition-transform text-[#8A8E84] hover:text-[#4A4E44] cursor-pointer ${isExpanded ? 'rotate-90' : ''}`}
             fill="currentColor"
             viewBox="0 0 20 20"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleNode(category.id);
+            }}
           >
             <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
           </svg>
         )}
         {!hasChildren && !hasArticles && <span className="w-3" />}
-        <span className="text-[#6a7587]">{getCategoryIcon(category.icon, "w-4 h-4")}</span>
-        <span className="text-sm truncate flex-1">{category.name}</span>
+        
+        {/* Иконка и название - открывают категорию */}
+        <span 
+          className="text-[#6a7587] cursor-pointer hover:text-[#4A4E44] transition-colors"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleCategoryClick(category.id);
+          }}
+        >
+          {getCategoryIcon(category.icon, "w-4 h-4")}
+        </span>
+        <span 
+          className="text-sm truncate flex-1 cursor-pointer hover:text-[#2A2D28] transition-colors"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleCategoryClick(category.id);
+          }}
+        >
+          {category.name}
+        </span>
         {hasArticles && (
           <span className="text-xs text-[#8A8E84]">{category.articles!.length}</span>
         )}
