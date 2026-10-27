@@ -418,6 +418,7 @@ export default function App() {
                             toggleNode={toggleNode}
                             selectedCategory={selectedCategory}
                             handleCategoryClick={handleCategoryClick}
+                            handleArticleClick={handleArticleClick}
                             depth={0}
                           />
                         ))}
@@ -479,6 +480,7 @@ export default function App() {
                         toggleNode={toggleNode}
                         selectedCategory={selectedCategory}
                         handleCategoryClick={handleCategoryClick}
+                        handleArticleClick={handleArticleClick}
                         depth={0}
                       />
                     ))}
@@ -564,6 +566,7 @@ function SidebarNode({
   toggleNode,
   selectedCategory,
   handleCategoryClick,
+  handleArticleClick,
   depth
 }: {
   category: Category;
@@ -571,40 +574,45 @@ function SidebarNode({
   toggleNode: (id: string) => void;
   selectedCategory: string | null;
   handleCategoryClick: (id: string) => void;
+  handleArticleClick: (article: Article) => void;
   depth: number;
 }) {
   const isExpanded = expandedNodes.has(category.id);
   const hasChildren = category.children && category.children.length > 0;
+  const hasArticles = category.articles && category.articles.length > 0;
   const isSelected = selectedCategory === category.id;
 
   return (
     <div>
       <div
         className={`flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer transition-all group
-          ${isSelected ? 'bg-[#e8f0de] text-[#3d4f30] font-medium' : 'hover:bg-[#f0f4eb] text-[#4a5d3a]'}
+          ${isSelected ? 'bg-[#E4E2DC] text-[#2A2D28] font-medium' : 'hover:bg-[#ECEAE6] text-[#4A4E44]'}
         `}
         style={{ paddingLeft: `${depth * 16 + 12}px` }}
         onClick={() => {
           handleCategoryClick(category.id);
-          if (hasChildren) toggleNode(category.id);
+          if (hasChildren || hasArticles) toggleNode(category.id);
         }}
       >
-        {hasChildren && (
+        {(hasChildren || hasArticles) && (
           <svg
-            className={`w-3 h-3 flex-shrink-0 transition-transform text-[#8fa87a]`}
+            className={`w-3 h-3 flex-shrink-0 transition-transform text-[#8A8E84] ${isExpanded ? 'rotate-90' : ''}`}
             fill="currentColor"
             viewBox="0 0 20 20"
           >
             <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
           </svg>
         )}
-        {!hasChildren && <span className="w-3" />}
-        <span className="text-[#6b7f58]">{getCategoryIcon(category.icon, "w-4 h-4")}</span>
-        <span className="text-sm truncate">{category.name}</span>
+        {!hasChildren && !hasArticles && <span className="w-3" />}
+        <span className="text-[#6A6E64]">{getCategoryIcon(category.icon, "w-4 h-4")}</span>
+        <span className="text-sm truncate flex-1">{category.name}</span>
+        {hasArticles && (
+          <span className="text-xs text-[#8A8E84]">{category.articles!.length}</span>
+        )}
       </div>
-      {isExpanded && hasChildren && (
+      {isExpanded && (
         <div>
-          {category.children!.map(child => (
+          {hasChildren && category.children!.map(child => (
             <SidebarNode
               key={child.id}
               category={child}
@@ -612,8 +620,30 @@ function SidebarNode({
               toggleNode={toggleNode}
               selectedCategory={selectedCategory}
               handleCategoryClick={handleCategoryClick}
+              handleArticleClick={handleArticleClick}
               depth={depth + 1}
             />
+          ))}
+          {hasArticles && category.articles!.map(article => (
+            <div
+              key={article.id}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg cursor-pointer hover:bg-[#ECEAE6] transition-all group"
+              style={{ paddingLeft: `${(depth + 1) * 16 + 12}px` }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleArticleClick(article);
+              }}
+            >
+              <span className="w-3" />
+              <div className="w-5 h-5 rounded overflow-hidden flex-shrink-0">
+                <img 
+                  src={getArticleImage(article.id)} 
+                  alt={article.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <span className="text-xs text-[#6A6E64] truncate group-hover:text-[#4A4E44]">{article.title}</span>
+            </div>
           ))}
         </div>
       )}
@@ -623,6 +653,8 @@ function SidebarNode({
 
 // Home page
 function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryClick: (id: string) => void; handleArticleClick: (article: Article) => void }) {
+  const [focusedCategory, setFocusedCategory] = useState<string | null>(null);
+
   // Позиции основных категорий
   const mainNodes = [
     { id: 'indoor', x: 450, y: 120, label: 'Комнатные растения' },
@@ -686,6 +718,30 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
     { from: 'pests', to: 'landscape' },
   ];
 
+  // Получить все статьи из категории и её подкатегорий
+  const getAllArticlesFromCategory = (categoryId: string): Article[] => {
+    const category = findCategory(categories, categoryId);
+    if (!category) return [];
+    return collectArticles(category);
+  };
+
+  // Получить подкатегории для фокусированной категории
+  const getFocusedSubNodes = () => {
+    if (!focusedCategory) return subNodes;
+    
+    const focusedCategoryData = findCategory(categories, focusedCategory);
+    if (!focusedCategoryData || !focusedCategoryData.children) return [];
+    
+    // Возвращаем только подкатегории фокусированной категории
+    return subNodes.filter(sub => sub.parent === focusedCategory);
+  };
+
+  // Получить статьи для фокусированной категории
+  const getFocusedArticles = () => {
+    if (!focusedCategory) return [];
+    return getAllArticlesFromCategory(focusedCategory);
+  };
+
   return (
     <div className="p-8">
       <div className="mb-8">
@@ -694,6 +750,17 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
       </div>
 
       <div className="bg-gradient-to-br from-[#fafafa] to-[#f0f0f0] rounded-xl border border-[#d0d0d0] p-6 shadow-lg">
+        {focusedCategory && (
+          <button
+            onClick={() => setFocusedCategory(null)}
+            className="mb-4 px-4 py-2 rounded-lg bg-white border border-[#d0d0d0] hover:bg-[#f5f5f5] transition-colors text-sm text-[#4a4a4a] flex items-center gap-2"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Назад ко всем категориям
+          </button>
+        )}
         <svg width="100%" height="750" viewBox="0 0 900 750" className="w-full">
           {/* Градиенты и фильтры */}
           <defs>
@@ -722,131 +789,292 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
             </filter>
           </defs>
 
-          {/* Связи между основными категориями */}
-          {mainConnections.map((conn, i) => {
-            const fromNode = mainNodes.find(n => n.id === conn.from);
-            const toNode = mainNodes.find(n => n.id === conn.to);
-            if (!fromNode || !toNode) return null;
-            
-            return (
-              <line
-                key={`main-${i}`}
-                x1={fromNode.x}
-                y1={fromNode.y}
-                x2={toNode.x}
-                y2={toNode.y}
-                stroke="#a0a0a0"
-                strokeWidth="2"
-                strokeDasharray="8,4"
-                opacity="0.6"
-              />
-            );
-          })}
+          {!focusedCategory ? (
+            <>
+              {/* Обычный режим: показываем все категории */}
+              {/* Связи между основными категориями */}
+              {mainConnections.map((conn, i) => {
+                const fromNode = mainNodes.find(n => n.id === conn.from);
+                const toNode = mainNodes.find(n => n.id === conn.to);
+                if (!fromNode || !toNode) return null;
+                
+                return (
+                  <line
+                    key={`main-${i}`}
+                    x1={fromNode.x}
+                    y1={fromNode.y}
+                    x2={toNode.x}
+                    y2={toNode.y}
+                    stroke="#a0a0a0"
+                    strokeWidth="2"
+                    strokeDasharray="8,4"
+                    opacity="0.6"
+                  />
+                );
+              })}
 
-          {/* Связи подкатегорий с основными */}
-          {subNodes.map((subNode, i) => {
-            const parentNode = mainNodes.find(n => n.id === subNode.parent);
-            if (!parentNode) return null;
-            
-            return (
-              <line
-                key={`sub-${i}`}
-                x1={parentNode.x}
-                y1={parentNode.y}
-                x2={subNode.x}
-                y2={subNode.y}
-                stroke="#b0b0b0"
-                strokeWidth="1.5"
-                opacity="0.5"
-              />
-            );
-          })}
+              {/* Связи подкатегорий с основными */}
+              {subNodes.map((subNode, i) => {
+                const parentNode = mainNodes.find(n => n.id === subNode.parent);
+                if (!parentNode) return null;
+                
+                return (
+                  <line
+                    key={`sub-${i}`}
+                    x1={parentNode.x}
+                    y1={parentNode.y}
+                    x2={subNode.x}
+                    y2={subNode.y}
+                    stroke="#b0b0b0"
+                    strokeWidth="1.5"
+                    opacity="0.5"
+                  />
+                );
+              })}
 
-          {/* Подкатегории (меньшие узлы) */}
-          {subNodes.map(node => {
-            const category = categories.find(c => c.id === node.id) || 
-                           categories.flatMap(c => c.children || []).find(c => c.id === node.id);
-            if (!category) return null;
+              {/* Подкатегории (меньшие узлы) */}
+              {subNodes.map(node => {
+                const category = categories.find(c => c.id === node.id) || 
+                               categories.flatMap(c => c.children || []).find(c => c.id === node.id);
+                if (!category) return null;
 
-            return (
-              <g
-                key={node.id}
-                onClick={() => handleCategoryClick(node.id)}
-                className="cursor-pointer group"
-              >
-                <circle
-                  cx={node.x}
-                  cy={node.y}
-                  r="25"
-                  fill="url(#subNodeGradient)"
-                  stroke="#b8b8b8"
-                  strokeWidth="1.5"
-                  filter="url(#shadow)"
-                  className="group-hover:stroke-[#707070] group-hover:fill-[#f8f8f8] transition-all duration-300"
-                />
-                <foreignObject x={node.x - 12} y={node.y - 12} width="24" height="24">
-                  <div className="flex items-center justify-center text-[#5a5a5a] group-hover:text-[#3a3a3a] transition-colors duration-300">
-                    {getCategoryIcon(category.icon, "w-4 h-4")}
-                  </div>
-                </foreignObject>
-                <text
-                  x={node.x}
-                  y={node.y + 38}
-                  textAnchor="middle"
-                  className="text-xs fill-[#5a5a5a] group-hover:fill-[#2a2a2a] transition-colors duration-300 font-medium"
-                  style={{ fontSize: '11px' }}
-                >
-                  {node.label}
-                </text>
-              </g>
-            );
-          })}
+                return (
+                  <g
+                    key={node.id}
+                    onClick={() => handleCategoryClick(node.id)}
+                    className="cursor-pointer group"
+                  >
+                    <circle
+                      cx={node.x}
+                      cy={node.y}
+                      r="25"
+                      fill="url(#subNodeGradient)"
+                      stroke="#b8b8b8"
+                      strokeWidth="1.5"
+                      filter="url(#shadow)"
+                      className="group-hover:stroke-[#707070] group-hover:fill-[#f8f8f8] transition-all duration-300"
+                    />
+                    <foreignObject x={node.x - 12} y={node.y - 12} width="24" height="24">
+                      <div className="flex items-center justify-center text-[#5a5a5a] group-hover:text-[#3a3a3a] transition-colors duration-300">
+                        {getCategoryIcon(category.icon, "w-4 h-4")}
+                      </div>
+                    </foreignObject>
+                    <text
+                      x={node.x}
+                      y={node.y + 38}
+                      textAnchor="middle"
+                      className="text-xs fill-[#5a5a5a] group-hover:fill-[#2a2a2a] transition-colors duration-300 font-medium"
+                      style={{ fontSize: '11px' }}
+                    >
+                      {node.label}
+                    </text>
+                  </g>
+                );
+              })}
 
-          {/* Основные категории (большие узлы) */}
-          {mainNodes.map(node => {
-            const category = categories.find(c => c.id === node.id);
-            if (!category) return null;
+              {/* Основные категории (большие узлы) */}
+              {mainNodes.map(node => {
+                const category = categories.find(c => c.id === node.id);
+                if (!category) return null;
 
-            return (
-              <g
-                key={node.id}
-                onClick={() => handleCategoryClick(node.id)}
-                className="cursor-pointer group"
-              >
-                <circle
-                  cx={node.x}
-                  cy={node.y}
-                  r="40"
-                  fill="url(#mainNodeGradient)"
-                  stroke="#808080"
-                  strokeWidth="2.5"
-                  filter="url(#shadow)"
-                  className="group-hover:stroke-[#4a4a4a] transition-all duration-300"
-                />
-                <circle
-                  cx={node.x}
-                  cy={node.y}
-                  r="40"
-                  fill="url(#mainNodeGlow)"
-                  className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                />
-                <foreignObject x={node.x - 18} y={node.y - 18} width="36" height="36">
-                  <div className="flex items-center justify-center text-[#3a3a3a] group-hover:text-[#1a1a1a] transition-colors duration-300">
-                    {getCategoryIcon(category.icon, "w-6 h-6")}
-                  </div>
-                </foreignObject>
-                <text
-                  x={node.x}
-                  y={node.y + 55}
-                  textAnchor="middle"
-                  className="text-sm font-bold fill-[#2a2a2a] group-hover:fill-[#0a0a0a] transition-colors duration-300"
-                  style={{ fontSize: '13px' }}
-                >
-                  {node.label}
-                </text>
-              </g>
-            );
-          })}
+                return (
+                  <g
+                    key={node.id}
+                    onClick={() => setFocusedCategory(node.id)}
+                    className="cursor-pointer group"
+                  >
+                    <circle
+                      cx={node.x}
+                      cy={node.y}
+                      r="40"
+                      fill="url(#mainNodeGradient)"
+                      stroke="#808080"
+                      strokeWidth="2.5"
+                      filter="url(#shadow)"
+                      className="group-hover:stroke-[#4a4a4a] transition-all duration-300"
+                    />
+                    <circle
+                      cx={node.x}
+                      cy={node.y}
+                      r="40"
+                      fill="url(#mainNodeGlow)"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                    />
+                    <foreignObject x={node.x - 18} y={node.y - 18} width="36" height="36">
+                      <div className="flex items-center justify-center text-[#3a3a3a] group-hover:text-[#1a1a1a] transition-colors duration-300">
+                        {getCategoryIcon(category.icon, "w-6 h-6")}
+                      </div>
+                    </foreignObject>
+                    <text
+                      x={node.x}
+                      y={node.y + 55}
+                      textAnchor="middle"
+                      className="text-sm font-bold fill-[#2a2a2a] group-hover:fill-[#0a0a0a] transition-colors duration-300"
+                      style={{ fontSize: '13px' }}
+                    >
+                      {node.label}
+                    </text>
+                  </g>
+                );
+              })}
+            </>
+          ) : (
+            <>
+              {/* Режим фокусировки: показываем только выбранную категорию и её содержимое */}
+              {(() => {
+                const focusedNode = mainNodes.find(n => n.id === focusedCategory);
+                if (!focusedNode) return null;
+
+                const focusedArticles = getFocusedArticles();
+                const focusedSubNodes = getFocusedSubNodes();
+
+                // Позиционируем статьи по кругу вокруг центральной категории
+                const articleRadius = 200;
+                const articleAngleStep = (2 * Math.PI) / Math.max(focusedArticles.length, 1);
+
+                return (
+                  <>
+                    {/* Центральная увеличенная категория */}
+                    <g
+                      onClick={() => handleCategoryClick(focusedCategory)}
+                      className="cursor-pointer group"
+                    >
+                      <circle
+                        cx={450}
+                        cy={375}
+                        r="80"
+                        fill="url(#mainNodeGradient)"
+                        stroke="#808080"
+                        strokeWidth="3"
+                        filter="url(#shadow)"
+                        className="group-hover:stroke-[#4a4a4a] transition-all duration-300"
+                      />
+                      <foreignObject x={450 - 30} y={375 - 30} width="60" height="60">
+                        <div className="flex items-center justify-center text-[#3a3a3a]">
+                          {getCategoryIcon(focusedNode.id, "w-12 h-12")}
+                        </div>
+                      </foreignObject>
+                      <text
+                        x={450}
+                        y={375 + 100}
+                        textAnchor="middle"
+                        className="text-base font-bold fill-[#2a2a2a]"
+                        style={{ fontSize: '16px' }}
+                      >
+                        {focusedNode.label}
+                      </text>
+                    </g>
+
+                    {/* Подкатегории вокруг центральной категории */}
+                    {focusedSubNodes.map((subNode, index) => {
+                      const category = categories.find(c => c.id === subNode.id) || 
+                                     categories.flatMap(c => c.children || []).find(c => c.id === subNode.id);
+                      if (!category) return null;
+
+                      const angle = (index / focusedSubNodes.length) * 2 * Math.PI - Math.PI / 2;
+                      const subRadius = 150;
+                      const x = 450 + Math.cos(angle) * subRadius;
+                      const y = 375 + Math.sin(angle) * subRadius;
+
+                      return (
+                        <g
+                          key={subNode.id}
+                          onClick={() => handleCategoryClick(subNode.id)}
+                          className="cursor-pointer group"
+                        >
+                          <line
+                            x1={450}
+                            y1={375}
+                            x2={x}
+                            y2={y}
+                            stroke="#b0b0b0"
+                            strokeWidth="1.5"
+                            opacity="0.5"
+                          />
+                          <circle
+                            cx={x}
+                            cy={y}
+                            r="30"
+                            fill="url(#subNodeGradient)"
+                            stroke="#b8b8b8"
+                            strokeWidth="1.5"
+                            filter="url(#shadow)"
+                            className="group-hover:stroke-[#707070] transition-all duration-300"
+                          />
+                          <foreignObject x={x - 14} y={y - 14} width="28" height="28">
+                            <div className="flex items-center justify-center text-[#5a5a5a]">
+                              {getCategoryIcon(category.icon, "w-5 h-5")}
+                            </div>
+                          </foreignObject>
+                          <text
+                            x={x}
+                            y={y + 45}
+                            textAnchor="middle"
+                            className="text-xs fill-[#5a5a5a] font-medium"
+                            style={{ fontSize: '12px' }}
+                          >
+                            {subNode.label}
+                          </text>
+                        </g>
+                      );
+                    })}
+
+                    {/* Статьи как мелкие кружочки */}
+                    {focusedArticles.map((article, index) => {
+                      const angle = (index / focusedArticles.length) * 2 * Math.PI - Math.PI / 2;
+                      const x = 450 + Math.cos(angle) * articleRadius;
+                      const y = 375 + Math.sin(angle) * articleRadius;
+
+                      return (
+                        <g
+                          key={article.id}
+                          onClick={() => handleArticleClick(article)}
+                          className="cursor-pointer group"
+                        >
+                          <line
+                            x1={450}
+                            y1={375}
+                            x2={x}
+                            y2={y}
+                            stroke="#d0d0d0"
+                            strokeWidth="1"
+                            opacity="0.4"
+                          />
+                          <circle
+                            cx={x}
+                            cy={y}
+                            r="18"
+                            fill="#f5f5f5"
+                            stroke="#c0c0c0"
+                            strokeWidth="1"
+                            className="group-hover:stroke-[#808080] group-hover:fill-[#ffffff] transition-all duration-300"
+                          />
+                          <foreignObject x={x - 12} y={y - 12} width="24" height="24">
+                            <div className="w-full h-full rounded-full overflow-hidden">
+                              <img 
+                                src={getArticleImage(article.id)} 
+                                alt={article.title}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          </foreignObject>
+                          <text
+                            x={x}
+                            y={y + 30}
+                            textAnchor="middle"
+                            className="text-xs fill-[#6a6a6a]"
+                            style={{ fontSize: '10px' }}
+                          >
+                            {article.title.length > 20 ? article.title.substring(0, 20) + '...' : article.title}
+                          </text>
+                        </g>
+                      );
+                    })}
+                  </>
+                );
+              })()}
+            </>
+          )}
         </svg>
       </div>
 
@@ -854,7 +1082,7 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
   );
 }
 
-// Category page - shows articles and subcategories as a list
+// Category page - shows articles and subcategories as a tree
 function CategoryPage({
   categoryId,
   onArticleClick,
@@ -867,17 +1095,104 @@ function CategoryPage({
   breadcrumbs: { id: string; name: string }[];
 }) {
   const category = findCategory(categories, categoryId);
+  const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
+
   if (!category) return null;
 
-  const hasChildren = category.children && category.children.length > 0;
-  const hasArticles = category.articles && category.articles.length > 0;
+  const toggleNode = (id: string) => {
+    setExpandedNodes(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const renderTreeNode = (node: Category, depth: number = 0) => {
+    const hasChildren = node.children && node.children.length > 0;
+    const hasArticles = node.articles && node.articles.length > 0;
+    const isExpanded = expandedNodes.has(node.id);
+    const isCurrentCategory = node.id === categoryId;
+
+    return (
+      <div key={node.id}>
+        {/* Category node */}
+        <div
+          className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition-all group ${
+            isCurrentCategory ? 'bg-[#E4E2DC] font-medium' : 'hover:bg-[#ECEAE6]'
+          }`}
+          style={{ paddingLeft: `${depth * 24 + 16}px` }}
+          onClick={() => {
+            if (hasChildren || hasArticles) {
+              toggleNode(node.id);
+            }
+            if (!isCurrentCategory) {
+              onCategoryClick(node.id);
+            }
+          }}
+        >
+          {hasChildren || hasArticles ? (
+            <svg
+              className={`w-4 h-4 text-[#8A8E84] transition-transform flex-shrink-0 ${isExpanded ? 'rotate-90' : ''}`}
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+            </svg>
+          ) : (
+            <span className="w-4 flex-shrink-0" />
+          )}
+          <span className="text-[#6A6E64]">{getCategoryIcon(node.icon, "w-5 h-5")}</span>
+          <span className="text-[#2A2D28] flex-1">{node.name}</span>
+          {(hasChildren || hasArticles) && (
+            <span className="text-xs text-[#8A8E84]">
+              {hasChildren && `${node.children!.length} подкат.`}
+              {hasChildren && hasArticles && ' · '}
+              {hasArticles && `${node.articles!.length} ст.`}
+            </span>
+          )}
+        </div>
+
+        {/* Expanded children */}
+        {isExpanded && (
+          <div>
+            {hasChildren && node.children!.map(child => renderTreeNode(child, depth + 1))}
+            {hasArticles && node.articles!.map(article => (
+              <div
+                key={article.id}
+                className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-[#ECEAE6] transition-colors group"
+                style={{ paddingLeft: `${(depth + 1) * 24 + 16}px` }}
+                onClick={() => onArticleClick(article)}
+              >
+                <span className="w-4 flex-shrink-0" />
+                <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 shadow-sm group-hover:shadow-md transition-shadow">
+                  <img 
+                    src={getArticleImage(article.id)} 
+                    alt={article.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-[#2A2D28] text-sm font-medium group-hover:text-[#4A4E44]">{article.title}</div>
+                  <div className="text-xs text-[#8A8E84] mt-0.5">{article.author} · {article.date}</div>
+                </div>
+                <svg className="w-4 h-4 text-[#8A8E84] group-hover:text-[#4A4E44] transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="p-8">
       {/* Breadcrumbs */}
-      <nav className="flex items-center gap-2 text-sm text-[#6b7f58] mb-6 flex-wrap">
+      <nav className="flex items-center gap-2 text-sm text-[#6A6E64] mb-6 flex-wrap">
         <span
-          className="hover:text-[#4a5d3a] cursor-pointer transition-colors"
+          className="hover:text-[#4A4E44] cursor-pointer transition-colors"
           onClick={() => onCategoryClick('')}
         >
           Главная
@@ -888,10 +1203,10 @@ function CategoryPage({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
             {i === breadcrumbs.length - 1 ? (
-              <span className="text-[#3d4f30] font-medium">{crumb.name}</span>
+              <span className="text-[#2A2D28] font-medium">{crumb.name}</span>
             ) : (
               <span
-                className="hover:text-[#4a5d3a] cursor-pointer transition-colors"
+                className="hover:text-[#4A4E44] cursor-pointer transition-colors"
                 onClick={() => onCategoryClick(crumb.id)}
               >
                 {crumb.name}
@@ -902,100 +1217,20 @@ function CategoryPage({
       </nav>
 
       {/* Category header */}
-      <div className="flex items-center gap-4 mb-8">
-        <span className="text-[#6b7f58]">{getCategoryIcon(category.icon, "w-9 h-9")}</span>
+      <div className="flex items-center gap-4 mb-6">
+        <span className="text-[#6A6E64]">{getCategoryIcon(category.icon, "w-9 h-9")}</span>
         <div>
-          <h1 className="text-2xl font-bold text-[#3d4f30]">{category.name}</h1>
-          <p className="text-[#6b7f58] text-sm mt-1">
-            {hasChildren && `${category.children!.length} подкатегорий`}
-            {hasChildren && hasArticles && ' · '}
-            {hasArticles && `${category.articles!.length} статей`}
+          <h1 className="text-2xl font-bold text-[#2A2D28]">{category.name}</h1>
+          <p className="text-[#6A6E64] text-sm mt-1">
+            {(category.children?.length || 0) + (category.articles?.length || 0)} элементов
           </p>
         </div>
       </div>
 
-      {/* Subcategories as list */}
-      {hasChildren && (
-        <div className="mb-8">
-          <h2 className="text-lg font-semibold text-[#3d4f30] mb-4 flex items-center gap-2">
-            <svg className="w-5 h-5 text-[#6b7f58]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-            </svg>
-            Подкатегории
-          </h2>
-          <div className="bg-white rounded-xl border border-[#d4dcc8] overflow-hidden">
-            {category.children!.map((child, i) => (
-              <div
-                key={child.id}
-                onClick={() => onCategoryClick(child.id)}
-                className={`flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-[#f0f4eb] transition-colors group
-                  ${i !== category.children!.length - 1 ? 'border-b border-[#e8ede2]' : ''}
-                `}
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-[#6b7f58]">{getCategoryIcon(child.icon, "w-5 h-5")}</span>
-                  <div>
-                    <span className="text-[#3d4f30] font-medium group-hover:text-[#4a5d3a]">{child.name}</span>
-                    <span className="text-xs text-[#8fa87a] ml-3">
-                      {child.children ? `${child.children.length} подкат.` : `${child.articles?.length || 0} ст.`}
-                    </span>
-                  </div>
-                </div>
-                <svg className="w-5 h-5 text-[#8fa87a] group-hover:text-[#4a5d3a] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Articles as list with thumbnails */}
-      {hasArticles && (
-        <div>
-          <h2 className="text-lg font-semibold text-[#3d4f30] mb-4 flex items-center gap-2">
-            <svg className="w-5 h-5 text-[#6b7f58]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            Статьи
-          </h2>
-          <div className="bg-white rounded-xl border border-[#d4dcc8] overflow-hidden">
-            {category.articles!.map((article, i) => (
-              <div
-                key={article.id}
-                onClick={() => onArticleClick(article)}
-                className={`flex items-center gap-4 px-5 py-4 cursor-pointer hover:bg-[#f0f4eb] transition-colors group
-                  ${i !== category.articles!.length - 1 ? 'border-b border-[#e8ede2]' : ''}
-                `}
-              >
-                {/* Thumbnail image */}
-                <div className="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0 shadow-md group-hover:shadow-lg transition-shadow duration-300">
-                  <img 
-                    src={getArticleImage(article.id)} 
-                    alt={article.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
-                  />
-                </div>
-                
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-[#3d4f30] font-medium group-hover:text-[#4a5d3a] mb-1">{article.title}</h3>
-                  <p className="text-sm text-[#6b7f58] line-clamp-2">{article.content}</p>
-                  <div className="flex items-center gap-4 mt-2">
-                    <span className="text-xs text-[#8fa87a]">{article.author}</span>
-                    <span className="text-xs text-[#a8b89a]">{article.date}</span>
-                  </div>
-                </div>
-                
-                {/* Arrow */}
-                <svg className="w-5 h-5 text-[#8fa87a] group-hover:text-[#4a5d3a] transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Tree view */}
+      <div className="bg-white rounded-xl border border-[#D8D6D0] overflow-hidden">
+        {renderTreeNode(category, 0)}
+      </div>
     </div>
   );
 }
