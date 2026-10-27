@@ -9,7 +9,7 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <style>
-    * { scrollbar-width: thin; scrollbar-color: #8fa87a #f0f4eb; }
+    * { scrollbar-width: thin; scrollbar-color: #8A8E84 #ECEAE6; }
     *::-webkit-scrollbar { width: 6px; }
     *::-webkit-scrollbar-track { background: #f0f4eb; }
     *::-webkit-scrollbar-thumb { background-color: #8fa87a; border-radius: 3px; }
@@ -400,9 +400,9 @@
       };
 
       return (
-        <div className="h-screen bg-[#f5f5f0] flex flex-col overflow-hidden">
+        <div className="h-screen bg-[#F4F3EF] flex flex-col overflow-hidden">
           {/* Header */}
-          <header className="bg-[#4a5d3a] shadow-lg sticky top-0 z-50">
+          <header className="bg-[#4A4E44] shadow-lg sticky top-0 z-50">
             <div className="flex items-center justify-between px-6 py-3">
               <div className="flex items-center gap-3 cursor-pointer" onClick={() => { setCurrentPage('home'); setSelectedCategory(null); setSelectedArticle(null); }}>
                 <svg className="w-7 h-7 text-[#8fa87a]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -416,7 +416,7 @@
                   <input type="text" placeholder="Поиск по базе знаний..." value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                    className="w-full px-4 py-2 pl-10 rounded-lg bg-[#5a6f48] text-white placeholder-[#a8b89a] border border-[#6b7f58] focus:outline-none focus:ring-2 focus:ring-[#8fa87a]" />
+                    className="w-full px-4 py-2 pl-10 rounded-lg bg-[#5A5E54] text-white placeholder-[#A8AC9E] border border-[#6A6E64] focus:outline-none focus:ring-2 focus:ring-[#8fa87a]" />
                   <svg className="absolute left-3 top-2.5 w-5 h-5 text-[#a8b89a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
@@ -435,10 +435,10 @@
                     <span className="absolute top-1 right-1 w-2 h-2 bg-[#e8a838] rounded-full"></span>
                   </button>
                   {showNotifications && (
-                    <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl shadow-xl border border-[#d4dcc8] overflow-hidden z-50">
-                      <div className="p-4 border-b border-[#e8ede2] flex items-center justify-between">
-                        <h3 className="font-semibold text-[#3d4f30]">Уведомления</h3>
-                        <span className="text-xs text-[#6b7f58] bg-[#e8f0de] px-2 py-0.5 rounded-full">3 новых</span>
+                    <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl shadow-xl border border-[#D8D6D0] overflow-hidden z-50">
+                      <div className="p-4 border-b border-[#E8E6E2] flex items-center justify-between">
+                        <h3 className="font-semibold text-[#2A2D28]">Уведомления</h3>
+                        <span className="text-xs text-[#6b7f58] bg-[#E4E2DC] px-2 py-0.5 rounded-full">3 новых</span>
                       </div>
                       <div className="max-h-80 overflow-y-auto">
                         <div className="p-4 border-b border-[#e8ede2] hover:bg-[#f0f4eb] cursor-pointer">
@@ -500,7 +500,7 @@
                           <div className="w-12 h-12 rounded-full bg-[#8fa87a] flex items-center justify-center text-white font-bold text-lg">АЗ</div>
                           <div>
                             <p className="text-white font-semibold">Анна Зелёнова</p>
-                            <p className="text-[#c8d4b8] text-sm">Автор статей</p>
+                            <p className="text-[#C0C4B8] text-sm">Автор статей</p>
                           </div>
                         </div>
                       </div>
@@ -1056,7 +1056,7 @@
                 )}
                 <div className="mt-8 pt-6 border-t border-[#e8ede2]">
                   <div className="flex items-center gap-3">
-                    <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#e8f0de] hover:bg-[#d4e4c8] text-[#4a5d3a] transition-colors"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" /></svg>Полезно</button>
+                    <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#e8f0de] hover:bg-[#D8D6D0] text-[#4a5d3a] transition-colors"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" /></svg>Полезно</button>
                     <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#f0f4eb] hover:bg-[#e8ede2] text-[#6b7f58] transition-colors"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>Поделиться</button>
                   </div>
                 </div>
