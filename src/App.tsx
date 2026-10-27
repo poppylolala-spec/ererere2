@@ -969,11 +969,11 @@ function CategoryPage({
                 `}
               >
                 {/* Thumbnail image */}
-                <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 bg-gradient-to-br from-[#e8e8e8] to-[#d0d0d0]">
+                <div className="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0 shadow-md group-hover:shadow-lg transition-shadow duration-300">
                   <img 
                     src={getArticleImage(article.id)} 
                     alt={article.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
                   />
                 </div>
                 

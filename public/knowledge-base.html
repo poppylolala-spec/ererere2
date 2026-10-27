@@ -989,11 +989,11 @@
               <div className="bg-white rounded-xl border border-[#d4dcc8] overflow-hidden">
                 {category.articles.map((article, i) => (
                   <div key={article.id} onClick={() => onArticleClick(article)} className={`flex items-center gap-4 px-5 py-4 cursor-pointer hover:bg-[#f0f4eb] transition-colors group ${i !== category.articles.length - 1 ? 'border-b border-[#e8ede2]' : ''}`}>
-                    <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 bg-gradient-to-br from-[#e8e8e8] to-[#d0d0d0]">
+                    <div className="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0 shadow-md group-hover:shadow-lg transition-shadow duration-300">
                       <img 
                         src={getArticleImage(article.id)} 
                         alt={article.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
                       />
                     </div>
                     <div className="flex-1 min-w-0">
