@@ -179,13 +179,13 @@ export default function App() {
   };
 
   return (
-    <div className="h-screen bg-[#F4F3EF] flex flex-col overflow-hidden">
+    <div className="h-screen bg-[#f0f2f5] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-[#4A4E44] shadow-lg sticky top-0 z-50">
+      <header className="bg-[#4a5567] shadow-lg sticky top-0 z-50">
         <div className="flex items-center justify-between px-6 py-3">
           {/* Logo */}
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => { setCurrentPage('home'); setSelectedCategory(null); setSelectedArticle(null); }}>
-            <svg className="w-7 h-7 text-[#B8BCAE]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+            <svg className="w-7 h-7 text-[#9aa5b7]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 21V11m0 0c-2-3-5-4-7-3m7 3c2-3 5-4 7-3M9 11c0-2 1-4 3-5m0 5c0-2-1-4-3-5" />
             </svg>
             <h1 className="text-white text-xl font-bold tracking-wide">База знаний</h1>
@@ -200,9 +200,9 @@ export default function App() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                className="w-full px-4 py-2 pl-10 rounded-lg bg-[#5A5E54] text-white placeholder-[#B8BCAE] border border-[#6A6E64] focus:outline-none focus:ring-2 focus:ring-[#8A8E84] focus:border-transparent transition-all"
+                className="w-full px-4 py-2 pl-10 rounded-lg bg-[#5a6577] text-white placeholder-[#9aa5b7] border border-[#6a7587] focus:outline-none focus:ring-2 focus:ring-[#7a8597] focus:border-transparent transition-all"
               />
-              <svg className="absolute left-3 top-2.5 w-5 h-5 text-[#B8BCAE]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="absolute left-3 top-2.5 w-5 h-5 text-[#9aa5b7]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
@@ -213,7 +213,7 @@ export default function App() {
             {/* Workspace button */}
             <button
               onClick={() => setCurrentPage('workspace')}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#5A5E54] hover:bg-[#6A6E64] text-white transition-colors"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#5a6577] hover:bg-[#6a7587] text-white transition-colors"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
@@ -225,7 +225,7 @@ export default function App() {
             <div className="relative">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 rounded-lg hover:bg-[#5A5E54] transition-colors"
+                className="relative p-2 rounded-lg hover:bg-[#5a6577] transition-colors"
               >
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -234,27 +234,27 @@ export default function App() {
               </button>
 
               {showNotifications && (
-                <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl shadow-xl border border-[#D8D6D0] overflow-hidden z-50">
-                  <div className="p-4 border-b border-[#E8E6E2] flex items-center justify-between">
-                    <h3 className="font-semibold text-[#2A2D28]">Уведомления</h3>
-                    <span className="text-xs text-[#6A6E64] bg-[#E4E2DC] px-2 py-0.5 rounded-full">3 новых</span>
+                <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl shadow-xl border border-[#c8cad0] overflow-hidden z-50">
+                  <div className="p-4 border-b border-[#d8dae0] flex items-center justify-between">
+                    <h3 className="font-semibold text-[#2a3547]">Уведомления</h3>
+                    <span className="text-xs text-[#6a7587] bg-[#d8dae0] px-2 py-0.5 rounded-full">3 новых</span>
                   </div>
                   <div className="max-h-80 overflow-y-auto">
-                    <div className="p-4 border-b border-[#e8ede2] hover:bg-[#ECEAE6] cursor-pointer transition-colors">
+                    <div className="p-4 border-b border-[#d8dae0] hover:bg-[#e8eaef] cursor-pointer transition-colors">
                       <div className="flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-full bg-[#E4E2DC] flex items-center justify-center flex-shrink-0">
-                          <svg className="w-4 h-4 text-[#4A4E44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="w-8 h-8 rounded-full bg-[#d8dae0] flex items-center justify-center flex-shrink-0">
+                          <svg className="w-4 h-4 text-[#4a5567]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                         </div>
                         <div>
-                          <p className="text-sm text-[#2A2D28] font-medium">Статья одобрена</p>
-                          <p className="text-xs text-[#6A6E64] mt-0.5">«Уход за фиалками» прошла проверку и опубликована</p>
-                          <p className="text-xs text-[#A8AC9E] mt-1">2 часа назад</p>
+                          <p className="text-sm text-[#2a3547] font-medium">Статья одобрена</p>
+                          <p className="text-xs text-[#6a7587] mt-0.5">«Уход за фиалками» прошла проверку и опубликована</p>
+                          <p className="text-xs text-[#8a95a7] mt-1">2 часа назад</p>
                         </div>
                       </div>
                     </div>
-                    <div className="p-4 border-b border-[#e8ede2] hover:bg-[#ECEAE6] cursor-pointer transition-colors">
+                    <div className="p-4 border-b border-[#d8dae0] hover:bg-[#e8eaef] cursor-pointer transition-colors">
                       <div className="flex items-start gap-3">
                         <div className="w-8 h-8 rounded-full bg-[#fef3cd] flex items-center justify-center flex-shrink-0">
                           <svg className="w-4 h-4 text-[#856404]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -262,23 +262,23 @@ export default function App() {
                           </svg>
                         </div>
                         <div>
-                          <p className="text-sm text-[#3d4f30] font-medium">Новый комментарий</p>
-                          <p className="text-xs text-[#6b7f58] mt-0.5">Игорь Садовников оставил комментарий к вашей статье</p>
-                          <p className="text-xs text-[#A8AC9E] mt-1">5 часов назад</p>
+                          <p className="text-sm text-[#2a3547] font-medium">Новый комментарий</p>
+                          <p className="text-xs text-[#6a7587] mt-0.5">Игорь Садовников оставил комментарий к вашей статье</p>
+                          <p className="text-xs text-[#8a95a7] mt-1">5 часов назад</p>
                         </div>
                       </div>
                     </div>
-                    <div className="p-4 hover:bg-[#ECEAE6] cursor-pointer transition-colors">
+                    <div className="p-4 hover:bg-[#e8eaef] cursor-pointer transition-colors">
                       <div className="flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-full bg-[#d4e8f0] flex items-center justify-center flex-shrink-0">
-                          <svg className="w-4 h-4 text-[#2c5f7c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="w-8 h-8 rounded-full bg-[#d8dae0] flex items-center justify-center flex-shrink-0">
+                          <svg className="w-4 h-4 text-[#4a5567]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                         </div>
                         <div>
-                          <p className="text-sm text-[#3d4f30] font-medium">Запрос на проверку</p>
-                          <p className="text-xs text-[#6b7f58] mt-0.5">«Пересадка фаленопсиса» отправлена на рецензию</p>
-                          <p className="text-xs text-[#a8b89a] mt-1">Вчера</p>
+                          <p className="text-sm text-[#2a3547] font-medium">Запрос на проверку</p>
+                          <p className="text-xs text-[#6a7587] mt-0.5">«Пересадка фаленопсиса» отправлена на рецензию</p>
+                          <p className="text-xs text-[#8a95a7] mt-1">Вчера</p>
                         </div>
                       </div>
                     </div>
@@ -286,7 +286,7 @@ export default function App() {
                   <div className="p-3 border-t border-[#e8ede2]">
                     <button 
                       onClick={() => { setCurrentPage('notifications'); setShowNotifications(false); }}
-                      className="w-full text-center text-sm text-[#4A4E44] hover:text-[#2A2D28] font-medium py-1">
+                      className="w-full text-center text-sm text-[#4a5567] hover:text-[#2a3547] font-medium py-1">
                       Смотреть все уведомления
                     </button>
                   </div>
@@ -298,9 +298,9 @@ export default function App() {
             <div className="relative">
               <button
                 onClick={() => setShowProfileDropdown(!showProfileDropdown)}
-                className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-[#5A5E54] transition-colors"
+                className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-[#5a6577] transition-colors"
               >
-                <div className="w-8 h-8 rounded-full bg-[#8A8E84] flex items-center justify-center text-white font-bold text-sm">
+                <div className="w-8 h-8 rounded-full bg-[#7a8597] flex items-center justify-center text-white font-bold text-sm">
                   АЗ
                 </div>
                 <span className="text-white text-sm hidden md:inline">Анна Зелёнова</span>
@@ -310,44 +310,44 @@ export default function App() {
               </button>
 
               {showProfileDropdown && (
-                <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-xl shadow-xl border border-[#D8D6D0] overflow-hidden z-50">
-                  <div className="p-4 bg-gradient-to-r from-[#4a5d3a] to-[#5a6f48]">
+                <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-xl shadow-xl border border-[#c8cad0] overflow-hidden z-50">
+                  <div className="p-4 bg-gradient-to-r from-[#4a5567] to-[#5a6577]">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full bg-[#8A8E84] flex items-center justify-center text-white font-bold text-lg">
+                      <div className="w-12 h-12 rounded-full bg-[#7a8597] flex items-center justify-center text-white font-bold text-lg">
                         АЗ
                       </div>
                       <div>
                         <p className="text-white font-semibold">Анна Зелёнова</p>
-                        <p className="text-[#c8d4b8] text-sm">Автор статей</p>
+                        <p className="text-[#9aa5b7] text-sm">Автор статей</p>
                       </div>
                     </div>
                   </div>
                   <div className="p-3">
-                    <div className="flex justify-between items-center py-2 px-2 rounded-lg hover:bg-[#f0f4eb] cursor-pointer transition-colors" onClick={() => { setCurrentPage('profile'); setShowProfileDropdown(false); }}>
+                    <div className="flex justify-between items-center py-2 px-2 rounded-lg hover:bg-[#e8eaef] cursor-pointer transition-colors" onClick={() => { setCurrentPage('profile'); setShowProfileDropdown(false); }}>
                       <div className="flex items-center gap-2">
-                        <svg className="w-4 h-4 text-[#6b7f58]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 text-[#6a7587]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
-                        <span className="text-sm text-[#3d4f30]">Мой профиль</span>
+                        <span className="text-sm text-[#2a3547]">Мой профиль</span>
                       </div>
-                      <span className="text-xs text-[#6b7f58]">4.8 / 12 ст.</span>
+                      <span className="text-xs text-[#6a7587]">4.8 / 12 ст.</span>
                     </div>
-                    <div className="flex justify-between items-center py-2 px-2 rounded-lg hover:bg-[#f0f4eb] cursor-pointer transition-colors">
+                    <div className="flex justify-between items-center py-2 px-2 rounded-lg hover:bg-[#e8eaef] cursor-pointer transition-colors">
                       <div className="flex items-center gap-2">
-                        <svg className="w-4 h-4 text-[#6b7f58]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 text-[#6a7587]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
-                        <span className="text-sm text-[#3d4f30]">Настройки</span>
+                        <span className="text-sm text-[#2a3547]">Настройки</span>
                       </div>
                     </div>
                     <hr className="my-2 border-[#e8ede2]" />
-                    <div className="flex justify-between items-center py-2 px-2 rounded-lg hover:bg-[#f0f4eb] cursor-pointer transition-colors">
+                    <div className="flex justify-between items-center py-2 px-2 rounded-lg hover:bg-[#e8eaef] cursor-pointer transition-colors">
                       <div className="flex items-center gap-2">
-                        <svg className="w-4 h-4 text-[#6b7f58]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 text-[#6a7587]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                         </svg>
-                        <span className="text-sm text-[#3d4f30]">Выйти</span>
+                        <span className="text-sm text-[#2a3547]">Выйти</span>
                       </div>
                     </div>
                   </div>
@@ -361,7 +361,7 @@ export default function App() {
       <div className="flex flex-1 min-h-0">
         {/* Sidebar - показываем только на страницах базы знаний */}
         {(currentPage === 'home' || currentPage === 'article' || currentPage === 'search') && (
-          <aside className="w-72 bg-white border-r border-[#d4dcc8] flex-shrink-0 shadow-sm overflow-hidden flex flex-col self-stretch">
+          <aside className="w-72 bg-white border-r border-[#c8cad0] flex-shrink-0 shadow-sm overflow-hidden flex flex-col self-stretch">
             {currentPage === 'article' && selectedArticle && selectedArticle.sections && selectedArticle.sections.length > 0 ? (
               <>
                 {/* Tabs headers */}
@@ -370,8 +370,8 @@ export default function App() {
                     onClick={() => setSidebarTab('tree')}
                     className={`flex-1 px-4 py-3 text-sm font-medium transition-all ${
                       sidebarTab === 'tree'
-                        ? 'text-[#4a5d3a] bg-white border-b-2 border-[#4a5d3a]'
-                        : 'text-[#6b7f58] bg-[#f0f4eb] hover:bg-[#E4E2DC]'
+                        ? 'text-[#4a5567] bg-white border-b-2 border-[#4a5567]'
+                        : 'text-[#6b7f58] bg-[#e8eaef] hover:bg-[#d8dae0]'
                     }`}
                   >
                     Категории
@@ -380,8 +380,8 @@ export default function App() {
                     onClick={() => setSidebarTab('toc')}
                     className={`flex-1 px-4 py-3 text-sm font-medium transition-all ${
                       sidebarTab === 'toc'
-                        ? 'text-[#4a5d3a] bg-white border-b-2 border-[#4a5d3a]'
-                        : 'text-[#6b7f58] bg-[#f0f4eb] hover:bg-[#e8f0de]'
+                        ? 'text-[#4a5567] bg-white border-b-2 border-[#4a5567]'
+                        : 'text-[#6b7f58] bg-[#e8eaef] hover:bg-[#e8eaef]'
                     }`}
                   >
                     Содержание
@@ -393,7 +393,7 @@ export default function App() {
                   {/* Inactive tab peek - LEFT when TOC active */}
                   {sidebarTab === 'toc' && (
                     <div 
-                      className="w-14 overflow-y-auto border-r border-[#e8ede2] bg-[#f0f4eb]"
+                      className="w-14 overflow-y-auto border-r border-[#e8ede2] bg-[#e8eaef]"
                       onClick={() => setSidebarTab('tree')}
                     >
                       <div className="p-2 space-y-3">
@@ -418,6 +418,7 @@ export default function App() {
                             toggleNode={toggleNode}
                             selectedCategory={selectedCategory}
                             handleCategoryClick={handleCategoryClick}
+                            handleArticleClick={handleArticleClick}
                             depth={0}
                           />
                         ))}
@@ -434,9 +435,9 @@ export default function App() {
                                   element.scrollIntoView({ behavior: 'smooth', block: 'start' });
                                 }
                               }}
-                              className="w-full text-left text-sm text-[#6b7f58] hover:text-[#4A4E44] hover:bg-[#f0f4eb] py-1.5 px-2 rounded transition-colors"
+                              className="w-full text-left text-sm text-[#6b7f58] hover:text-[#4a5567] hover:bg-[#f0f4eb] py-1.5 px-2 rounded transition-colors"
                             >
-                              <span className="text-[#8A8E84] mr-2">{index + 1}.</span>
+                              <span className="text-[#7a8597] mr-2">{index + 1}.</span>
                               {section.title}
                             </button>
                           ))}
@@ -454,7 +455,7 @@ export default function App() {
                       <div className="p-2 space-y-3">
                         {selectedArticle.sections.slice(0, 8).map((_, index) => (
                           <div key={index} className="flex items-center justify-center" title={`Раздел ${index + 1}`}>
-                            <svg className="w-4 h-4 text-[#8fa87a] opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 text-[#7a8597] opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h10M4 14h16M4 18h10" />
                             </svg>
                           </div>
@@ -479,6 +480,7 @@ export default function App() {
                         toggleNode={toggleNode}
                         selectedCategory={selectedCategory}
                         handleCategoryClick={handleCategoryClick}
+                        handleArticleClick={handleArticleClick}
                         depth={0}
                       />
                     ))}
@@ -490,7 +492,7 @@ export default function App() {
         )}
 
         {/* Main Content */}
-        <main className={`flex-1 overflow-y-auto bg-[#F4F3EF] min-h-0 ${
+        <main className={`flex-1 overflow-y-auto bg-[#f0f2f5] min-h-0 ${
           currentPage === 'profile' || currentPage === 'workspace' || currentPage === 'create-draft' || currentPage === 'notifications' || currentPage === 'my-comments' || currentPage === 'my-attachments'
             ? 'flex justify-center items-start'
             : ''
@@ -564,6 +566,7 @@ function SidebarNode({
   toggleNode,
   selectedCategory,
   handleCategoryClick,
+  handleArticleClick,
   depth
 }: {
   category: Category;
@@ -571,40 +574,64 @@ function SidebarNode({
   toggleNode: (id: string) => void;
   selectedCategory: string | null;
   handleCategoryClick: (id: string) => void;
+  handleArticleClick: (article: Article) => void;
   depth: number;
 }) {
   const isExpanded = expandedNodes.has(category.id);
   const hasChildren = category.children && category.children.length > 0;
+  const hasArticles = category.articles && category.articles.length > 0;
   const isSelected = selectedCategory === category.id;
 
   return (
     <div>
       <div
-        className={`flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer transition-all group
-          ${isSelected ? 'bg-[#e8f0de] text-[#3d4f30] font-medium' : 'hover:bg-[#f0f4eb] text-[#4a5d3a]'}
+        className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all group
+          ${isSelected ? 'bg-[#d8dae0] text-[#2a3547] font-medium' : 'hover:bg-[#e8eaef] text-[#4a5567]'}
         `}
         style={{ paddingLeft: `${depth * 16 + 12}px` }}
-        onClick={() => {
-          handleCategoryClick(category.id);
-          if (hasChildren) toggleNode(category.id);
-        }}
       >
-        {hasChildren && (
+        {/* Стрелка - разворачивает/сворачивает */}
+        {(hasChildren || hasArticles) && (
           <svg
-            className={`w-3 h-3 flex-shrink-0 transition-transform text-[#8fa87a]`}
+            className={`w-3 h-3 flex-shrink-0 transition-transform text-[#7a8597] hover:text-[#4A4E44] cursor-pointer ${isExpanded ? 'rotate-90' : ''}`}
             fill="currentColor"
             viewBox="0 0 20 20"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleNode(category.id);
+            }}
           >
             <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
           </svg>
         )}
-        {!hasChildren && <span className="w-3" />}
-        <span className="text-[#6b7f58]">{getCategoryIcon(category.icon, "w-4 h-4")}</span>
-        <span className="text-sm truncate">{category.name}</span>
+        {!hasChildren && !hasArticles && <span className="w-3" />}
+        
+        {/* Иконка и название - открывают категорию */}
+        <span 
+          className="text-[#6a7587] cursor-pointer hover:text-[#4A4E44] transition-colors"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleCategoryClick(category.id);
+          }}
+        >
+          {getCategoryIcon(category.icon, "w-4 h-4")}
+        </span>
+        <span 
+          className="text-sm truncate flex-1 cursor-pointer hover:text-[#2A2D28] transition-colors"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleCategoryClick(category.id);
+          }}
+        >
+          {category.name}
+        </span>
+        {hasArticles && (
+          <span className="text-xs text-[#8A8E84]">{category.articles!.length}</span>
+        )}
       </div>
-      {isExpanded && hasChildren && (
+      {isExpanded && (
         <div>
-          {category.children!.map(child => (
+          {hasChildren && category.children!.map(child => (
             <SidebarNode
               key={child.id}
               category={child}
@@ -612,8 +639,26 @@ function SidebarNode({
               toggleNode={toggleNode}
               selectedCategory={selectedCategory}
               handleCategoryClick={handleCategoryClick}
+              handleArticleClick={handleArticleClick}
               depth={depth + 1}
             />
+          ))}
+          {hasArticles && category.articles!.map(article => (
+            <div
+              key={article.id}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg cursor-pointer hover:bg-[#ECEAE6] transition-all group"
+              style={{ paddingLeft: `${(depth + 1) * 16 + 12}px` }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleArticleClick(article);
+              }}
+            >
+              <span className="w-3" />
+              <svg className="w-3 h-3 text-[#8A8E84] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              <span className="text-xs text-[#6a7587] truncate group-hover:text-[#4A4E44]">{article.title}</span>
+            </div>
           ))}
         </div>
       )}
@@ -623,6 +668,46 @@ function SidebarNode({
 
 // Home page
 function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryClick: (id: string) => void; handleArticleClick: (article: Article) => void }) {
+  const [focusedCategory, setFocusedCategory] = useState<string | null>(null);
+  const [zoomLevel, setZoomLevel] = useState(1);
+  const [viewBox, setViewBox] = useState({ x: 0, y: 0, width: 900, height: 750 });
+  
+  // Генерация звёзд для фона
+  const stars = Array.from({ length: 200 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 900,
+    y: Math.random() * 750,
+    r: Math.random() * 1.5 + 0.5,
+    opacity: Math.random() * 0.8 + 0.2,
+  }));
+
+  // Функция для zoom к категории
+  const zoomToCategory = (categoryId: string) => {
+    const mainNode = mainNodes.find(n => n.id === categoryId);
+    const subNode = subNodes.find(n => n.id === categoryId);
+    const node = mainNode || subNode;
+    
+    if (node) {
+      // Вычисляем новый viewBox для zoom
+      const zoomFactor = 0.6; // Zoom in на 60%
+      const newWidth = 900 * zoomFactor;
+      const newHeight = 750 * zoomFactor;
+      const newX = node.x - newWidth / 2;
+      const newY = node.y - newHeight / 2;
+      
+      setViewBox({ x: newX, y: newY, width: newWidth, height: newHeight });
+      setZoomLevel(zoomLevel * (1 / zoomFactor));
+      setFocusedCategory(categoryId);
+    }
+  };
+
+  // Функция для возврата к общему виду
+  const resetZoom = () => {
+    setViewBox({ x: 0, y: 0, width: 900, height: 750 });
+    setZoomLevel(1);
+    setFocusedCategory(null);
+  };
+
   // Позиции основных категорий
   const mainNodes = [
     { id: 'indoor', x: 450, y: 120, label: 'Комнатные растения' },
@@ -686,6 +771,30 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
     { from: 'pests', to: 'landscape' },
   ];
 
+  // Получить все статьи из категории и её подкатегорий
+  const getAllArticlesFromCategory = (categoryId: string): Article[] => {
+    const category = findCategory(categories, categoryId);
+    if (!category) return [];
+    return collectArticles(category);
+  };
+
+  // Получить подкатегории для фокусированной категории
+  const getFocusedSubNodes = () => {
+    if (!focusedCategory) return subNodes;
+    
+    const focusedCategoryData = findCategory(categories, focusedCategory);
+    if (!focusedCategoryData || !focusedCategoryData.children) return [];
+    
+    // Возвращаем только подкатегории фокусированной категории
+    return subNodes.filter(sub => sub.parent === focusedCategory);
+  };
+
+  // Получить статьи для фокусированной категории
+  const getFocusedArticles = () => {
+    if (!focusedCategory) return [];
+    return getAllArticlesFromCategory(focusedCategory);
+  };
+
   return (
     <div className="p-8">
       <div className="mb-8">
@@ -693,8 +802,19 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
         <p className="text-[#4a4a4a] text-lg font-light">Энциклопедия растений — уход, посадка, размножение и многое другое</p>
       </div>
 
-      <div className="bg-gradient-to-br from-[#fafafa] to-[#f0f0f0] rounded-xl border border-[#d0d0d0] p-6 shadow-lg">
-        <svg width="100%" height="750" viewBox="0 0 900 750" className="w-full">
+      <div className="bg-gradient-to-br from-[#0a0a1a] via-[#1a1a2e] to-[#16213e] rounded-xl border border-[#2a2a4a] p-6 shadow-2xl overflow-hidden relative">
+        {focusedCategory && (
+          <button
+            onClick={resetZoom}
+            className="mb-4 px-4 py-2 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-colors text-sm text-white flex items-center gap-2 relative z-10"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Назад ко всем категориям
+          </button>
+        )}
+        <svg width="100%" height="750" viewBox={`${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`} className="w-full relative z-0 transition-all duration-700 ease-in-out">
           {/* Градиенты и фильтры */}
           <defs>
             <linearGradient id="mainNodeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -710,8 +830,13 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
               <stop offset="0%" stopColor="#ffffff" stopOpacity="0.8" />
               <stop offset="100%" stopColor="#d0d0d0" stopOpacity="0" />
             </radialGradient>
+            <radialGradient id="galaxyGlow">
+              <stop offset="0%" stopColor="#6366f1" stopOpacity="0.3" />
+              <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.1" />
+              <stop offset="100%" stopColor="#0a0a1a" stopOpacity="0" />
+            </radialGradient>
             <filter id="shadow">
-              <feDropShadow dx="0" dy="4" stdDeviation="6" floodOpacity="0.2"/>
+              <feDropShadow dx="0" dy="4" stdDeviation="6" floodOpacity="0.4"/>
             </filter>
             <filter id="glow">
               <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
@@ -720,133 +845,322 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
                 <feMergeNode in="SourceGraphic"/>
               </feMerge>
             </filter>
+            <filter id="starGlow">
+              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
           </defs>
 
-          {/* Связи между основными категориями */}
-          {mainConnections.map((conn, i) => {
-            const fromNode = mainNodes.find(n => n.id === conn.from);
-            const toNode = mainNodes.find(n => n.id === conn.to);
-            if (!fromNode || !toNode) return null;
-            
-            return (
-              <line
-                key={`main-${i}`}
-                x1={fromNode.x}
-                y1={fromNode.y}
-                x2={toNode.x}
-                y2={toNode.y}
-                stroke="#a0a0a0"
-                strokeWidth="2"
-                strokeDasharray="8,4"
-                opacity="0.6"
-              />
-            );
-          })}
+          {/* Космический фон со звёздами */}
+          <rect width="900" height="750" fill="url(#galaxyGlow)" />
+          {stars.map(star => (
+            <circle
+              key={star.id}
+              cx={star.x}
+              cy={star.y}
+              r={star.r}
+              fill="white"
+              opacity={star.opacity}
+              filter="url(#starGlow)"
+            />
+          ))}
 
-          {/* Связи подкатегорий с основными */}
-          {subNodes.map((subNode, i) => {
-            const parentNode = mainNodes.find(n => n.id === subNode.parent);
-            if (!parentNode) return null;
-            
-            return (
-              <line
-                key={`sub-${i}`}
-                x1={parentNode.x}
-                y1={parentNode.y}
-                x2={subNode.x}
-                y2={subNode.y}
-                stroke="#b0b0b0"
-                strokeWidth="1.5"
-                opacity="0.5"
-              />
-            );
-          })}
+          {!focusedCategory ? (
+            <>
+              {/* Обычный режим: показываем все категории */}
+              {/* Связи между основными категориями */}
+              {mainConnections.map((conn, i) => {
+                const fromNode = mainNodes.find(n => n.id === conn.from);
+                const toNode = mainNodes.find(n => n.id === conn.to);
+                if (!fromNode || !toNode) return null;
+                
+                return (
+                  <line
+                    key={`main-${i}`}
+                    x1={fromNode.x}
+                    y1={fromNode.y}
+                    x2={toNode.x}
+                    y2={toNode.y}
+                    stroke="#6366f1"
+                    strokeWidth="2"
+                    strokeDasharray="8,4"
+                    opacity="0.4"
+                  />
+                );
+              })}
 
-          {/* Подкатегории (меньшие узлы) */}
-          {subNodes.map(node => {
-            const category = categories.find(c => c.id === node.id) || 
-                           categories.flatMap(c => c.children || []).find(c => c.id === node.id);
-            if (!category) return null;
+              {/* Связи подкатегорий с основными */}
+              {subNodes.map((subNode, i) => {
+                const parentNode = mainNodes.find(n => n.id === subNode.parent);
+                if (!parentNode) return null;
+                
+                return (
+                  <line
+                    key={`sub-${i}`}
+                    x1={parentNode.x}
+                    y1={parentNode.y}
+                    x2={subNode.x}
+                    y2={subNode.y}
+                    stroke="#8b5cf6"
+                    strokeWidth="1.5"
+                    opacity="0.3"
+                  />
+                );
+              })}
 
-            return (
-              <g
-                key={node.id}
-                onClick={() => handleCategoryClick(node.id)}
-                className="cursor-pointer group"
-              >
-                <circle
-                  cx={node.x}
-                  cy={node.y}
-                  r="25"
-                  fill="url(#subNodeGradient)"
-                  stroke="#b8b8b8"
-                  strokeWidth="1.5"
-                  filter="url(#shadow)"
-                  className="group-hover:stroke-[#707070] group-hover:fill-[#f8f8f8] transition-all duration-300"
-                />
-                <foreignObject x={node.x - 12} y={node.y - 12} width="24" height="24">
-                  <div className="flex items-center justify-center text-[#5a5a5a] group-hover:text-[#3a3a3a] transition-colors duration-300">
-                    {getCategoryIcon(category.icon, "w-4 h-4")}
-                  </div>
-                </foreignObject>
-                <text
-                  x={node.x}
-                  y={node.y + 38}
-                  textAnchor="middle"
-                  className="text-xs fill-[#5a5a5a] group-hover:fill-[#2a2a2a] transition-colors duration-300 font-medium"
-                  style={{ fontSize: '11px' }}
-                >
-                  {node.label}
-                </text>
-              </g>
-            );
-          })}
+              {/* Подкатегории (меньшие узлы) */}
+              {subNodes.map(node => {
+                const category = categories.find(c => c.id === node.id) || 
+                               categories.flatMap(c => c.children || []).find(c => c.id === node.id);
+                if (!category) return null;
 
-          {/* Основные категории (большие узлы) */}
-          {mainNodes.map(node => {
-            const category = categories.find(c => c.id === node.id);
-            if (!category) return null;
+                return (
+                  <g
+                    key={node.id}
+                    onClick={() => zoomToCategory(node.id)}
+                    className="cursor-pointer group"
+                  >
+                    <circle
+                      cx={node.x}
+                      cy={node.y}
+                      r="25"
+                      fill="url(#subNodeGradient)"
+                      stroke="#8b5cf6"
+                      strokeWidth="1.5"
+                      filter="url(#shadow)"
+                      className="group-hover:stroke-[#a78bfa] group-hover:fill-[#f8f8f8] transition-all duration-300"
+                    />
+                    <foreignObject x={node.x - 12} y={node.y - 12} width="24" height="24">
+                      <div className="flex items-center justify-center text-[#5a5a5a] group-hover:text-[#3a3a3a] transition-colors duration-300">
+                        {getCategoryIcon(category.icon, "w-4 h-4")}
+                      </div>
+                    </foreignObject>
+                    <text
+                      x={node.x}
+                      y={node.y + 38}
+                      textAnchor="middle"
+                      className="text-xs fill-white group-hover:fill-[#e0e0e0] transition-colors duration-300 font-medium"
+                      style={{ fontSize: '11px' }}
+                    >
+                      {node.label}
+                    </text>
+                  </g>
+                );
+              })}
 
-            return (
-              <g
-                key={node.id}
-                onClick={() => handleCategoryClick(node.id)}
-                className="cursor-pointer group"
-              >
-                <circle
-                  cx={node.x}
-                  cy={node.y}
-                  r="40"
-                  fill="url(#mainNodeGradient)"
-                  stroke="#808080"
-                  strokeWidth="2.5"
-                  filter="url(#shadow)"
-                  className="group-hover:stroke-[#4a4a4a] transition-all duration-300"
-                />
-                <circle
-                  cx={node.x}
-                  cy={node.y}
-                  r="40"
-                  fill="url(#mainNodeGlow)"
-                  className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                />
-                <foreignObject x={node.x - 18} y={node.y - 18} width="36" height="36">
-                  <div className="flex items-center justify-center text-[#3a3a3a] group-hover:text-[#1a1a1a] transition-colors duration-300">
-                    {getCategoryIcon(category.icon, "w-6 h-6")}
-                  </div>
-                </foreignObject>
-                <text
-                  x={node.x}
-                  y={node.y + 55}
-                  textAnchor="middle"
-                  className="text-sm font-bold fill-[#2a2a2a] group-hover:fill-[#0a0a0a] transition-colors duration-300"
-                  style={{ fontSize: '13px' }}
-                >
-                  {node.label}
-                </text>
-              </g>
-            );
-          })}
+              {/* Основные категории (большие узлы) */}
+              {mainNodes.map(node => {
+                const category = categories.find(c => c.id === node.id);
+                if (!category) return null;
+
+                return (
+                  <g
+                    key={node.id}
+                    onClick={() => zoomToCategory(node.id)}
+                    className="cursor-pointer group"
+                  >
+                    <circle
+                      cx={node.x}
+                      cy={node.y}
+                      r="40"
+                      fill="url(#mainNodeGradient)"
+                      stroke="#6366f1"
+                      strokeWidth="2.5"
+                      filter="url(#shadow)"
+                      className="group-hover:stroke-[#a78bfa] transition-all duration-300"
+                    />
+                    <circle
+                      cx={node.x}
+                      cy={node.y}
+                      r="40"
+                      fill="url(#mainNodeGlow)"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                    />
+                    <foreignObject x={node.x - 18} y={node.y - 18} width="36" height="36">
+                      <div className="flex items-center justify-center text-[#3a3a3a] group-hover:text-[#1a1a1a] transition-colors duration-300">
+                        {getCategoryIcon(category.icon, "w-6 h-6")}
+                      </div>
+                    </foreignObject>
+                    <text
+                      x={node.x}
+                      y={node.y + 55}
+                      textAnchor="middle"
+                      className="text-sm font-bold fill-white group-hover:fill-[#e0e0e0] transition-colors duration-300"
+                      style={{ fontSize: '13px' }}
+                    >
+                      {node.label}
+                    </text>
+                  </g>
+                );
+              })}
+            </>
+          ) : (
+            <>
+              {/* Режим фокусировки: показываем только выбранную категорию и её содержимое */}
+              {(() => {
+                // Ищем категорию среди основных и подкатегорий
+                const focusedMainNode = mainNodes.find(n => n.id === focusedCategory);
+                const focusedSubNode = subNodes.find(n => n.id === focusedCategory);
+                const focusedNode = focusedMainNode || focusedSubNode;
+                
+                if (!focusedNode) return null;
+
+                const focusedArticles = getFocusedArticles();
+                
+                // Получаем подкатегории для фокусированной категории
+                const focusedCategoryData = findCategory(categories, focusedCategory);
+                const childSubNodes = focusedCategoryData?.children 
+                  ? subNodes.filter(sub => focusedCategoryData.children!.some(c => c.id === sub.id))
+                  : [];
+
+                // Позиционируем статьи по кругу вокруг центральной категории
+                const articleRadius = 200;
+
+                return (
+                  <>
+                    {/* Центральная увеличенная категория */}
+                    <g
+                      className="cursor-pointer group"
+                    >
+                      <circle
+                        cx={450}
+                        cy={375}
+                        r="80"
+                        fill="url(#mainNodeGradient)"
+                        stroke="#a0a0a0"
+                        strokeWidth="3"
+                        filter="url(#shadow)"
+                        className="group-hover:stroke-[#ffffff] transition-all duration-300"
+                      />
+                      <foreignObject x={450 - 30} y={375 - 30} width="60" height="60">
+                        <div className="flex items-center justify-center text-[#3a3a3a]">
+                          {getCategoryIcon(focusedNode.id, "w-12 h-12")}
+                        </div>
+                      </foreignObject>
+                      <text
+                        x={450}
+                        y={375 + 100}
+                        textAnchor="middle"
+                        className="text-base font-bold fill-white"
+                        style={{ fontSize: '16px' }}
+                      >
+                        {focusedNode.label}
+                      </text>
+                    </g>
+
+                    {/* Подкатегории вокруг центральной категории */}
+                    {childSubNodes.map((subNode, index) => {
+                      const category = categories.find(c => c.id === subNode.id) || 
+                                     categories.flatMap(c => c.children || []).find(c => c.id === subNode.id);
+                      if (!category) return null;
+
+                      const angle = (index / Math.max(childSubNodes.length, 1)) * 2 * Math.PI - Math.PI / 2;
+                      const subRadius = 150;
+                      const x = 450 + Math.cos(angle) * subRadius;
+                      const y = 375 + Math.sin(angle) * subRadius;
+
+                      return (
+                        <g
+                          key={subNode.id}
+                          onClick={() => zoomToCategory(subNode.id)}
+                          className="cursor-pointer group"
+                        >
+                          <line
+                            x1={450}
+                            y1={375}
+                            x2={x}
+                            y2={y}
+                            stroke="#6366f1"
+                            strokeWidth="1.5"
+                            opacity="0.6"
+                          />
+                          <circle
+                            cx={x}
+                            cy={y}
+                            r="30"
+                            fill="url(#subNodeGradient)"
+                            stroke="#8b5cf6"
+                            strokeWidth="1.5"
+                            filter="url(#shadow)"
+                            className="group-hover:stroke-[#a78bfa] transition-all duration-300"
+                          />
+                          <foreignObject x={x - 14} y={y - 14} width="28" height="28">
+                            <div className="flex items-center justify-center text-[#5a5a5a]">
+                              {getCategoryIcon(category.icon, "w-5 h-5")}
+                            </div>
+                          </foreignObject>
+                          <text
+                            x={x}
+                            y={y + 45}
+                            textAnchor="middle"
+                            className="text-xs fill-white font-medium"
+                            style={{ fontSize: '12px' }}
+                          >
+                            {subNode.label}
+                          </text>
+                        </g>
+                      );
+                    })}
+
+                    {/* Статьи как мелкие кружочки */}
+                    {focusedArticles.map((article, index) => {
+                      const angle = (index / Math.max(focusedArticles.length, 1)) * 2 * Math.PI - Math.PI / 2;
+                      const x = 450 + Math.cos(angle) * articleRadius;
+                      const y = 375 + Math.sin(angle) * articleRadius;
+
+                      return (
+                        <g
+                          key={article.id}
+                          onClick={() => handleArticleClick(article)}
+                          className="cursor-pointer group"
+                        >
+                          <line
+                            x1={450}
+                            y1={375}
+                            x2={x}
+                            y2={y}
+                            stroke="#8b5cf6"
+                            strokeWidth="1"
+                            opacity="0.4"
+                          />
+                          <circle
+                            cx={x}
+                            cy={y}
+                            r="18"
+                            fill="#f5f5f5"
+                            stroke="#a78bfa"
+                            strokeWidth="1.5"
+                            className="group-hover:stroke-[#ffffff] group-hover:fill-[#ffffff] transition-all duration-300"
+                          />
+                          <foreignObject x={x - 12} y={y - 12} width="24" height="24">
+                            <div className="w-full h-full rounded-full overflow-hidden">
+                              <img 
+                                src={getArticleImage(article.id)} 
+                                alt={article.title}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          </foreignObject>
+                          <text
+                            x={x}
+                            y={y + 30}
+                            textAnchor="middle"
+                            className="text-xs fill-white"
+                            style={{ fontSize: '10px' }}
+                          >
+                            {article.title.length > 20 ? article.title.substring(0, 20) + '...' : article.title}
+                          </text>
+                        </g>
+                      );
+                    })}
+                  </>
+                );
+              })()}
+            </>
+          )}
         </svg>
       </div>
 
@@ -854,7 +1168,7 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
   );
 }
 
-// Category page - shows articles and subcategories as a list
+// Category page - shows articles and subcategories as a tree
 function CategoryPage({
   categoryId,
   onArticleClick,
@@ -867,17 +1181,102 @@ function CategoryPage({
   breadcrumbs: { id: string; name: string }[];
 }) {
   const category = findCategory(categories, categoryId);
+  const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
+
   if (!category) return null;
 
-  const hasChildren = category.children && category.children.length > 0;
-  const hasArticles = category.articles && category.articles.length > 0;
+  const toggleNode = (id: string) => {
+    setExpandedNodes(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const renderTreeNode = (node: Category, depth: number = 0) => {
+    const hasChildren = node.children && node.children.length > 0;
+    const hasArticles = node.articles && node.articles.length > 0;
+    const isExpanded = expandedNodes.has(node.id);
+    const isCurrentCategory = node.id === categoryId;
+
+    return (
+      <div key={node.id}>
+        {/* Category node */}
+        <div
+          className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition-all group ${
+            isCurrentCategory ? 'bg-[#E4E2DC] font-medium' : 'hover:bg-[#ECEAE6]'
+          }`}
+          style={{ paddingLeft: `${depth * 24 + 16}px` }}
+          onClick={() => {
+            // Только разворачиваем/сворачиваем, не переходим
+            if (hasChildren || hasArticles) {
+              toggleNode(node.id);
+            }
+          }}
+        >
+          {hasChildren || hasArticles ? (
+            <svg
+              className={`w-4 h-4 text-[#8A8E84] transition-transform flex-shrink-0 ${isExpanded ? 'rotate-90' : ''}`}
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+            </svg>
+          ) : (
+            <span className="w-4 flex-shrink-0" />
+          )}
+          <span className="text-[#6a7587]">{getCategoryIcon(node.icon, "w-5 h-5")}</span>
+          <span className="text-[#2A2D28] flex-1">{node.name}</span>
+          {(hasChildren || hasArticles) && (
+            <span className="text-xs text-[#8A8E84]">
+              {hasChildren && `${node.children!.length} подкат.`}
+              {hasChildren && hasArticles && ' · '}
+              {hasArticles && `${node.articles!.length} ст.`}
+            </span>
+          )}
+        </div>
+
+        {/* Expanded children */}
+        {isExpanded && (
+          <div>
+            {hasChildren && node.children!.map(child => renderTreeNode(child, depth + 1))}
+            {hasArticles && node.articles!.map(article => (
+              <div
+                key={article.id}
+                className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-[#ECEAE6] transition-colors group"
+                style={{ paddingLeft: `${(depth + 1) * 24 + 16}px` }}
+                onClick={() => onArticleClick(article)}
+              >
+                <span className="w-4 flex-shrink-0" />
+                <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 shadow-sm group-hover:shadow-md transition-shadow">
+                  <img 
+                    src={getArticleImage(article.id)} 
+                    alt={article.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-[#2A2D28] text-sm font-medium group-hover:text-[#4A4E44]">{article.title}</div>
+                  <div className="text-xs text-[#8A8E84] mt-0.5">{article.author} · {article.date}</div>
+                </div>
+                <svg className="w-4 h-4 text-[#8A8E84] group-hover:text-[#4A4E44] transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="p-8">
       {/* Breadcrumbs */}
-      <nav className="flex items-center gap-2 text-sm text-[#6b7f58] mb-6 flex-wrap">
+      <nav className="flex items-center gap-2 text-sm text-[#6A6E64] mb-6 flex-wrap">
         <span
-          className="hover:text-[#4a5d3a] cursor-pointer transition-colors"
+          className="hover:text-[#4A4E44] cursor-pointer transition-colors"
           onClick={() => onCategoryClick('')}
         >
           Главная
@@ -888,10 +1287,10 @@ function CategoryPage({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
             {i === breadcrumbs.length - 1 ? (
-              <span className="text-[#3d4f30] font-medium">{crumb.name}</span>
+              <span className="text-[#2A2D28] font-medium">{crumb.name}</span>
             ) : (
               <span
-                className="hover:text-[#4a5d3a] cursor-pointer transition-colors"
+                className="hover:text-[#4A4E44] cursor-pointer transition-colors"
                 onClick={() => onCategoryClick(crumb.id)}
               >
                 {crumb.name}
@@ -901,101 +1300,33 @@ function CategoryPage({
         ))}
       </nav>
 
-      {/* Category header */}
-      <div className="flex items-center gap-4 mb-8">
-        <span className="text-[#6b7f58]">{getCategoryIcon(category.icon, "w-9 h-9")}</span>
-        <div>
-          <h1 className="text-2xl font-bold text-[#3d4f30]">{category.name}</h1>
-          <p className="text-[#6b7f58] text-sm mt-1">
-            {hasChildren && `${category.children!.length} подкатегорий`}
-            {hasChildren && hasArticles && ' · '}
-            {hasArticles && `${category.articles!.length} статей`}
-          </p>
-        </div>
+      {/* Tree view - показываем только содержимое категории, без заголовка */}
+      <div className="bg-white rounded-xl border border-[#c8cad0] overflow-hidden">
+        {category.children && category.children.length > 0 && category.children.map(child => renderTreeNode(child, 0))}
+        {category.articles && category.articles.length > 0 && category.articles.map(article => (
+          <div
+            key={article.id}
+            className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-[#ECEAE6] transition-colors group"
+            onClick={() => onArticleClick(article)}
+          >
+            <span className="w-4 flex-shrink-0" />
+            <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 shadow-sm group-hover:shadow-md transition-shadow">
+              <img 
+                src={getArticleImage(article.id)} 
+                alt={article.title}
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+              />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-[#2A2D28] text-sm font-medium group-hover:text-[#4A4E44]">{article.title}</div>
+              <div className="text-xs text-[#8A8E84] mt-0.5">{article.author} · {article.date}</div>
+            </div>
+            <svg className="w-4 h-4 text-[#8A8E84] group-hover:text-[#4A4E44] transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        ))}
       </div>
-
-      {/* Subcategories as list */}
-      {hasChildren && (
-        <div className="mb-8">
-          <h2 className="text-lg font-semibold text-[#3d4f30] mb-4 flex items-center gap-2">
-            <svg className="w-5 h-5 text-[#6b7f58]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-            </svg>
-            Подкатегории
-          </h2>
-          <div className="bg-white rounded-xl border border-[#d4dcc8] overflow-hidden">
-            {category.children!.map((child, i) => (
-              <div
-                key={child.id}
-                onClick={() => onCategoryClick(child.id)}
-                className={`flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-[#f0f4eb] transition-colors group
-                  ${i !== category.children!.length - 1 ? 'border-b border-[#e8ede2]' : ''}
-                `}
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-[#6b7f58]">{getCategoryIcon(child.icon, "w-5 h-5")}</span>
-                  <div>
-                    <span className="text-[#3d4f30] font-medium group-hover:text-[#4a5d3a]">{child.name}</span>
-                    <span className="text-xs text-[#8fa87a] ml-3">
-                      {child.children ? `${child.children.length} подкат.` : `${child.articles?.length || 0} ст.`}
-                    </span>
-                  </div>
-                </div>
-                <svg className="w-5 h-5 text-[#8fa87a] group-hover:text-[#4a5d3a] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Articles as list with thumbnails */}
-      {hasArticles && (
-        <div>
-          <h2 className="text-lg font-semibold text-[#3d4f30] mb-4 flex items-center gap-2">
-            <svg className="w-5 h-5 text-[#6b7f58]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            Статьи
-          </h2>
-          <div className="bg-white rounded-xl border border-[#d4dcc8] overflow-hidden">
-            {category.articles!.map((article, i) => (
-              <div
-                key={article.id}
-                onClick={() => onArticleClick(article)}
-                className={`flex items-center gap-4 px-5 py-4 cursor-pointer hover:bg-[#f0f4eb] transition-colors group
-                  ${i !== category.articles!.length - 1 ? 'border-b border-[#e8ede2]' : ''}
-                `}
-              >
-                {/* Thumbnail image */}
-                <div className="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0 shadow-md group-hover:shadow-lg transition-shadow duration-300">
-                  <img 
-                    src={getArticleImage(article.id)} 
-                    alt={article.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
-                  />
-                </div>
-                
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-[#3d4f30] font-medium group-hover:text-[#4a5d3a] mb-1">{article.title}</h3>
-                  <p className="text-sm text-[#6b7f58] line-clamp-2">{article.content}</p>
-                  <div className="flex items-center gap-4 mt-2">
-                    <span className="text-xs text-[#8fa87a]">{article.author}</span>
-                    <span className="text-xs text-[#a8b89a]">{article.date}</span>
-                  </div>
-                </div>
-                
-                {/* Arrow */}
-                <svg className="w-5 h-5 text-[#8fa87a] group-hover:text-[#4a5d3a] transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 }
@@ -1020,7 +1351,7 @@ function ArticlePage({ article, reviewMode }: { article: Article; reviewMode?: b
       <div className="flex gap-6">
         {/* Main article content */}
         <div className="flex-1 min-w-0">
-          <div className="bg-white rounded-xl border border-[#d4dcc8] p-8">
+          <div className="bg-white rounded-xl border border-[#c8cad0] p-8">
             <div className="mb-6">
               <h1 className="text-2xl font-bold text-[#3d4f30] mb-3">{article.title}</h1>
               <div className="flex items-center gap-4 text-sm text-[#6b7f58]">
@@ -1056,7 +1387,7 @@ function ArticlePage({ article, reviewMode }: { article: Article; reviewMode?: b
             </div>
             <div className="mt-8 pt-6 border-t border-[#e8ede2]">
               <div className="flex items-center gap-3">
-                <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#e8f0de] hover:bg-[#D8D6D0] text-[#4a5d3a] transition-colors">
+                <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#e8eaef] hover:bg-[#c8cad0] text-[#4a5d3a] transition-colors">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
                   </svg>
@@ -1082,10 +1413,10 @@ function ArticlePage({ article, reviewMode }: { article: Article; reviewMode?: b
             </h3>
             {(article.commentsCount || 0) > 0 ? (
               <div className="space-y-4">
-                <div className="border-l-2 border-[#8fa87a] pl-4 py-2">
+                <div className="border-l-2 border-[#7a8597] pl-4 py-2">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-sm font-medium text-[#3d4f30]">Игорь Садовников</span>
-                    <span className="text-xs text-[#a8b89a]">2 дня назад</span>
+                    <span className="text-xs text-[#8a95a7]">2 дня назад</span>
                   </div>
                   <p className="text-sm text-[#4a5d3a]">Отличная статья, очень полезно для начинающих цветоводов!</p>
                 </div>
@@ -1096,7 +1427,7 @@ function ArticlePage({ article, reviewMode }: { article: Article; reviewMode?: b
             <div className="mt-4 pt-4 border-t border-[#e8ede2]">
               <textarea
                 placeholder="Написать комментарий..."
-                className="w-full px-4 py-3 rounded-lg border border-[#d4dcc8] focus:outline-none focus:ring-2 focus:ring-[#8fa87a] focus:border-transparent resize-none text-sm"
+                className="w-full px-4 py-3 rounded-lg border border-[#d4dcc8] focus:outline-none focus:ring-2 focus:ring-[#7a8597] focus:border-transparent resize-none text-sm"
                 rows={3}
               />
               <button className="mt-2 px-4 py-2 rounded-lg bg-[#4A4E44] hover:bg-[#5A5E54] text-white text-sm transition-colors">
@@ -1133,10 +1464,10 @@ function ArticlePage({ article, reviewMode }: { article: Article; reviewMode?: b
             ) : (
               <div>
                 <p className="text-sm text-[#6b7f58] mb-1">Мало оценок</p>
-                <p className="text-xs text-[#a8b89a]">Оценок пока нет</p>
+                <p className="text-xs text-[#8a95a7]">Оценок пока нет</p>
               </div>
             )}
-            <p className="text-xs text-[#a8b89a] mt-3 italic">Свой материал оценивать нельзя.</p>
+            <p className="text-xs text-[#8a95a7] mt-3 italic">Свой материал оценивать нельзя.</p>
           </div>
 
           {/* About material */}
@@ -1229,14 +1560,14 @@ function ProfilePage({ onArticleClick }: { onArticleClick?: (article: Article) =
     <div className="w-full p-8 max-w-4xl">
       <div className="bg-white rounded-xl border border-[#d4dcc8] overflow-hidden">
         {/* Profile header */}
-        <div className="bg-gradient-to-r from-[#4a5d3a] to-[#6b7f58] p-8">
+        <div className="bg-gradient-to-r from-[#4a5567] to-[#5a6577] p-8">
           <div className="flex items-center gap-6">
-            <div className="w-20 h-20 rounded-full bg-[#8A8E84] flex items-center justify-center text-white font-bold text-2xl border-4 border-[#a8b89a]">
+            <div className="w-20 h-20 rounded-full bg-[#8A8E84] flex items-center justify-center text-white font-bold text-2xl border-4 border-[#8a95a7]">
               АЗ
             </div>
             <div>
               <h1 className="text-2xl font-bold text-white">Анна Зелёнова</h1>
-              <p className="text-[#c8d4b8]">Автор статей · Присоединилась в марте 2024</p>
+              <p className="text-[#9aa5b7]">Автор статей · Присоединилась в марте 2024</p>
             </div>
           </div>
         </div>
@@ -1268,21 +1599,21 @@ function ProfilePage({ onArticleClick }: { onArticleClick?: (article: Article) =
             <div className="flex items-center gap-3">
               <span className="text-sm text-[#6b7f58] w-24">Качество</span>
               <div className="flex-1 bg-[#e8ede2] rounded-full h-3">
-                <div className="bg-[#6A6E64] h-3 rounded-full" style={{ width: '90%' }}></div>
+                <div className="bg-[#6a7587] h-3 rounded-full" style={{ width: '90%' }}></div>
               </div>
               <span className="text-sm font-medium text-[#4a5d3a]">90%</span>
             </div>
             <div className="flex items-center gap-3">
               <span className="text-sm text-[#6b7f58] w-24">Активность</span>
               <div className="flex-1 bg-[#e8ede2] rounded-full h-3">
-                <div className="bg-[#8fa87a] h-3 rounded-full" style={{ width: '75%' }}></div>
+                <div className="bg-[#7a8597] h-3 rounded-full" style={{ width: '75%' }}></div>
               </div>
               <span className="text-sm font-medium text-[#4a5d3a]">75%</span>
             </div>
             <div className="flex items-center gap-3">
               <span className="text-sm text-[#6b7f58] w-24">Полезность</span>
               <div className="flex-1 bg-[#e8ede2] rounded-full h-3">
-                <div className="bg-[#A8AC9E] h-3 rounded-full" style={{ width: '85%' }}></div>
+                <div className="bg-[#8a95a7] h-3 rounded-full" style={{ width: '85%' }}></div>
               </div>
               <span className="text-sm font-medium text-[#4a5d3a]">85%</span>
             </div>
@@ -1302,7 +1633,7 @@ function ProfilePage({ onArticleClick }: { onArticleClick?: (article: Article) =
                 className="flex items-center justify-between py-3 px-4 rounded-lg hover:bg-[#f0f4eb] transition-colors cursor-pointer"
               >
                 <div className="flex items-center gap-3">
-                  <svg className="w-4 h-4 text-[#8fa87a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-[#7a8597]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                   <span className="text-sm text-[#3d4f30]">{article.title}</span>
@@ -1366,7 +1697,7 @@ function WorkspacePage({
         <div className="flex items-center gap-3">
           <button
             onClick={() => setCurrentPage('my-comments')}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all bg-white text-[#4a5d3a] border border-[#d4dcc8] hover:bg-[#f0f4eb] hover:border-[#8fa87a]"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all bg-white text-[#4a5d3a] border border-[#d4dcc8] hover:bg-[#f0f4eb] hover:border-[#7a8597]"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
@@ -1447,7 +1778,7 @@ function WorkspacePage({
                     <p className="text-sm text-[#6b7f58] line-clamp-2">{article.content}</p>
                     <div className="flex items-center gap-4 mt-2">
                       <span className="text-xs text-[#8fa87a]">{article.author}</span>
-                      <span className="text-xs text-[#a8b89a]">{article.date}</span>
+                      <span className="text-xs text-[#8a95a7]">{article.date}</span>
                     </div>
                   </div>
                   {isMyMaterials && article.status && <StatusBadge status={article.status} />}
@@ -1592,7 +1923,7 @@ function MyCommentsPage({ onArticleClick }: { onArticleClick: (article: Article)
               }`}
             >
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-[#e8f0de] flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 rounded-full bg-[#e8eaef] flex items-center justify-center flex-shrink-0">
                   <svg className="w-5 h-5 text-[#4a5d3a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
                   </svg>
@@ -1681,7 +2012,7 @@ function MyAttachmentsPage() {
         </div>
         <button
           onClick={() => setShowAddModal(true)}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#4a5d3a] hover:bg-[#5a6f48] text-white transition-colors shadow-md"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#4a5d3a] hover:bg-[#5a6577] text-white transition-colors shadow-md"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -1734,7 +2065,7 @@ function MyAttachmentsPage() {
                       </svg>
                     </div>
                   ) : (
-                    <div className="w-10 h-10 rounded-lg bg-[#e8f0de] flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 rounded-lg bg-[#e8eaef] flex items-center justify-center flex-shrink-0">
                       <svg className="w-5 h-5 text-[#4a5d3a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
@@ -1748,7 +2079,7 @@ function MyAttachmentsPage() {
                 <div className="col-span-2 flex items-center gap-2">
                   <button
                     onClick={() => handleView(attachment)}
-                    className="p-2 rounded-lg hover:bg-[#e8f0de] text-[#4a5d3a] transition-colors"
+                    className="p-2 rounded-lg hover:bg-[#e8eaef] text-[#4a5d3a] transition-colors"
                     title="Просмотр"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1758,7 +2089,7 @@ function MyAttachmentsPage() {
                   </button>
                   <button
                     onClick={() => handleDownload(attachment)}
-                    className="p-2 rounded-lg hover:bg-[#e8f0de] text-[#4a5d3a] transition-colors"
+                    className="p-2 rounded-lg hover:bg-[#e8eaef] text-[#4a5d3a] transition-colors"
                     title="Скачать"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1830,7 +2161,7 @@ function MyAttachmentsPage() {
                     alert('Файл добавлен (демо)');
                     setShowAddModal(false);
                   }}
-                  className="flex-1 px-4 py-2.5 rounded-lg bg-[#4a5d3a] hover:bg-[#5a6f48] text-white transition-colors"
+                  className="flex-1 px-4 py-2.5 rounded-lg bg-[#4a5d3a] hover:bg-[#5a6577] text-white transition-colors"
                 >
                   Добавить
                 </button>
@@ -2144,7 +2475,7 @@ function CreateDraftPage({ setCurrentPage, setUserDrafts, userDrafts, editingDra
                 </select>
                 <button
                   onClick={addAdditionalSection}
-                  className="px-3 py-2 rounded bg-[#e8f0de] hover:bg-[#d4e4c8] text-[#4a5d3a] text-sm transition-colors"
+                  className="px-3 py-2 rounded bg-[#e8f0de] hover:bg-[#d8dae0] text-[#4a5d3a] text-sm transition-colors"
                   title="Добавить раздел"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2167,7 +2498,7 @@ function CreateDraftPage({ setCurrentPage, setUserDrafts, userDrafts, editingDra
               </select>
               <button
                 disabled={!section && additionalSections.length === 0}
-                className="px-3 py-2 rounded bg-[#e8f0de] hover:bg-[#d4e4c8] text-[#4a5d3a] text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-3 py-2 rounded bg-[#e8f0de] hover:bg-[#d8dae0] text-[#4a5d3a] text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 title="Добавить привязку"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2193,7 +2524,7 @@ function CreateDraftPage({ setCurrentPage, setUserDrafts, userDrafts, editingDra
           <div>
             <label className="block text-xs font-medium text-[#6b7f58] mb-1">Вложения</label>
             <div className="flex items-center gap-2">
-              <button className="flex items-center gap-2 px-3 py-1.5 rounded bg-[#e8f0de] hover:bg-[#d4e4c8] text-[#4a5d3a] text-xs transition-colors">
+              <button className="flex items-center gap-2 px-3 py-1.5 rounded bg-[#e8f0de] hover:bg-[#d8dae0] text-[#4a5d3a] text-xs transition-colors">
                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
                 </svg>
@@ -2319,7 +2650,7 @@ function CreateDraftPage({ setCurrentPage, setUserDrafts, userDrafts, editingDra
         <div className="flex flex-wrap gap-3">
           <button 
             onClick={handleSaveDraft}
-            className="px-5 py-2.5 rounded-lg bg-[#4a5d3a] hover:bg-[#5a6f48] text-white transition-colors shadow-md">
+            className="px-5 py-2.5 rounded-lg bg-[#4a5d3a] hover:bg-[#5a6577] text-white transition-colors shadow-md">
             Сохранить черновик
           </button>
           <button className="px-5 py-2.5 rounded-lg bg-white hover:bg-[#f0f4eb] text-[#4a5d3a] border border-[#d4dcc8] transition-colors">
