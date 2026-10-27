@@ -635,13 +635,9 @@ function SidebarNode({
               }}
             >
               <span className="w-3" />
-              <div className="w-5 h-5 rounded overflow-hidden flex-shrink-0">
-                <img 
-                  src={getArticleImage(article.id)} 
-                  alt={article.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              <svg className="w-3 h-3 text-[#8A8E84] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
               <span className="text-xs text-[#6A6E64] truncate group-hover:text-[#4A4E44]">{article.title}</span>
             </div>
           ))}
@@ -654,6 +650,15 @@ function SidebarNode({
 // Home page
 function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryClick: (id: string) => void; handleArticleClick: (article: Article) => void }) {
   const [focusedCategory, setFocusedCategory] = useState<string | null>(null);
+  
+  // Генерация звёзд для фона
+  const stars = Array.from({ length: 200 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 900,
+    y: Math.random() * 750,
+    r: Math.random() * 1.5 + 0.5,
+    opacity: Math.random() * 0.8 + 0.2,
+  }));
 
   // Позиции основных категорий
   const mainNodes = [
@@ -749,11 +754,11 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
         <p className="text-[#4a4a4a] text-lg font-light">Энциклопедия растений — уход, посадка, размножение и многое другое</p>
       </div>
 
-      <div className="bg-gradient-to-br from-[#fafafa] to-[#f0f0f0] rounded-xl border border-[#d0d0d0] p-6 shadow-lg">
+      <div className="bg-gradient-to-br from-[#0a0a1a] via-[#1a1a2e] to-[#16213e] rounded-xl border border-[#2a2a4a] p-6 shadow-2xl overflow-hidden relative">
         {focusedCategory && (
           <button
             onClick={() => setFocusedCategory(null)}
-            className="mb-4 px-4 py-2 rounded-lg bg-white border border-[#d0d0d0] hover:bg-[#f5f5f5] transition-colors text-sm text-[#4a4a4a] flex items-center gap-2"
+            className="mb-4 px-4 py-2 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-colors text-sm text-white flex items-center gap-2 relative z-10"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -761,7 +766,7 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
             Назад ко всем категориям
           </button>
         )}
-        <svg width="100%" height="750" viewBox="0 0 900 750" className="w-full">
+        <svg width="100%" height="750" viewBox="0 0 900 750" className="w-full relative z-0">
           {/* Градиенты и фильтры */}
           <defs>
             <linearGradient id="mainNodeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -777,8 +782,13 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
               <stop offset="0%" stopColor="#ffffff" stopOpacity="0.8" />
               <stop offset="100%" stopColor="#d0d0d0" stopOpacity="0" />
             </radialGradient>
+            <radialGradient id="galaxyGlow">
+              <stop offset="0%" stopColor="#6366f1" stopOpacity="0.3" />
+              <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.1" />
+              <stop offset="100%" stopColor="#0a0a1a" stopOpacity="0" />
+            </radialGradient>
             <filter id="shadow">
-              <feDropShadow dx="0" dy="4" stdDeviation="6" floodOpacity="0.2"/>
+              <feDropShadow dx="0" dy="4" stdDeviation="6" floodOpacity="0.4"/>
             </filter>
             <filter id="glow">
               <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
@@ -787,7 +797,28 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
                 <feMergeNode in="SourceGraphic"/>
               </feMerge>
             </filter>
+            <filter id="starGlow">
+              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
           </defs>
+
+          {/* Космический фон со звёздами */}
+          <rect width="900" height="750" fill="url(#galaxyGlow)" />
+          {stars.map(star => (
+            <circle
+              key={star.id}
+              cx={star.x}
+              cy={star.y}
+              r={star.r}
+              fill="white"
+              opacity={star.opacity}
+              filter="url(#starGlow)"
+            />
+          ))}
 
           {!focusedCategory ? (
             <>
@@ -805,10 +836,10 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
                     y1={fromNode.y}
                     x2={toNode.x}
                     y2={toNode.y}
-                    stroke="#a0a0a0"
+                    stroke="#6366f1"
                     strokeWidth="2"
                     strokeDasharray="8,4"
-                    opacity="0.6"
+                    opacity="0.4"
                   />
                 );
               })}
@@ -825,9 +856,9 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
                     y1={parentNode.y}
                     x2={subNode.x}
                     y2={subNode.y}
-                    stroke="#b0b0b0"
+                    stroke="#8b5cf6"
                     strokeWidth="1.5"
-                    opacity="0.5"
+                    opacity="0.3"
                   />
                 );
               })}
@@ -841,7 +872,7 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
                 return (
                   <g
                     key={node.id}
-                    onClick={() => handleCategoryClick(node.id)}
+                    onClick={() => setFocusedCategory(node.id)}
                     className="cursor-pointer group"
                   >
                     <circle
@@ -849,10 +880,10 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
                       cy={node.y}
                       r="25"
                       fill="url(#subNodeGradient)"
-                      stroke="#b8b8b8"
+                      stroke="#8b5cf6"
                       strokeWidth="1.5"
                       filter="url(#shadow)"
-                      className="group-hover:stroke-[#707070] group-hover:fill-[#f8f8f8] transition-all duration-300"
+                      className="group-hover:stroke-[#a78bfa] group-hover:fill-[#f8f8f8] transition-all duration-300"
                     />
                     <foreignObject x={node.x - 12} y={node.y - 12} width="24" height="24">
                       <div className="flex items-center justify-center text-[#5a5a5a] group-hover:text-[#3a3a3a] transition-colors duration-300">
@@ -863,7 +894,7 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
                       x={node.x}
                       y={node.y + 38}
                       textAnchor="middle"
-                      className="text-xs fill-[#5a5a5a] group-hover:fill-[#2a2a2a] transition-colors duration-300 font-medium"
+                      className="text-xs fill-white group-hover:fill-[#e0e0e0] transition-colors duration-300 font-medium"
                       style={{ fontSize: '11px' }}
                     >
                       {node.label}
@@ -888,10 +919,10 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
                       cy={node.y}
                       r="40"
                       fill="url(#mainNodeGradient)"
-                      stroke="#808080"
+                      stroke="#6366f1"
                       strokeWidth="2.5"
                       filter="url(#shadow)"
-                      className="group-hover:stroke-[#4a4a4a] transition-all duration-300"
+                      className="group-hover:stroke-[#a78bfa] transition-all duration-300"
                     />
                     <circle
                       cx={node.x}
@@ -909,7 +940,7 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
                       x={node.x}
                       y={node.y + 55}
                       textAnchor="middle"
-                      className="text-sm font-bold fill-[#2a2a2a] group-hover:fill-[#0a0a0a] transition-colors duration-300"
+                      className="text-sm font-bold fill-white group-hover:fill-[#e0e0e0] transition-colors duration-300"
                       style={{ fontSize: '13px' }}
                     >
                       {node.label}
@@ -922,21 +953,28 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
             <>
               {/* Режим фокусировки: показываем только выбранную категорию и её содержимое */}
               {(() => {
-                const focusedNode = mainNodes.find(n => n.id === focusedCategory);
+                // Ищем категорию среди основных и подкатегорий
+                const focusedMainNode = mainNodes.find(n => n.id === focusedCategory);
+                const focusedSubNode = subNodes.find(n => n.id === focusedCategory);
+                const focusedNode = focusedMainNode || focusedSubNode;
+                
                 if (!focusedNode) return null;
 
                 const focusedArticles = getFocusedArticles();
-                const focusedSubNodes = getFocusedSubNodes();
+                
+                // Получаем подкатегории для фокусированной категории
+                const focusedCategoryData = findCategory(categories, focusedCategory);
+                const childSubNodes = focusedCategoryData?.children 
+                  ? subNodes.filter(sub => focusedCategoryData.children!.some(c => c.id === sub.id))
+                  : [];
 
                 // Позиционируем статьи по кругу вокруг центральной категории
                 const articleRadius = 200;
-                const articleAngleStep = (2 * Math.PI) / Math.max(focusedArticles.length, 1);
 
                 return (
                   <>
                     {/* Центральная увеличенная категория */}
                     <g
-                      onClick={() => handleCategoryClick(focusedCategory)}
                       className="cursor-pointer group"
                     >
                       <circle
@@ -944,10 +982,10 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
                         cy={375}
                         r="80"
                         fill="url(#mainNodeGradient)"
-                        stroke="#808080"
+                        stroke="#a0a0a0"
                         strokeWidth="3"
                         filter="url(#shadow)"
-                        className="group-hover:stroke-[#4a4a4a] transition-all duration-300"
+                        className="group-hover:stroke-[#ffffff] transition-all duration-300"
                       />
                       <foreignObject x={450 - 30} y={375 - 30} width="60" height="60">
                         <div className="flex items-center justify-center text-[#3a3a3a]">
@@ -958,7 +996,7 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
                         x={450}
                         y={375 + 100}
                         textAnchor="middle"
-                        className="text-base font-bold fill-[#2a2a2a]"
+                        className="text-base font-bold fill-white"
                         style={{ fontSize: '16px' }}
                       >
                         {focusedNode.label}
@@ -966,12 +1004,12 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
                     </g>
 
                     {/* Подкатегории вокруг центральной категории */}
-                    {focusedSubNodes.map((subNode, index) => {
+                    {childSubNodes.map((subNode, index) => {
                       const category = categories.find(c => c.id === subNode.id) || 
                                      categories.flatMap(c => c.children || []).find(c => c.id === subNode.id);
                       if (!category) return null;
 
-                      const angle = (index / focusedSubNodes.length) * 2 * Math.PI - Math.PI / 2;
+                      const angle = (index / Math.max(childSubNodes.length, 1)) * 2 * Math.PI - Math.PI / 2;
                       const subRadius = 150;
                       const x = 450 + Math.cos(angle) * subRadius;
                       const y = 375 + Math.sin(angle) * subRadius;
@@ -979,7 +1017,7 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
                       return (
                         <g
                           key={subNode.id}
-                          onClick={() => handleCategoryClick(subNode.id)}
+                          onClick={() => setFocusedCategory(subNode.id)}
                           className="cursor-pointer group"
                         >
                           <line
@@ -987,19 +1025,19 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
                             y1={375}
                             x2={x}
                             y2={y}
-                            stroke="#b0b0b0"
+                            stroke="#6366f1"
                             strokeWidth="1.5"
-                            opacity="0.5"
+                            opacity="0.6"
                           />
                           <circle
                             cx={x}
                             cy={y}
                             r="30"
                             fill="url(#subNodeGradient)"
-                            stroke="#b8b8b8"
+                            stroke="#8b5cf6"
                             strokeWidth="1.5"
                             filter="url(#shadow)"
-                            className="group-hover:stroke-[#707070] transition-all duration-300"
+                            className="group-hover:stroke-[#a78bfa] transition-all duration-300"
                           />
                           <foreignObject x={x - 14} y={y - 14} width="28" height="28">
                             <div className="flex items-center justify-center text-[#5a5a5a]">
@@ -1010,7 +1048,7 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
                             x={x}
                             y={y + 45}
                             textAnchor="middle"
-                            className="text-xs fill-[#5a5a5a] font-medium"
+                            className="text-xs fill-white font-medium"
                             style={{ fontSize: '12px' }}
                           >
                             {subNode.label}
@@ -1021,7 +1059,7 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
 
                     {/* Статьи как мелкие кружочки */}
                     {focusedArticles.map((article, index) => {
-                      const angle = (index / focusedArticles.length) * 2 * Math.PI - Math.PI / 2;
+                      const angle = (index / Math.max(focusedArticles.length, 1)) * 2 * Math.PI - Math.PI / 2;
                       const x = 450 + Math.cos(angle) * articleRadius;
                       const y = 375 + Math.sin(angle) * articleRadius;
 
@@ -1036,7 +1074,7 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
                             y1={375}
                             x2={x}
                             y2={y}
-                            stroke="#d0d0d0"
+                            stroke="#8b5cf6"
                             strokeWidth="1"
                             opacity="0.4"
                           />
@@ -1045,9 +1083,9 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
                             cy={y}
                             r="18"
                             fill="#f5f5f5"
-                            stroke="#c0c0c0"
-                            strokeWidth="1"
-                            className="group-hover:stroke-[#808080] group-hover:fill-[#ffffff] transition-all duration-300"
+                            stroke="#a78bfa"
+                            strokeWidth="1.5"
+                            className="group-hover:stroke-[#ffffff] group-hover:fill-[#ffffff] transition-all duration-300"
                           />
                           <foreignObject x={x - 12} y={y - 12} width="24" height="24">
                             <div className="w-full h-full rounded-full overflow-hidden">
@@ -1062,7 +1100,7 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
                             x={x}
                             y={y + 30}
                             textAnchor="middle"
-                            className="text-xs fill-[#6a6a6a]"
+                            className="text-xs fill-white"
                             style={{ fontSize: '10px' }}
                           >
                             {article.title.length > 20 ? article.title.substring(0, 20) + '...' : article.title}
@@ -1216,20 +1254,32 @@ function CategoryPage({
         ))}
       </nav>
 
-      {/* Category header */}
-      <div className="flex items-center gap-4 mb-6">
-        <span className="text-[#6A6E64]">{getCategoryIcon(category.icon, "w-9 h-9")}</span>
-        <div>
-          <h1 className="text-2xl font-bold text-[#2A2D28]">{category.name}</h1>
-          <p className="text-[#6A6E64] text-sm mt-1">
-            {(category.children?.length || 0) + (category.articles?.length || 0)} элементов
-          </p>
-        </div>
-      </div>
-
-      {/* Tree view */}
+      {/* Tree view - показываем только содержимое категории, без заголовка */}
       <div className="bg-white rounded-xl border border-[#D8D6D0] overflow-hidden">
-        {renderTreeNode(category, 0)}
+        {category.children && category.children.length > 0 && category.children.map(child => renderTreeNode(child, 0))}
+        {category.articles && category.articles.length > 0 && category.articles.map(article => (
+          <div
+            key={article.id}
+            className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-[#ECEAE6] transition-colors group"
+            onClick={() => onArticleClick(article)}
+          >
+            <span className="w-4 flex-shrink-0" />
+            <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 shadow-sm group-hover:shadow-md transition-shadow">
+              <img 
+                src={getArticleImage(article.id)} 
+                alt={article.title}
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+              />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-[#2A2D28] text-sm font-medium group-hover:text-[#4A4E44]">{article.title}</div>
+              <div className="text-xs text-[#8A8E84] mt-0.5">{article.author} · {article.date}</div>
+            </div>
+            <svg className="w-4 h-4 text-[#8A8E84] group-hover:text-[#4A4E44] transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        ))}
       </div>
     </div>
   );
