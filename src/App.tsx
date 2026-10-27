@@ -240,21 +240,21 @@ export default function App() {
                     <span className="text-xs text-[#6a7587] bg-[#d8dae0] px-2 py-0.5 rounded-full">3 новых</span>
                   </div>
                   <div className="max-h-80 overflow-y-auto">
-                    <div className="p-4 border-b border-[#e8ede2] hover:bg-[#e8eaef] cursor-pointer transition-colors">
+                    <div className="p-4 border-b border-[#d8dae0] hover:bg-[#e8eaef] cursor-pointer transition-colors">
                       <div className="flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-full bg-[#E4E2DC] flex items-center justify-center flex-shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-[#d8dae0] flex items-center justify-center flex-shrink-0">
                           <svg className="w-4 h-4 text-[#4a5567]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                         </div>
                         <div>
-                          <p className="text-sm text-[#2A2D28] font-medium">Статья одобрена</p>
-                          <p className="text-xs text-[#6A6E64] mt-0.5">«Уход за фиалками» прошла проверку и опубликована</p>
+                          <p className="text-sm text-[#2a3547] font-medium">Статья одобрена</p>
+                          <p className="text-xs text-[#6a7587] mt-0.5">«Уход за фиалками» прошла проверку и опубликована</p>
                           <p className="text-xs text-[#8a95a7] mt-1">2 часа назад</p>
                         </div>
                       </div>
                     </div>
-                    <div className="p-4 border-b border-[#e8ede2] hover:bg-[#ECEAE6] cursor-pointer transition-colors">
+                    <div className="p-4 border-b border-[#d8dae0] hover:bg-[#e8eaef] cursor-pointer transition-colors">
                       <div className="flex items-start gap-3">
                         <div className="w-8 h-8 rounded-full bg-[#fef3cd] flex items-center justify-center flex-shrink-0">
                           <svg className="w-4 h-4 text-[#856404]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -262,23 +262,23 @@ export default function App() {
                           </svg>
                         </div>
                         <div>
-                          <p className="text-sm text-[#3d4f30] font-medium">Новый комментарий</p>
-                          <p className="text-xs text-[#6b7f58] mt-0.5">Игорь Садовников оставил комментарий к вашей статье</p>
-                          <p className="text-xs text-[#A8AC9E] mt-1">5 часов назад</p>
+                          <p className="text-sm text-[#2a3547] font-medium">Новый комментарий</p>
+                          <p className="text-xs text-[#6a7587] mt-0.5">Игорь Садовников оставил комментарий к вашей статье</p>
+                          <p className="text-xs text-[#8a95a7] mt-1">5 часов назад</p>
                         </div>
                       </div>
                     </div>
                     <div className="p-4 hover:bg-[#ECEAE6] cursor-pointer transition-colors">
                       <div className="flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-full bg-[#d4e8f0] flex items-center justify-center flex-shrink-0">
-                          <svg className="w-4 h-4 text-[#2c5f7c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="w-8 h-8 rounded-full bg-[#d8dae0] flex items-center justify-center flex-shrink-0">
+                          <svg className="w-4 h-4 text-[#4a5567]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                         </div>
                         <div>
-                          <p className="text-sm text-[#3d4f30] font-medium">Запрос на проверку</p>
-                          <p className="text-xs text-[#6b7f58] mt-0.5">«Пересадка фаленопсиса» отправлена на рецензию</p>
-                          <p className="text-xs text-[#a8b89a] mt-1">Вчера</p>
+                          <p className="text-sm text-[#2a3547] font-medium">Запрос на проверку</p>
+                          <p className="text-xs text-[#6a7587] mt-0.5">«Пересадка фаленопсиса» отправлена на рецензию</p>
+                          <p className="text-xs text-[#8a95a7] mt-1">Вчера</p>
                         </div>
                       </div>
                     </div>
@@ -286,7 +286,7 @@ export default function App() {
                   <div className="p-3 border-t border-[#e8ede2]">
                     <button 
                       onClick={() => { setCurrentPage('notifications'); setShowNotifications(false); }}
-                      className="w-full text-center text-sm text-[#4A4E44] hover:text-[#2A2D28] font-medium py-1">
+                      className="w-full text-center text-sm text-[#4a5567] hover:text-[#2A2D28] font-medium py-1">
                       Смотреть все уведомления
                     </button>
                   </div>
@@ -298,7 +298,7 @@ export default function App() {
             <div className="relative">
               <button
                 onClick={() => setShowProfileDropdown(!showProfileDropdown)}
-                className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-[#5A5E54] transition-colors"
+                className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-[#5a6577] transition-colors"
               >
                 <div className="w-8 h-8 rounded-full bg-[#7a8597] flex items-center justify-center text-white font-bold text-sm">
                   АЗ
@@ -310,29 +310,29 @@ export default function App() {
               </button>
 
               {showProfileDropdown && (
-                <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-xl shadow-xl border border-[#D8D6D0] overflow-hidden z-50">
-                  <div className="p-4 bg-gradient-to-r from-[#4a5d3a] to-[#5a6f48]">
+                <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-xl shadow-xl border border-[#c8cad0] overflow-hidden z-50">
+                  <div className="p-4 bg-gradient-to-r from-[#4a5567] to-[#5a6577]">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full bg-[#8A8E84] flex items-center justify-center text-white font-bold text-lg">
+                      <div className="w-12 h-12 rounded-full bg-[#7a8597] flex items-center justify-center text-white font-bold text-lg">
                         АЗ
                       </div>
                       <div>
                         <p className="text-white font-semibold">Анна Зелёнова</p>
-                        <p className="text-[#c8d4b8] text-sm">Автор статей</p>
+                        <p className="text-[#9aa5b7] text-sm">Автор статей</p>
                       </div>
                     </div>
                   </div>
                   <div className="p-3">
-                    <div className="flex justify-between items-center py-2 px-2 rounded-lg hover:bg-[#f0f4eb] cursor-pointer transition-colors" onClick={() => { setCurrentPage('profile'); setShowProfileDropdown(false); }}>
+                    <div className="flex justify-between items-center py-2 px-2 rounded-lg hover:bg-[#e8eaef] cursor-pointer transition-colors" onClick={() => { setCurrentPage('profile'); setShowProfileDropdown(false); }}>
                       <div className="flex items-center gap-2">
-                        <svg className="w-4 h-4 text-[#6b7f58]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 text-[#6a7587]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
-                        <span className="text-sm text-[#3d4f30]">Мой профиль</span>
+                        <span className="text-sm text-[#2a3547]">Мой профиль</span>
                       </div>
                       <span className="text-xs text-[#6b7f58]">4.8 / 12 ст.</span>
                     </div>
-                    <div className="flex justify-between items-center py-2 px-2 rounded-lg hover:bg-[#f0f4eb] cursor-pointer transition-colors">
+                    <div className="flex justify-between items-center py-2 px-2 rounded-lg hover:bg-[#e8eaef] cursor-pointer transition-colors">
                       <div className="flex items-center gap-2">
                         <svg className="w-4 h-4 text-[#6b7f58]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -342,7 +342,7 @@ export default function App() {
                       </div>
                     </div>
                     <hr className="my-2 border-[#e8ede2]" />
-                    <div className="flex justify-between items-center py-2 px-2 rounded-lg hover:bg-[#f0f4eb] cursor-pointer transition-colors">
+                    <div className="flex justify-between items-center py-2 px-2 rounded-lg hover:bg-[#e8eaef] cursor-pointer transition-colors">
                       <div className="flex items-center gap-2">
                         <svg className="w-4 h-4 text-[#6b7f58]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -361,7 +361,7 @@ export default function App() {
       <div className="flex flex-1 min-h-0">
         {/* Sidebar - показываем только на страницах базы знаний */}
         {(currentPage === 'home' || currentPage === 'article' || currentPage === 'search') && (
-          <aside className="w-72 bg-white border-r border-[#d4dcc8] flex-shrink-0 shadow-sm overflow-hidden flex flex-col self-stretch">
+          <aside className="w-72 bg-white border-r border-[#c8cad0] flex-shrink-0 shadow-sm overflow-hidden flex flex-col self-stretch">
             {currentPage === 'article' && selectedArticle && selectedArticle.sections && selectedArticle.sections.length > 0 ? (
               <>
                 {/* Tabs headers */}
@@ -370,7 +370,7 @@ export default function App() {
                     onClick={() => setSidebarTab('tree')}
                     className={`flex-1 px-4 py-3 text-sm font-medium transition-all ${
                       sidebarTab === 'tree'
-                        ? 'text-[#4a5d3a] bg-white border-b-2 border-[#4a5d3a]'
+                        ? 'text-[#4a5567] bg-white border-b-2 border-[#4a5d3a]'
                         : 'text-[#6b7f58] bg-[#f0f4eb] hover:bg-[#E4E2DC]'
                     }`}
                   >
@@ -381,7 +381,7 @@ export default function App() {
                     className={`flex-1 px-4 py-3 text-sm font-medium transition-all ${
                       sidebarTab === 'toc'
                         ? 'text-[#4a5d3a] bg-white border-b-2 border-[#4a5d3a]'
-                        : 'text-[#6b7f58] bg-[#f0f4eb] hover:bg-[#e8f0de]'
+                        : 'text-[#6b7f58] bg-[#f0f4eb] hover:bg-[#e8eaef]'
                     }`}
                   >
                     Содержание
@@ -455,7 +455,7 @@ export default function App() {
                       <div className="p-2 space-y-3">
                         {selectedArticle.sections.slice(0, 8).map((_, index) => (
                           <div key={index} className="flex items-center justify-center" title={`Раздел ${index + 1}`}>
-                            <svg className="w-4 h-4 text-[#8fa87a] opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 text-[#7a8597] opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h10M4 14h16M4 18h10" />
                             </svg>
                           </div>
@@ -492,7 +492,7 @@ export default function App() {
         )}
 
         {/* Main Content */}
-        <main className={`flex-1 overflow-y-auto bg-[#F4F3EF] min-h-0 ${
+        <main className={`flex-1 overflow-y-auto bg-[#f0f2f5] min-h-0 ${
           currentPage === 'profile' || currentPage === 'workspace' || currentPage === 'create-draft' || currentPage === 'notifications' || currentPage === 'my-comments' || currentPage === 'my-attachments'
             ? 'flex justify-center items-start'
             : ''
@@ -604,7 +604,7 @@ function SidebarNode({
           </svg>
         )}
         {!hasChildren && !hasArticles && <span className="w-3" />}
-        <span className="text-[#6A6E64]">{getCategoryIcon(category.icon, "w-4 h-4")}</span>
+        <span className="text-[#6a7587]">{getCategoryIcon(category.icon, "w-4 h-4")}</span>
         <span className="text-sm truncate flex-1">{category.name}</span>
         {hasArticles && (
           <span className="text-xs text-[#8A8E84]">{category.articles!.length}</span>
@@ -1332,7 +1332,7 @@ function ArticlePage({ article, reviewMode }: { article: Article; reviewMode?: b
       <div className="flex gap-6">
         {/* Main article content */}
         <div className="flex-1 min-w-0">
-          <div className="bg-white rounded-xl border border-[#d4dcc8] p-8">
+          <div className="bg-white rounded-xl border border-[#c8cad0] p-8">
             <div className="mb-6">
               <h1 className="text-2xl font-bold text-[#3d4f30] mb-3">{article.title}</h1>
               <div className="flex items-center gap-4 text-sm text-[#6b7f58]">
@@ -1368,7 +1368,7 @@ function ArticlePage({ article, reviewMode }: { article: Article; reviewMode?: b
             </div>
             <div className="mt-8 pt-6 border-t border-[#e8ede2]">
               <div className="flex items-center gap-3">
-                <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#e8f0de] hover:bg-[#D8D6D0] text-[#4a5d3a] transition-colors">
+                <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#e8eaef] hover:bg-[#D8D6D0] text-[#4a5d3a] transition-colors">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
                   </svg>
@@ -1394,10 +1394,10 @@ function ArticlePage({ article, reviewMode }: { article: Article; reviewMode?: b
             </h3>
             {(article.commentsCount || 0) > 0 ? (
               <div className="space-y-4">
-                <div className="border-l-2 border-[#8fa87a] pl-4 py-2">
+                <div className="border-l-2 border-[#7a8597] pl-4 py-2">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-sm font-medium text-[#3d4f30]">Игорь Садовников</span>
-                    <span className="text-xs text-[#a8b89a]">2 дня назад</span>
+                    <span className="text-xs text-[#8a95a7]">2 дня назад</span>
                   </div>
                   <p className="text-sm text-[#4a5d3a]">Отличная статья, очень полезно для начинающих цветоводов!</p>
                 </div>
@@ -1408,7 +1408,7 @@ function ArticlePage({ article, reviewMode }: { article: Article; reviewMode?: b
             <div className="mt-4 pt-4 border-t border-[#e8ede2]">
               <textarea
                 placeholder="Написать комментарий..."
-                className="w-full px-4 py-3 rounded-lg border border-[#d4dcc8] focus:outline-none focus:ring-2 focus:ring-[#8fa87a] focus:border-transparent resize-none text-sm"
+                className="w-full px-4 py-3 rounded-lg border border-[#d4dcc8] focus:outline-none focus:ring-2 focus:ring-[#7a8597] focus:border-transparent resize-none text-sm"
                 rows={3}
               />
               <button className="mt-2 px-4 py-2 rounded-lg bg-[#4A4E44] hover:bg-[#5A5E54] text-white text-sm transition-colors">
@@ -1445,7 +1445,7 @@ function ArticlePage({ article, reviewMode }: { article: Article; reviewMode?: b
             ) : (
               <div>
                 <p className="text-sm text-[#6b7f58] mb-1">Мало оценок</p>
-                <p className="text-xs text-[#a8b89a]">Оценок пока нет</p>
+                <p className="text-xs text-[#8a95a7]">Оценок пока нет</p>
               </div>
             )}
             <p className="text-xs text-[#a8b89a] mt-3 italic">Свой материал оценивать нельзя.</p>
@@ -1548,7 +1548,7 @@ function ProfilePage({ onArticleClick }: { onArticleClick?: (article: Article) =
             </div>
             <div>
               <h1 className="text-2xl font-bold text-white">Анна Зелёнова</h1>
-              <p className="text-[#c8d4b8]">Автор статей · Присоединилась в марте 2024</p>
+              <p className="text-[#9aa5b7]">Автор статей · Присоединилась в марте 2024</p>
             </div>
           </div>
         </div>
@@ -1904,7 +1904,7 @@ function MyCommentsPage({ onArticleClick }: { onArticleClick: (article: Article)
               }`}
             >
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-[#e8f0de] flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 rounded-full bg-[#e8eaef] flex items-center justify-center flex-shrink-0">
                   <svg className="w-5 h-5 text-[#4a5d3a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
                   </svg>
@@ -1993,7 +1993,7 @@ function MyAttachmentsPage() {
         </div>
         <button
           onClick={() => setShowAddModal(true)}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#4a5d3a] hover:bg-[#5a6f48] text-white transition-colors shadow-md"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#4a5d3a] hover:bg-[#5a6577] text-white transition-colors shadow-md"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -2456,7 +2456,7 @@ function CreateDraftPage({ setCurrentPage, setUserDrafts, userDrafts, editingDra
                 </select>
                 <button
                   onClick={addAdditionalSection}
-                  className="px-3 py-2 rounded bg-[#e8f0de] hover:bg-[#d4e4c8] text-[#4a5d3a] text-sm transition-colors"
+                  className="px-3 py-2 rounded bg-[#e8f0de] hover:bg-[#d8dae0] text-[#4a5d3a] text-sm transition-colors"
                   title="Добавить раздел"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2479,7 +2479,7 @@ function CreateDraftPage({ setCurrentPage, setUserDrafts, userDrafts, editingDra
               </select>
               <button
                 disabled={!section && additionalSections.length === 0}
-                className="px-3 py-2 rounded bg-[#e8f0de] hover:bg-[#d4e4c8] text-[#4a5d3a] text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-3 py-2 rounded bg-[#e8f0de] hover:bg-[#d8dae0] text-[#4a5d3a] text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 title="Добавить привязку"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2505,7 +2505,7 @@ function CreateDraftPage({ setCurrentPage, setUserDrafts, userDrafts, editingDra
           <div>
             <label className="block text-xs font-medium text-[#6b7f58] mb-1">Вложения</label>
             <div className="flex items-center gap-2">
-              <button className="flex items-center gap-2 px-3 py-1.5 rounded bg-[#e8f0de] hover:bg-[#d4e4c8] text-[#4a5d3a] text-xs transition-colors">
+              <button className="flex items-center gap-2 px-3 py-1.5 rounded bg-[#e8f0de] hover:bg-[#d8dae0] text-[#4a5d3a] text-xs transition-colors">
                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
                 </svg>
