@@ -147,13 +147,13 @@ export default function App() {
   };
 
   return (
-    <div className="h-screen bg-[#f5f5f0] flex flex-col overflow-hidden">
+    <div className="h-screen bg-[#F4F3EF] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-[#4a5d3a] shadow-lg sticky top-0 z-50">
+      <header className="bg-[#4A4E44] shadow-lg sticky top-0 z-50">
         <div className="flex items-center justify-between px-6 py-3">
           {/* Logo */}
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => { setCurrentPage('home'); setSelectedCategory(null); setSelectedArticle(null); }}>
-            <svg className="w-7 h-7 text-[#8fa87a]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+            <svg className="w-7 h-7 text-[#B8BCAE]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 21V11m0 0c-2-3-5-4-7-3m7 3c2-3 5-4 7-3M9 11c0-2 1-4 3-5m0 5c0-2-1-4-3-5" />
             </svg>
             <h1 className="text-white text-xl font-bold tracking-wide">База знаний</h1>
@@ -168,9 +168,9 @@ export default function App() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                className="w-full px-4 py-2 pl-10 rounded-lg bg-[#5a6f48] text-white placeholder-[#a8b89a] border border-[#6b7f58] focus:outline-none focus:ring-2 focus:ring-[#8fa87a] focus:border-transparent transition-all"
+                className="w-full px-4 py-2 pl-10 rounded-lg bg-[#5A5E54] text-white placeholder-[#B8BCAE] border border-[#6A6E64] focus:outline-none focus:ring-2 focus:ring-[#8A8E84] focus:border-transparent transition-all"
               />
-              <svg className="absolute left-3 top-2.5 w-5 h-5 text-[#a8b89a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="absolute left-3 top-2.5 w-5 h-5 text-[#B8BCAE]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
@@ -181,7 +181,7 @@ export default function App() {
             {/* Workspace button */}
             <button
               onClick={() => setCurrentPage('workspace')}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#5a6f48] hover:bg-[#6b7f58] text-white transition-colors"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#5A5E54] hover:bg-[#6A6E64] text-white transition-colors"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
@@ -193,7 +193,7 @@ export default function App() {
             <div className="relative">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 rounded-lg hover:bg-[#5a6f48] transition-colors"
+                className="relative p-2 rounded-lg hover:bg-[#5A5E54] transition-colors"
               >
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -202,27 +202,27 @@ export default function App() {
               </button>
 
               {showNotifications && (
-                <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl shadow-xl border border-[#d4dcc8] overflow-hidden z-50">
-                  <div className="p-4 border-b border-[#e8ede2] flex items-center justify-between">
-                    <h3 className="font-semibold text-[#3d4f30]">Уведомления</h3>
-                    <span className="text-xs text-[#6b7f58] bg-[#e8f0de] px-2 py-0.5 rounded-full">3 новых</span>
+                <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl shadow-xl border border-[#D8D6D0] overflow-hidden z-50">
+                  <div className="p-4 border-b border-[#E8E6E2] flex items-center justify-between">
+                    <h3 className="font-semibold text-[#2A2D28]">Уведомления</h3>
+                    <span className="text-xs text-[#6A6E64] bg-[#E4E2DC] px-2 py-0.5 rounded-full">3 новых</span>
                   </div>
                   <div className="max-h-80 overflow-y-auto">
-                    <div className="p-4 border-b border-[#e8ede2] hover:bg-[#f0f4eb] cursor-pointer transition-colors">
+                    <div className="p-4 border-b border-[#e8ede2] hover:bg-[#ECEAE6] cursor-pointer transition-colors">
                       <div className="flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-full bg-[#e8f0de] flex items-center justify-center flex-shrink-0">
-                          <svg className="w-4 h-4 text-[#4a5d3a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="w-8 h-8 rounded-full bg-[#E4E2DC] flex items-center justify-center flex-shrink-0">
+                          <svg className="w-4 h-4 text-[#4A4E44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                         </div>
                         <div>
-                          <p className="text-sm text-[#3d4f30] font-medium">Статья одобрена</p>
-                          <p className="text-xs text-[#6b7f58] mt-0.5">«Уход за фиалками» прошла проверку и опубликована</p>
-                          <p className="text-xs text-[#a8b89a] mt-1">2 часа назад</p>
+                          <p className="text-sm text-[#2A2D28] font-medium">Статья одобрена</p>
+                          <p className="text-xs text-[#6A6E64] mt-0.5">«Уход за фиалками» прошла проверку и опубликована</p>
+                          <p className="text-xs text-[#A8AC9E] mt-1">2 часа назад</p>
                         </div>
                       </div>
                     </div>
-                    <div className="p-4 border-b border-[#e8ede2] hover:bg-[#f0f4eb] cursor-pointer transition-colors">
+                    <div className="p-4 border-b border-[#e8ede2] hover:bg-[#ECEAE6] cursor-pointer transition-colors">
                       <div className="flex items-start gap-3">
                         <div className="w-8 h-8 rounded-full bg-[#fef3cd] flex items-center justify-center flex-shrink-0">
                           <svg className="w-4 h-4 text-[#856404]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -232,11 +232,11 @@ export default function App() {
                         <div>
                           <p className="text-sm text-[#3d4f30] font-medium">Новый комментарий</p>
                           <p className="text-xs text-[#6b7f58] mt-0.5">Игорь Садовников оставил комментарий к вашей статье</p>
-                          <p className="text-xs text-[#a8b89a] mt-1">5 часов назад</p>
+                          <p className="text-xs text-[#A8AC9E] mt-1">5 часов назад</p>
                         </div>
                       </div>
                     </div>
-                    <div className="p-4 hover:bg-[#f0f4eb] cursor-pointer transition-colors">
+                    <div className="p-4 hover:bg-[#ECEAE6] cursor-pointer transition-colors">
                       <div className="flex items-start gap-3">
                         <div className="w-8 h-8 rounded-full bg-[#d4e8f0] flex items-center justify-center flex-shrink-0">
                           <svg className="w-4 h-4 text-[#2c5f7c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -254,7 +254,7 @@ export default function App() {
                   <div className="p-3 border-t border-[#e8ede2]">
                     <button 
                       onClick={() => { setCurrentPage('notifications'); setShowNotifications(false); }}
-                      className="w-full text-center text-sm text-[#4a5d3a] hover:text-[#3d4f30] font-medium py-1">
+                      className="w-full text-center text-sm text-[#4A4E44] hover:text-[#2A2D28] font-medium py-1">
                       Смотреть все уведомления
                     </button>
                   </div>
@@ -266,9 +266,9 @@ export default function App() {
             <div className="relative">
               <button
                 onClick={() => setShowProfileDropdown(!showProfileDropdown)}
-                className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-[#5a6f48] transition-colors"
+                className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-[#5A5E54] transition-colors"
               >
-                <div className="w-8 h-8 rounded-full bg-[#8fa87a] flex items-center justify-center text-white font-bold text-sm">
+                <div className="w-8 h-8 rounded-full bg-[#8A8E84] flex items-center justify-center text-white font-bold text-sm">
                   АЗ
                 </div>
                 <span className="text-white text-sm hidden md:inline">Анна Зелёнова</span>
@@ -278,10 +278,10 @@ export default function App() {
               </button>
 
               {showProfileDropdown && (
-                <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-xl shadow-xl border border-[#d4dcc8] overflow-hidden z-50">
+                <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-xl shadow-xl border border-[#D8D6D0] overflow-hidden z-50">
                   <div className="p-4 bg-gradient-to-r from-[#4a5d3a] to-[#5a6f48]">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full bg-[#8fa87a] flex items-center justify-center text-white font-bold text-lg">
+                      <div className="w-12 h-12 rounded-full bg-[#8A8E84] flex items-center justify-center text-white font-bold text-lg">
                         АЗ
                       </div>
                       <div>
@@ -339,7 +339,7 @@ export default function App() {
                     className={`flex-1 px-4 py-3 text-sm font-medium transition-all ${
                       sidebarTab === 'tree'
                         ? 'text-[#4a5d3a] bg-white border-b-2 border-[#4a5d3a]'
-                        : 'text-[#6b7f58] bg-[#f0f4eb] hover:bg-[#e8f0de]'
+                        : 'text-[#6b7f58] bg-[#f0f4eb] hover:bg-[#E4E2DC]'
                     }`}
                   >
                     Категории
@@ -402,9 +402,9 @@ export default function App() {
                                   element.scrollIntoView({ behavior: 'smooth', block: 'start' });
                                 }
                               }}
-                              className="w-full text-left text-sm text-[#6b7f58] hover:text-[#4a5d3a] hover:bg-[#f0f4eb] py-1.5 px-2 rounded transition-colors"
+                              className="w-full text-left text-sm text-[#6b7f58] hover:text-[#4A4E44] hover:bg-[#f0f4eb] py-1.5 px-2 rounded transition-colors"
                             >
-                              <span className="text-[#8fa87a] mr-2">{index + 1}.</span>
+                              <span className="text-[#8A8E84] mr-2">{index + 1}.</span>
                               {section.title}
                             </button>
                           ))}
@@ -458,7 +458,7 @@ export default function App() {
         )}
 
         {/* Main Content */}
-        <main className={`flex-1 overflow-y-auto bg-[#f5f5f0] min-h-0 ${
+        <main className={`flex-1 overflow-y-auto bg-[#F4F3EF] min-h-0 ${
           currentPage === 'profile' || currentPage === 'workspace' || currentPage === 'create-draft' || currentPage === 'notifications' || currentPage === 'my-comments' || currentPage === 'my-attachments'
             ? 'flex justify-center items-start'
             : ''
@@ -818,23 +818,6 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
         </svg>
       </div>
 
-      {/* Демонстрация карточек статей с картинками */}
-      <div className="mt-12">
-        <h2 className="text-2xl font-bold text-[#1a1a1a] mb-6">Популярные статьи</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categories.slice(0, 3).map(cat => {
-            const article = cat.articles?.[0] || cat.children?.[0]?.articles?.[0];
-            if (!article) return null;
-            return (
-              <ArticleCardWithImage
-                key={article.id}
-                article={article}
-                onClick={() => handleArticleClick(article)}
-              />
-            );
-          })}
-        </div>
-      </div>
     </div>
   );
 }
@@ -935,7 +918,7 @@ function CategoryPage({
         </div>
       )}
 
-      {/* Articles as list - without status badges */}
+      {/* Articles as cards with images */}
       {hasArticles && (
         <div>
           <h2 className="text-lg font-semibold text-[#3d4f30] mb-4 flex items-center gap-2">
@@ -944,29 +927,13 @@ function CategoryPage({
             </svg>
             Статьи
           </h2>
-          <div className="bg-white rounded-xl border border-[#d4dcc8] overflow-hidden">
-            {category.articles!.map((article, i) => (
-              <div
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {category.articles!.map((article) => (
+              <ArticleCardWithImage
                 key={article.id}
+                article={article}
                 onClick={() => onArticleClick(article)}
-                className={`px-5 py-4 cursor-pointer hover:bg-[#f0f4eb] transition-colors group
-                  ${i !== category.articles!.length - 1 ? 'border-b border-[#e8ede2]' : ''}
-                `}
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <h3 className="text-[#3d4f30] font-medium group-hover:text-[#4a5d3a] mb-1">{article.title}</h3>
-                    <p className="text-sm text-[#6b7f58] line-clamp-2">{article.content}</p>
-                    <div className="flex items-center gap-4 mt-2">
-                      <span className="text-xs text-[#8fa87a]">{article.author}</span>
-                      <span className="text-xs text-[#a8b89a]">{article.date}</span>
-                    </div>
-                  </div>
-                  <svg className="w-5 h-5 text-[#8fa87a] group-hover:text-[#4a5d3a] transition-colors flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </div>
+              />
             ))}
           </div>
         </div>
@@ -1031,7 +998,7 @@ function ArticlePage({ article, reviewMode }: { article: Article; reviewMode?: b
             </div>
             <div className="mt-8 pt-6 border-t border-[#e8ede2]">
               <div className="flex items-center gap-3">
-                <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#e8f0de] hover:bg-[#d4e4c8] text-[#4a5d3a] transition-colors">
+                <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#e8f0de] hover:bg-[#D8D6D0] text-[#4a5d3a] transition-colors">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
                   </svg>
@@ -1074,7 +1041,7 @@ function ArticlePage({ article, reviewMode }: { article: Article; reviewMode?: b
                 className="w-full px-4 py-3 rounded-lg border border-[#d4dcc8] focus:outline-none focus:ring-2 focus:ring-[#8fa87a] focus:border-transparent resize-none text-sm"
                 rows={3}
               />
-              <button className="mt-2 px-4 py-2 rounded-lg bg-[#4a5d3a] hover:bg-[#5a6f48] text-white text-sm transition-colors">
+              <button className="mt-2 px-4 py-2 rounded-lg bg-[#4A4E44] hover:bg-[#5A5E54] text-white text-sm transition-colors">
                 Отправить
               </button>
             </div>
@@ -1206,7 +1173,7 @@ function ProfilePage({ onArticleClick }: { onArticleClick?: (article: Article) =
         {/* Profile header */}
         <div className="bg-gradient-to-r from-[#4a5d3a] to-[#6b7f58] p-8">
           <div className="flex items-center gap-6">
-            <div className="w-20 h-20 rounded-full bg-[#8fa87a] flex items-center justify-center text-white font-bold text-2xl border-4 border-[#a8b89a]">
+            <div className="w-20 h-20 rounded-full bg-[#8A8E84] flex items-center justify-center text-white font-bold text-2xl border-4 border-[#a8b89a]">
               АЗ
             </div>
             <div>
@@ -1243,7 +1210,7 @@ function ProfilePage({ onArticleClick }: { onArticleClick?: (article: Article) =
             <div className="flex items-center gap-3">
               <span className="text-sm text-[#6b7f58] w-24">Качество</span>
               <div className="flex-1 bg-[#e8ede2] rounded-full h-3">
-                <div className="bg-[#6b7f58] h-3 rounded-full" style={{ width: '90%' }}></div>
+                <div className="bg-[#6A6E64] h-3 rounded-full" style={{ width: '90%' }}></div>
               </div>
               <span className="text-sm font-medium text-[#4a5d3a]">90%</span>
             </div>
@@ -1257,7 +1224,7 @@ function ProfilePage({ onArticleClick }: { onArticleClick?: (article: Article) =
             <div className="flex items-center gap-3">
               <span className="text-sm text-[#6b7f58] w-24">Полезность</span>
               <div className="flex-1 bg-[#e8ede2] rounded-full h-3">
-                <div className="bg-[#a8b89a] h-3 rounded-full" style={{ width: '85%' }}></div>
+                <div className="bg-[#A8AC9E] h-3 rounded-full" style={{ width: '85%' }}></div>
               </div>
               <span className="text-sm font-medium text-[#4a5d3a]">85%</span>
             </div>
@@ -1359,7 +1326,7 @@ function WorkspacePage({
           </button>
           <button 
             onClick={() => setCurrentPage('create-draft')}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#4a5d3a] hover:bg-[#5a6f48] text-white transition-colors shadow-md">
+            className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#4a5d3a] hover:bg-[#5A5E54] text-white transition-colors shadow-md">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>
