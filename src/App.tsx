@@ -56,6 +56,38 @@ function findPath(cats: Category[], targetId: string, path: string[] = []): stri
   return null;
 }
 
+// Get article thumbnail image
+function getArticleImage(articleId: string): string {
+  const imageMap: Record<string, string> = {
+    // Фиалки
+    'v1': 'https://images.unsplash.com/photo-1597848212624-a19eb35e2651?w=200&h=200&fit=crop',
+    'v2': 'https://images.unsplash.com/photo-1459411552884-841db9b3cc4a?w=200&h=200&fit=crop',
+    'v3': 'https://images.unsplash.com/photo-1509223197845-458d87318791?w=200&h=200&fit=crop',
+    // Орхидеи
+    'p1': 'https://images.unsplash.com/photo-1567696911980-2eed69a46042?w=200&h=200&fit=crop',
+    'p2': 'https://images.unsplash.com/photo-1566836610593-62a64888a216?w=200&h=200&fit=crop',
+    'p3': 'https://images.unsplash.com/photo-1524598171353-ce84a157f929?w=200&h=200&fit=crop',
+    // Кактусы
+    'cact1': 'https://images.unsplash.com/photo-1459411552884-841db9b3cc4a?w=200&h=200&fit=crop',
+    'cact2': 'https://images.unsplash.com/photo-1509223197845-458d87318791?w=200&h=200&fit=crop',
+    // Розы
+    'r1': 'https://images.unsplash.com/photo-1455659817273-f96807779a8a?w=200&h=200&fit=crop',
+    'r2': 'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=200&h=200&fit=crop',
+    'r3': 'https://images.unsplash.com/photo-1455659817273-f96807779a8a?w=200&h=200&fit=crop',
+    // Тюльпаны
+    'tul1': 'https://images.unsplash.com/photo-1520763185298-1b434c919102?w=200&h=200&fit=crop',
+    'tul2': 'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=200&h=200&fit=crop',
+    'tul3': 'https://images.unsplash.com/photo-1520763185298-1b434c919102?w=200&h=200&fit=crop',
+    // Деревья
+    'app1': 'https://images.unsplash.com/photo-1509223197845-458d87318791?w=200&h=200&fit=crop',
+    'app2': 'https://images.unsplash.com/photo-1459411552884-841db9b3cc4a?w=200&h=200&fit=crop',
+    // Общие изображения растений
+    'default': 'https://images.unsplash.com/photo-1459411552884-841db9b3cc4a?w=200&h=200&fit=crop',
+  };
+  
+  return imageMap[articleId] || imageMap['default'];
+}
+
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -918,7 +950,7 @@ function CategoryPage({
         </div>
       )}
 
-      {/* Articles as cards with images */}
+      {/* Articles as list with thumbnails */}
       {hasArticles && (
         <div>
           <h2 className="text-lg font-semibold text-[#3d4f30] mb-4 flex items-center gap-2">
@@ -927,13 +959,39 @@ function CategoryPage({
             </svg>
             Статьи
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {category.articles!.map((article) => (
-              <ArticleCardWithImage
+          <div className="bg-white rounded-xl border border-[#d4dcc8] overflow-hidden">
+            {category.articles!.map((article, i) => (
+              <div
                 key={article.id}
-                article={article}
                 onClick={() => onArticleClick(article)}
-              />
+                className={`flex items-center gap-4 px-5 py-4 cursor-pointer hover:bg-[#f0f4eb] transition-colors group
+                  ${i !== category.articles!.length - 1 ? 'border-b border-[#e8ede2]' : ''}
+                `}
+              >
+                {/* Thumbnail image */}
+                <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 bg-gradient-to-br from-[#e8e8e8] to-[#d0d0d0]">
+                  <img 
+                    src={getArticleImage(article.id)} 
+                    alt={article.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                
+                {/* Content */}
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-[#3d4f30] font-medium group-hover:text-[#4a5d3a] mb-1">{article.title}</h3>
+                  <p className="text-sm text-[#6b7f58] line-clamp-2">{article.content}</p>
+                  <div className="flex items-center gap-4 mt-2">
+                    <span className="text-xs text-[#8fa87a]">{article.author}</span>
+                    <span className="text-xs text-[#a8b89a]">{article.date}</span>
+                  </div>
+                </div>
+                
+                {/* Arrow */}
+                <svg className="w-5 h-5 text-[#8fa87a] group-hover:text-[#4a5d3a] transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
             ))}
           </div>
         </div>
@@ -1960,58 +2018,6 @@ function NotificationsPage({ setCurrentPage }: { setCurrentPage: (page: Page) =>
             </p>
           </div>
         )}
-      </div>
-    </div>
-  );
-}
-
-// Article card with image component
-function ArticleCardWithImage({ article, onClick }: { article: Article; onClick: () => void }) {
-  // Генерируем цвет фона на основе ID статьи
-  const getColorFromId = (id: string) => {
-    const colors = [
-      'from-[#e8e8e8] to-[#d0d0d0]',
-      'from-[#f0f0f0] to-[#d8d8d8]',
-      'from-[#e0e0e0] to-[#c8c8c8]',
-      'from-[#f5f5f5] to-[#e0e0e0]',
-      'from-[#eaeaea] to-[#d2d2d2]',
-    ];
-    const index = id.charCodeAt(0) % colors.length;
-    return colors[index];
-  };
-
-  return (
-    <div
-      onClick={onClick}
-      className="bg-white rounded-xl border border-[#e0e0e0] overflow-hidden hover:shadow-xl hover:border-[#c0c0c0] transition-all duration-300 cursor-pointer group"
-    >
-      {/* Заглавная картинка */}
-      <div className={`h-48 bg-gradient-to-br ${getColorFromId(article.id)} relative overflow-hidden`}>
-        <div className="absolute inset-0 flex items-center justify-center opacity-20 group-hover:opacity-30 transition-opacity duration-300">
-          <svg className="w-32 h-32 text-[#808080]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/20 to-transparent"></div>
-      </div>
-
-      {/* Контент */}
-      <div className="p-5">
-        <h3 className="text-lg font-semibold text-[#2a2a2a] mb-2 group-hover:text-[#1a1a1a] transition-colors duration-300 line-clamp-2">
-          {article.title}
-        </h3>
-        <p className="text-sm text-[#6a6a6a] mb-4 line-clamp-2">
-          {article.content}
-        </p>
-        <div className="flex items-center justify-between text-xs text-[#8a8a8a]">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#d0d0d0] to-[#b0b0b0] flex items-center justify-center text-white text-xs font-semibold">
-              {article.author.charAt(0)}
-            </div>
-            <span>{article.author}</span>
-          </div>
-          <span>{article.date}</span>
-        </div>
       </div>
     </div>
   );
