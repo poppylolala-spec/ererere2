@@ -330,90 +330,126 @@ export default function App() {
         {/* Sidebar - показываем только на страницах базы знаний */}
         {(currentPage === 'home' || currentPage === 'article' || currentPage === 'search') && (
           <aside className="w-72 bg-white border-r border-[#d4dcc8] flex-shrink-0 shadow-sm overflow-hidden flex flex-col self-stretch">
-            {/* Tabs for Tree/TOC - sticky at top */}
-            <div className="flex-shrink-0">
-              {currentPage === 'article' && selectedArticle && selectedArticle.sections && selectedArticle.sections.length > 0 ? (
-                <div className="flex">
+            {currentPage === 'article' && selectedArticle && selectedArticle.sections && selectedArticle.sections.length > 0 ? (
+              <>
+                {/* Tabs headers */}
+                <div className="flex-shrink-0 flex">
                   <button
                     onClick={() => setSidebarTab('tree')}
-                    className={`flex-1 px-4 py-3 text-sm font-medium transition-all relative ${
+                    className={`flex-1 px-4 py-3 text-sm font-medium transition-all ${
                       sidebarTab === 'tree'
                         ? 'text-[#4a5d3a] bg-white border-b-2 border-[#4a5d3a]'
                         : 'text-[#6b7f58] bg-[#f0f4eb] hover:bg-[#e8f0de]'
                     }`}
                   >
                     Категории
-                    {sidebarTab === 'toc' && (
-                      <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 flex gap-1 opacity-40">
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                        </svg>
-                      </div>
-                    )}
                   </button>
                   <button
                     onClick={() => setSidebarTab('toc')}
-                    className={`flex-1 px-4 py-3 text-sm font-medium transition-all relative ${
+                    className={`flex-1 px-4 py-3 text-sm font-medium transition-all ${
                       sidebarTab === 'toc'
                         ? 'text-[#4a5d3a] bg-white border-b-2 border-[#4a5d3a]'
                         : 'text-[#6b7f58] bg-[#f0f4eb] hover:bg-[#e8f0de]'
                     }`}
                   >
                     Содержание
-                    {sidebarTab === 'tree' && (
-                      <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 flex gap-1 opacity-40">
-                        <span className="text-xs">1.</span>
-                        <span className="text-xs">2.</span>
-                      </div>
-                    )}
                   </button>
                 </div>
-              ) : (
+                
+                {/* Content area with peek */}
+                <div className="flex-1 flex overflow-hidden">
+                  {/* Active tab content */}
+                  <div className="flex-1 overflow-y-auto">
+                    {sidebarTab === 'tree' ? (
+                      <nav className="p-2">
+                        {categories.map(cat => (
+                          <SidebarNode
+                            key={cat.id}
+                            category={cat}
+                            expandedNodes={expandedNodes}
+                            toggleNode={toggleNode}
+                            selectedCategory={selectedCategory}
+                            handleCategoryClick={handleCategoryClick}
+                            depth={0}
+                          />
+                        ))}
+                      </nav>
+                    ) : (
+                      <nav className="p-4">
+                        <div className="space-y-1">
+                          {selectedArticle.sections.map((section, index) => (
+                            <button
+                              key={section.id}
+                              onClick={() => {
+                                const element = document.getElementById(section.id);
+                                if (element) {
+                                  element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                }
+                              }}
+                              className="w-full text-left text-sm text-[#6b7f58] hover:text-[#4a5d3a] hover:bg-[#f0f4eb] py-1.5 px-2 rounded transition-colors"
+                            >
+                              <span className="text-[#8fa87a] mr-2">{index + 1}.</span>
+                              {section.title}
+                            </button>
+                          ))}
+                        </div>
+                      </nav>
+                    )}
+                  </div>
+                  
+                  {/* Inactive tab peek */}
+                  <div 
+                    className={`w-14 overflow-y-auto border-l border-[#e8ede2] ${
+                      sidebarTab === 'tree' ? 'bg-[#f0f4eb]' : 'bg-[#f0f4eb]'
+                    }`}
+                    onClick={() => setSidebarTab(sidebarTab === 'tree' ? 'toc' : 'tree')}
+                  >
+                    {sidebarTab === 'tree' ? (
+                      // Peek of TOC - show paragraph icons
+                      <div className="p-2 space-y-3">
+                        {selectedArticle.sections.slice(0, 8).map((_, index) => (
+                          <div key={index} className="flex items-center justify-center">
+                            <svg className="w-4 h-4 text-[#8fa87a] opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h10" />
+                            </svg>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      // Peek of Categories - show category icons
+                      <div className="p-2 space-y-3">
+                        {categories.slice(0, 8).map(cat => (
+                          <div key={cat.id} className="flex items-center justify-center text-[#6b7f58] opacity-60">
+                            {getCategoryIcon(cat.icon, "w-4 h-4")}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
                 <div className="p-4 bg-white border-b border-[#e8ede2]">
                   <h2 className="text-sm font-semibold text-[#4a5d3a] uppercase tracking-wider">Категории</h2>
                 </div>
-              )}
-            </div>
-            
-            {/* Scrollable content area */}
-            <div className="flex-1 overflow-y-auto">
-              {sidebarTab === 'tree' || !selectedArticle?.sections ? (
-                <nav className="p-2">
-                  {categories.map(cat => (
-                    <SidebarNode
-                      key={cat.id}
-                      category={cat}
-                      expandedNodes={expandedNodes}
-                      toggleNode={toggleNode}
-                      selectedCategory={selectedCategory}
-                      handleCategoryClick={handleCategoryClick}
-                      depth={0}
-                    />
-                  ))}
-                </nav>
-              ) : (
-                <nav className="p-4">
-                  <h3 className="text-sm font-semibold text-[#3d4f30] mb-3">Содержание</h3>
-                  <div className="space-y-1">
-                    {selectedArticle.sections.map((section, index) => (
-                      <button
-                        key={section.id}
-                        onClick={() => {
-                          const element = document.getElementById(section.id);
-                          if (element) {
-                            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                          }
-                        }}
-                        className="w-full text-left text-sm text-[#6b7f58] hover:text-[#4a5d3a] hover:bg-[#f0f4eb] py-1.5 px-2 rounded transition-colors"
-                      >
-                        <span className="text-[#8fa87a] mr-2">{index + 1}.</span>
-                        {section.title}
-                      </button>
+                <div className="flex-1 overflow-y-auto">
+                  <nav className="p-2">
+                    {categories.map(cat => (
+                      <SidebarNode
+                        key={cat.id}
+                        category={cat}
+                        expandedNodes={expandedNodes}
+                        toggleNode={toggleNode}
+                        selectedCategory={selectedCategory}
+                        handleCategoryClick={handleCategoryClick}
+                        depth={0}
+                      />
                     ))}
-                  </div>
-                </nav>
-              )}
-            </div>
+                  </nav>
+                </div>
+              </>
+            )}
           </aside>
         )}
 
