@@ -179,13 +179,13 @@ export default function App() {
   };
 
   return (
-    <div className="h-screen bg-[#F4F3EF] flex flex-col overflow-hidden">
+    <div className="h-screen bg-[#f0f2f5] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-[#4A4E44] shadow-lg sticky top-0 z-50">
+      <header className="bg-[#4a5567] shadow-lg sticky top-0 z-50">
         <div className="flex items-center justify-between px-6 py-3">
           {/* Logo */}
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => { setCurrentPage('home'); setSelectedCategory(null); setSelectedArticle(null); }}>
-            <svg className="w-7 h-7 text-[#B8BCAE]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+            <svg className="w-7 h-7 text-[#9aa5b7]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 21V11m0 0c-2-3-5-4-7-3m7 3c2-3 5-4 7-3M9 11c0-2 1-4 3-5m0 5c0-2-1-4-3-5" />
             </svg>
             <h1 className="text-white text-xl font-bold tracking-wide">База знаний</h1>
@@ -200,9 +200,9 @@ export default function App() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                className="w-full px-4 py-2 pl-10 rounded-lg bg-[#5A5E54] text-white placeholder-[#B8BCAE] border border-[#6A6E64] focus:outline-none focus:ring-2 focus:ring-[#8A8E84] focus:border-transparent transition-all"
+                className="w-full px-4 py-2 pl-10 rounded-lg bg-[#5a6577] text-white placeholder-[#9aa5b7] border border-[#6a7587] focus:outline-none focus:ring-2 focus:ring-[#7a8597] focus:border-transparent transition-all"
               />
-              <svg className="absolute left-3 top-2.5 w-5 h-5 text-[#B8BCAE]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="absolute left-3 top-2.5 w-5 h-5 text-[#9aa5b7]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
@@ -213,7 +213,7 @@ export default function App() {
             {/* Workspace button */}
             <button
               onClick={() => setCurrentPage('workspace')}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#5A5E54] hover:bg-[#6A6E64] text-white transition-colors"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#5a6577] hover:bg-[#6a7587] text-white transition-colors"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
@@ -225,7 +225,7 @@ export default function App() {
             <div className="relative">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 rounded-lg hover:bg-[#5A5E54] transition-colors"
+                className="relative p-2 rounded-lg hover:bg-[#5a6577] transition-colors"
               >
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -234,23 +234,23 @@ export default function App() {
               </button>
 
               {showNotifications && (
-                <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl shadow-xl border border-[#D8D6D0] overflow-hidden z-50">
-                  <div className="p-4 border-b border-[#E8E6E2] flex items-center justify-between">
-                    <h3 className="font-semibold text-[#2A2D28]">Уведомления</h3>
-                    <span className="text-xs text-[#6A6E64] bg-[#E4E2DC] px-2 py-0.5 rounded-full">3 новых</span>
+                <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl shadow-xl border border-[#c8cad0] overflow-hidden z-50">
+                  <div className="p-4 border-b border-[#d8dae0] flex items-center justify-between">
+                    <h3 className="font-semibold text-[#2a3547]">Уведомления</h3>
+                    <span className="text-xs text-[#6a7587] bg-[#d8dae0] px-2 py-0.5 rounded-full">3 новых</span>
                   </div>
                   <div className="max-h-80 overflow-y-auto">
-                    <div className="p-4 border-b border-[#e8ede2] hover:bg-[#ECEAE6] cursor-pointer transition-colors">
+                    <div className="p-4 border-b border-[#e8ede2] hover:bg-[#e8eaef] cursor-pointer transition-colors">
                       <div className="flex items-start gap-3">
                         <div className="w-8 h-8 rounded-full bg-[#E4E2DC] flex items-center justify-center flex-shrink-0">
-                          <svg className="w-4 h-4 text-[#4A4E44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-4 h-4 text-[#4a5567]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                         </div>
                         <div>
                           <p className="text-sm text-[#2A2D28] font-medium">Статья одобрена</p>
                           <p className="text-xs text-[#6A6E64] mt-0.5">«Уход за фиалками» прошла проверку и опубликована</p>
-                          <p className="text-xs text-[#A8AC9E] mt-1">2 часа назад</p>
+                          <p className="text-xs text-[#8a95a7] mt-1">2 часа назад</p>
                         </div>
                       </div>
                     </div>
@@ -300,7 +300,7 @@ export default function App() {
                 onClick={() => setShowProfileDropdown(!showProfileDropdown)}
                 className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-[#5A5E54] transition-colors"
               >
-                <div className="w-8 h-8 rounded-full bg-[#8A8E84] flex items-center justify-center text-white font-bold text-sm">
+                <div className="w-8 h-8 rounded-full bg-[#7a8597] flex items-center justify-center text-white font-bold text-sm">
                   АЗ
                 </div>
                 <span className="text-white text-sm hidden md:inline">Анна Зелёнова</span>
@@ -590,7 +590,7 @@ function SidebarNode({
         `}
         style={{ paddingLeft: `${depth * 16 + 12}px` }}
         onClick={() => {
-          handleCategoryClick(category.id);
+          // Только разворачиваем/сворачиваем, не переходим
           if (hasChildren || hasArticles) toggleNode(category.id);
         }}
       >
@@ -650,6 +650,8 @@ function SidebarNode({
 // Home page
 function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryClick: (id: string) => void; handleArticleClick: (article: Article) => void }) {
   const [focusedCategory, setFocusedCategory] = useState<string | null>(null);
+  const [zoomLevel, setZoomLevel] = useState(1);
+  const [viewBox, setViewBox] = useState({ x: 0, y: 0, width: 900, height: 750 });
   
   // Генерация звёзд для фона
   const stars = Array.from({ length: 200 }, (_, i) => ({
@@ -659,6 +661,33 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
     r: Math.random() * 1.5 + 0.5,
     opacity: Math.random() * 0.8 + 0.2,
   }));
+
+  // Функция для zoom к категории
+  const zoomToCategory = (categoryId: string) => {
+    const mainNode = mainNodes.find(n => n.id === categoryId);
+    const subNode = subNodes.find(n => n.id === categoryId);
+    const node = mainNode || subNode;
+    
+    if (node) {
+      // Вычисляем новый viewBox для zoom
+      const zoomFactor = 0.6; // Zoom in на 60%
+      const newWidth = 900 * zoomFactor;
+      const newHeight = 750 * zoomFactor;
+      const newX = node.x - newWidth / 2;
+      const newY = node.y - newHeight / 2;
+      
+      setViewBox({ x: newX, y: newY, width: newWidth, height: newHeight });
+      setZoomLevel(zoomLevel * (1 / zoomFactor));
+      setFocusedCategory(categoryId);
+    }
+  };
+
+  // Функция для возврата к общему виду
+  const resetZoom = () => {
+    setViewBox({ x: 0, y: 0, width: 900, height: 750 });
+    setZoomLevel(1);
+    setFocusedCategory(null);
+  };
 
   // Позиции основных категорий
   const mainNodes = [
@@ -757,7 +786,7 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
       <div className="bg-gradient-to-br from-[#0a0a1a] via-[#1a1a2e] to-[#16213e] rounded-xl border border-[#2a2a4a] p-6 shadow-2xl overflow-hidden relative">
         {focusedCategory && (
           <button
-            onClick={() => setFocusedCategory(null)}
+            onClick={resetZoom}
             className="mb-4 px-4 py-2 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-colors text-sm text-white flex items-center gap-2 relative z-10"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -766,7 +795,7 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
             Назад ко всем категориям
           </button>
         )}
-        <svg width="100%" height="750" viewBox="0 0 900 750" className="w-full relative z-0">
+        <svg width="100%" height="750" viewBox={`${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`} className="w-full relative z-0 transition-all duration-700 ease-in-out">
           {/* Градиенты и фильтры */}
           <defs>
             <linearGradient id="mainNodeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -872,7 +901,7 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
                 return (
                   <g
                     key={node.id}
-                    onClick={() => setFocusedCategory(node.id)}
+                    onClick={() => zoomToCategory(node.id)}
                     className="cursor-pointer group"
                   >
                     <circle
@@ -911,7 +940,7 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
                 return (
                   <g
                     key={node.id}
-                    onClick={() => setFocusedCategory(node.id)}
+                    onClick={() => zoomToCategory(node.id)}
                     className="cursor-pointer group"
                   >
                     <circle
@@ -1017,7 +1046,7 @@ function HomePage({ handleCategoryClick, handleArticleClick }: { handleCategoryC
                       return (
                         <g
                           key={subNode.id}
-                          onClick={() => setFocusedCategory(subNode.id)}
+                          onClick={() => zoomToCategory(subNode.id)}
                           className="cursor-pointer group"
                         >
                           <line
@@ -1161,11 +1190,9 @@ function CategoryPage({
           }`}
           style={{ paddingLeft: `${depth * 24 + 16}px` }}
           onClick={() => {
+            // Только разворачиваем/сворачиваем, не переходим
             if (hasChildren || hasArticles) {
               toggleNode(node.id);
-            }
-            if (!isCurrentCategory) {
-              onCategoryClick(node.id);
             }
           }}
         >
